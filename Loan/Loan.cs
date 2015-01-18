@@ -25,7 +25,7 @@ namespace kCredit
         public string Calculation_Method { get; set; }
         public DateTime Disburse_Date { get; set; }
         public DateTime First_Installment_Date { get; set; }
-        public DateTime Maturity_Mate { get; set; }
+        public DateTime Maturity_Date { get; set; }
         public string Never_On { get; set; }
         public string Non_Working_Day_Move { get; set; }
         public string Purpose { get; set; }
@@ -46,14 +46,14 @@ namespace kCredit
 
         public static DataTable GetDataTable(string filter = "", string status = "")
         {
-            var sql = "id, account_no, customer_no, branch_code, frequency_unit, frequency, installment_no, amount, currency, interest_rate";
-            sql = SqlFacade.SqlSelect(TableName, sql, "1 = 1");
+            var sql = "select l.id, account_no, last_name || ' ' || first_name full_name, frequency_unit, frequency, installment_no, amount, currency, interest_rate, disburse_date" +
+                "\nfrom loan l\ninner join customer c on c.customer_no = l.customer_no";
             if (status.Length == 0)
-                sql += " and status <> '" + Type.RecordStatus_Deleted + "'";
+                sql += " and l.status <> '" + Type.RecordStatus_Deleted + "'";
             else
-                sql += " and status = '" + status + "'";
+                sql += " and l.status = '" + status + "'";
             if (filter.Length > 0)
-                sql += " and (" + SqlFacade.SqlILike("account_no, customer_no, branch_code") + ")";
+                sql += " and (" + SqlFacade.SqlILike("account_no, l.customer_no, l.branch_code") + ")";
             sql += "\norder by account_no\nlimit " + ConfigFacade.sy_select_limit;
 
             var cmd = new NpgsqlCommand(sql);
@@ -157,19 +157,11 @@ namespace kCredit
             SqlFacade.Connection.Execute(sql, new { branch_code });
         }
 
-        public static string GetNextSrNo(string branch_code)
-        {
-            var sql = SqlFacade.SqlSelect("customer_srno", "running_no", "branch_code = :branch_code");
-            var lNo = SqlFacade.Connection.ExecuteScalar<long>(sql, new { branch_code });
-            if (lNo != 0)
-                IncrementSrNo(branch_code);
-            else
-            {
-                SaveSrNo(branch_code, 2);
-                lNo = 1;
-            }
-            var sNo = branch_code + "-" + lNo.ToString(ConfigFacade.sy_customer_no_format);
-            return sNo;
+        public static string GetNextAccountNo(string customer_no)
+        {            
+            var sql = SqlFacade.SqlSelect(TableName, ":customer_no || '-' || count(*) + 1", "customer_no = :customer_no");
+            var sNo = SqlFacade.Connection.ExecuteScalar<string>(sql, new { customer_no });
+            return sNo;          
         }
     }
 }

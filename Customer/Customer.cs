@@ -13,7 +13,7 @@ namespace kCredit
     class Customer
     {
         public long Id { get; set; }
-        public string No { get; set; }
+        public string Customer_No { get; set; }
         public string First_Name { get; set; }
         public string Last_Name { get; set; }
         public string Gender { get; set; }
@@ -54,14 +54,14 @@ namespace kCredit
 
         public static DataTable GetDataTable(string filter = "", string status = "")
         {
-            var sql = SqlFacade.SqlSelect(TableName, "id, no, last_name || ' ' || first_name as name, gender, date_of_birth", "1 = 1");
+            var sql = SqlFacade.SqlSelect(TableName, "id, customer_no, last_name || ' ' || first_name as name, gender, date_of_birth", "1 = 1");
             if (status.Length == 0)
                 sql += " and status <> '" + Type.RecordStatus_Deleted + "'";
             else
                 sql += " and status = '" + status + "'";
             if (filter.Length > 0)
                 sql += " and (" + SqlFacade.SqlILike("no, last_name || ' ' || first_name ") + ")";
-            sql += "\norder by no\nlimit " + ConfigFacade.sy_select_limit;
+            sql += "\norder by customer_no\nlimit " + ConfigFacade.sy_select_limit;
 
             var cmd = new NpgsqlCommand(sql);
             if (filter.Length > 0)
@@ -76,7 +76,7 @@ namespace kCredit
             if (m.Id == 0)
             {
                 m.Insert_By = App.session.Username;
-                sql = "no, first_name, last_name, gender, date_of_birth, type, category, branch_code, " +
+                sql = "customer_no, first_name, last_name, gender, date_of_birth, type, category, branch_code, " +
                     "id_type1, id_value1, id_type2, id_value2, id_type3, id_value3, contact_type1, contact_value1, contact_type2, contact_value2, contact_type3, contact_value3, contact_type4, contact_value4, " +
                     "address, province, district, commune, village, note, insert_by";
                 sql = SqlFacade.SqlInsert(TableName, sql, "", true);
@@ -85,7 +85,7 @@ namespace kCredit
             else
             {
                 m.Change_By = App.session.Username;
-                sql = "no, first_name, last_name, gender, date_of_birth, type, category, branch_code, " +
+                sql = "customer_no, first_name, last_name, gender, date_of_birth, type, category, branch_code, " +
                    "id_type1, id_value1, id_type2, id_value2, id_type3, id_value3, contact_type1, contact_value1, contact_type2, contact_value2, contact_type3, contact_value3, contact_type4, contact_value4, " +
                    "address, province, district, commune, village, note, change_by, change_at, change_no";
                 sql = SqlFacade.SqlUpdate(TableName, sql, "change_at = now(), change_no = change_no + 1", "id = :id");
@@ -123,13 +123,13 @@ namespace kCredit
             LockFacade.Delete(TableName, Id);
         }
 
-        public static bool Exists(string No, long Id = 0)
+        public static bool Exists(string customer_no, long Id = 0)
         {
-            var sql = SqlFacade.SqlExists(TableName, "id <> :id and status <> :status and no = :no");
+            var sql = SqlFacade.SqlExists(TableName, "id <> :id and status <> :status and customer_no = :customer_no");
             var bExists = false;
             try
             {
-                bExists = SqlFacade.Connection.ExecuteScalar<bool>(sql, new { Id, Status = Type.RecordStatus_Deleted, No = No });
+                bExists = SqlFacade.Connection.ExecuteScalar<bool>(sql, new { Id, Status = Type.RecordStatus_Deleted, No = customer_no });
             }
             catch (Exception ex)
             {
@@ -163,7 +163,7 @@ namespace kCredit
             SqlFacade.Connection.Execute(sql, new { branch_code });
         }
 
-        public static string GetNextSrNo(string branch_code)
+        public static string GetNextCustomerNo(string branch_code)
         {
             var sql = SqlFacade.SqlSelect("customer_srno", "running_no", "branch_code = :branch_code");
             var lNo = SqlFacade.Connection.ExecuteScalar<long>(sql, new { branch_code });
