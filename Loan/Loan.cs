@@ -70,11 +70,11 @@ namespace kCredit
             {
                 m.Insert_By = App.session.Username;
                 m.Branch_Code = App.session.Branch_Code;
-                  sql = "account_no, customer_no, branch_code, frequency_unit, frequency, installment_no, amount, currency, interest_rate, calculation_method, " +
-                    "disburse_date, first_installment_date, maturity_date, never_on, non_working_day_move, purpose, payment_site, credit_agent_id, " +
-                    "note, insert_by";
+                sql = "account_no, customer_no, branch_code, frequency_unit, frequency, installment_no, amount, currency, interest_rate, calculation_method, " +
+                  "disburse_date, first_installment_date, maturity_date, never_on, non_working_day_move, purpose, payment_site, credit_agent_id, " +
+                  "note, insert_by";
                 sql = SqlFacade.SqlInsert(TableName, sql, "", true);
-              
+
                 m.Id = SqlFacade.Connection.ExecuteScalar<long>(sql, m);
             }
             else
@@ -158,10 +158,144 @@ namespace kCredit
         }
 
         public static string GetNextAccountNo(string customer_no)
-        {            
+        {
             var sql = SqlFacade.SqlSelect(TableName, ":customer_no || '-' || count(*) + 1", "customer_no = :customer_no");
             var sNo = SqlFacade.Connection.ExecuteScalar<string>(sql, new { customer_no });
-            return sNo;          
+            return sNo;
         }
+    }
+
+    class Schedule
+    {
+        public long Id { get; set; }
+        public string account_no { get; set; }
+        public DateTime date { get; set; }
+        public int no { get; set; }
+        public double principal { get; set; }
+        public double interest { get; set; }
+        public double total { get; set; }
+        public double outstanding { get; set; }
+        public double pay_off { get; set; }
+        public string note { get; set; }
+        public string status { get; set; }
+        public string Insert_By { get; set; }
+        public DateTime? Insert_At { get; set; }
+        public string Change_By { get; set; }
+        public DateTime? Change_At { get; set; }
+    }
+
+    static class ScheduleFacade
+    {
+        public static readonly string TableName = "schedule";
+
+        public static DataTable GetDataTable(long id)
+        {
+            var sql = SqlFacade.SqlSelect(TableName, "select id, date, no, principal, interest, total, outstanding", "id = :id", "no");
+            var cmd = new NpgsqlCommand(sql);
+            cmd.Parameters.AddWithValue(":id", id);
+            return SqlFacade.GetDataTable(cmd);
+        }
+
+        public static long Save(Schedule m)
+        {
+            string sql = "";
+            if (m.Id == 0)
+            {
+                m.Insert_By = App.session.Username;
+                sql = "account_no, date, no, principal, interest, total, outstanding, insert_by";
+                sql = SqlFacade.SqlInsert(TableName, sql, "", true);
+                m.Id = SqlFacade.Connection.ExecuteScalar<long>(sql, m);
+            }
+            else
+            {
+                m.Change_By = App.session.Username;
+                sql = "date, no, principal, interest, total, outstanding, change_by, change_at, change_no";
+                sql = SqlFacade.SqlUpdate(TableName, sql, "change_at = now(), change_no = change_no + 1", "id = :id");
+                SqlFacade.Connection.Execute(sql, m);
+                //ReleaseLock(m.Id);  // Unlock
+            }
+            return m.Id;
+        }
+
+        public static void Delete(string account_no)
+        {
+            var sql = SqlFacade.SqlDelete(TableName, "account_no = :account_no");
+            SqlFacade.Connection.Execute(sql, new { account_no });
+        }
+
+        //public static Loan Select(long Id)
+        //{
+        //    var sql = SqlFacade.SqlSelect(TableName, "*", "id = :id");
+        //    return SqlFacade.Connection.Query<Loan>(sql, new { Id }).FirstOrDefault();
+        //}
+
+        //public static void SetStatus(long Id, string status)
+        //{
+        //    var sql = SqlFacade.SqlUpdate(TableName, "status, change_by, change_at", "change_at = now()", "id = :id");
+        //    SqlFacade.Connection.Execute(sql, new { status, Change_By = App.session.Username, Id });
+        //}
+
+        //public static Lock GetLock(long Id)
+        //{
+        //    return LockFacade.Select(TableName, Id);
+        //}
+
+        //public static void Lock(long Id, string code)
+        //{
+        //    var m = new Lock { Table_Name = TableName, Lock_Id = Id, Ref = code };
+        //    LockFacade.Save(m);
+        //}
+
+        //public static void ReleaseLock(long Id)
+        //{
+        //    LockFacade.Delete(TableName, Id);
+        //}
+
+        //public static bool Exists(string account_no, long Id = 0)
+        //{
+        //    var sql = SqlFacade.SqlExists(TableName, "id <> :id and status <> :status and account_no = :account_no");
+        //    var bExists = false;
+        //    try
+        //    {
+        //        bExists = SqlFacade.Connection.ExecuteScalar<bool>(sql, new { Id, Status = Type.RecordStatus_Deleted, No = account_no });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageFacade.Show(MessageFacade.error_query + "\r\n" + ex.Message, LabelFacade.sy_customer, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //        ErrorLogFacade.Log(ex, "Exists");
+        //    }
+        //    return bExists;
+        //}
+
+        //public static void Export()
+        //{
+        //    string sql = SqlFacade.SqlSelect(TableName, ConfigFacade.sy_sql_export_customer, "status <> '" + Type.RecordStatus_Deleted + "'", "account_no");
+        //    SqlFacade.ExportToCSV(sql);
+        //}
+
+        //public static void SaveSrNo(string branch_code, long running_no = 1)
+        //{
+        //    var sql = SqlFacade.SqlInsert("customer_srno", "branch_code, running_no", "");
+        //    SqlFacade.Connection.Execute(sql, new { branch_code, running_no });
+        //}
+
+        //public static void IncrementSrNo(string branch_code)
+        //{
+        //    var sql = SqlFacade.SqlUpdate("customer_srno", "running_no", "running_no = running_no + 1", "branch_code = :branch_code");
+        //    SqlFacade.Connection.Execute(sql, new { branch_code });
+        //}
+
+        //public static void DecrementSrNo(string branch_code)    // When cancel; //todo: but when multi user???
+        //{
+        //    var sql = SqlFacade.SqlUpdate("customer_srno", "running_no", "running_no = running_no - 1", "branch_code = :branch_code");
+        //    SqlFacade.Connection.Execute(sql, new { branch_code });
+        //}
+
+        //public static string GetNextAccountNo(string customer_no)
+        //{
+        //    var sql = SqlFacade.SqlSelect(TableName, ":customer_no || '-' || count(*) + 1", "customer_no = :customer_no");
+        //    var sNo = SqlFacade.Connection.ExecuteScalar<string>(sql, new { customer_no });
+        //    return sNo;
+        //}
     }
 }

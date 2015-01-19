@@ -90,7 +90,7 @@ namespace kCredit
 
         private void AddRow(int no, DateTime repayment, double principal, double interest, double total, double outstanding)
         {
-            var row = dataGridView1.Rows[no - 1];
+            var row = dgvSchedule.Rows[no - 1];
             row.Cells["colNo"].Value = no;
             row.Cells["colDate"].Value = repayment;
             row.Cells["colPrin"].Value = principal;
@@ -102,7 +102,7 @@ namespace kCredit
         private void GenerateSchedule()
         {
             CalculateDates();
-            dataGridView1.Rows.Clear();
+            dgvSchedule.Rows.Clear();
 
             int nInstallmentNo = int.Parse(txtInstallmentNo.Text);
             string sFrequencyUnit = cboFrequencyUnit.SelectedValue.ToString();
@@ -129,7 +129,7 @@ namespace kCredit
             dtePrevious = dteRepayment;
             dPrincipalOut = dAmount - dPrincipalPay;
 
-            dataGridView1.Rows.Add();
+            dgvSchedule.Rows.Add();
             AddRow(1, dteRepayment, dPrincipalPay, dInterestCal, lTotalPay, dPrincipalOut);
 
             for (int i = 2; i < nInstallmentNo; i++)
@@ -148,7 +148,7 @@ namespace kCredit
                 else
                     lTotalPay = lTotalPay + dPrincipalPayLast + lInterestPay;
 
-                dataGridView1.Rows.Add();
+                dgvSchedule.Rows.Add();
                 AddRow(i, dteRepayment, dPrincipalPay, dInterestCal, dPrincipalPay + lInterestPay, dPrincipalOut);
             }
             iDayNum = (int)(dteMaturity - dtePrevious).TotalDays;
@@ -459,6 +459,7 @@ namespace kCredit
         {
             if (!IsValidated()) return false;
             Cursor = Cursors.WaitCursor;
+            // Loan account
             var m = new Loan();
             var log = new SessionLog { Module = Type.Module_Branch };
             m.Id = Id;
@@ -502,6 +503,20 @@ namespace kCredit
             {
                 MessageFacade.Show(MessageFacade.error_save + "\r\n" + ex.Message, LabelFacade.sy_save, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 ErrorLogFacade.Log(ex);
+            }
+            // Schedule
+            for (int i = 0; i < dgvSchedule.RowCount; i++)
+            {
+                var row = dgvSchedule.Rows[i];
+                var s = new Schedule();
+                s.account_no = m.Account_No;
+                s.no = (int)row.Cells["colNo"].Value;
+                s.date = (DateTime)row.Cells["colDate"].Value;
+                s.principal = (double)row.Cells["colPrin"].Value;
+                s.interest = (double)row.Cells["colInt"].Value;
+                s.total = (double)row.Cells["colTotal"].Value;
+                s.outstanding = (double)row.Cells["colOutstanding"].Value;
+                ScheduleFacade.Save(s);
             }
             if (dgvList.CurrentRow != null) RowIndex = dgvList.CurrentRow.Index;
             RefreshGrid(m.Id);
