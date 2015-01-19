@@ -15,6 +15,10 @@ namespace kCredit
         bool IsDirty = false;
         bool IsIgnore = true;
 
+        public bool IsDlg = false; // Show dialog box for selecting one 
+        public string CustomerNo = ""; // Selected customer no
+        public string FullName = "";    // Customer Full name
+
         frmMsg fMsg = null;
 
         StringFormat headerCellFormat = new StringFormat()
@@ -199,7 +203,7 @@ namespace kCredit
                 try
                 {
                     var m = CustomerFacade.Select(Id);
-                    txtCustomerNo.Text = m.No;
+                    txtCustomerNo.Text = m.Customer_No;
                     txtFirstName.Text = m.First_Name;
                     txtLastName.Text = m.Last_Name;
                     cboGender.SelectedValue = m.Gender;
@@ -230,7 +234,7 @@ namespace kCredit
                     SetStatus(m.Status);
                     LockControls();
                     IsDirty = false;
-                    SessionLogFacade.Log(Type.Priority_Information, Type.Module_Branch, Type.Log_View, "View. Id=" + m.Id + ", No=" + m.No);
+                    SessionLogFacade.Log(Type.Priority_Information, Type.Module_Branch, Type.Log_View, "View. Id=" + m.Id + ", No=" + m.Customer_No);
                 }
                 catch (Exception ex)
                 {
@@ -328,8 +332,8 @@ namespace kCredit
             btnClear.Text = "     " + (LabelFacade.sy_button_clear ?? btnClear.Text.Replace(" ", ""));
             btnFilter.Text = "     " + (LabelFacade.sy_button_filter ?? btnFilter.Text.Replace(" ", ""));
 
-            colCode.HeaderText = LabelFacade.GetLabel(prefix + "code") ?? colCode.HeaderText;
-            lblCode.Text = colCode.HeaderText;
+            colCustomerNo.HeaderText = LabelFacade.GetLabel(prefix + "code") ?? colCustomerNo.HeaderText;
+            lblCode.Text = colCustomerNo.HeaderText;
             lblName.Text = LabelFacade.GetLabel(prefix + "default_factor") ?? lblName.Text;
             //colDescription.HeaderText = LabelFacade.GetLabel(prefix + "description") ?? lblDescription.Text;
             //lblDescription.Text = colDescription.HeaderText;
@@ -344,7 +348,7 @@ namespace kCredit
             var m = new Customer();
             var log = new SessionLog { Module = Type.Module_Branch };
             m.Id = Id;
-            m.No = txtCustomerNo.Text.Trim();
+            m.Customer_No = txtCustomerNo.Text.Trim();
             m.First_Name = txtFirstName.Text;
             m.Last_Name = txtLastName.Text;
             m.Gender = cboGender.SelectedValue.ToString();
@@ -401,12 +405,15 @@ namespace kCredit
             return true;
         }
 
-        private void frmUnitMeasureList_Load(object sender, EventArgs e)
+        private void frmCustomerList_Load(object sender, EventArgs e)
         {
             Icon = Properties.Resources.Icon;
             try
             {
-                dgvList.ShowLessColumns(true);
+                
+               
+                
+                
                 SetSettings();
                 SetLabels();
                 Data.LoadBranch(cboBranch, false);
@@ -424,12 +431,20 @@ namespace kCredit
 
                 SessionLogFacade.Log(Type.Priority_Information, Type.Module_Branch, Type.Log_Open, "Opened");
                 RefreshGrid();
-                LoadData();
+                
+                LoadData();                
             }
             catch (Exception ex)
             {
                 ErrorLogFacade.Log(ex, "Form_Load");
                 MessageFacade.Show(MessageFacade.error_load_form + "\r\n" + ex.Message, LabelFacade.sy_customer, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            // ShowDialog; Select a customer
+            btnSelect.Visible = IsDlg;
+            if (IsDlg)
+            {
+                btnMode_Click(null, null);
+                toolStrip1.Refresh();
             }
         }
 
@@ -564,8 +579,13 @@ namespace kCredit
         private void dgvList_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex == -1) return;
-            if (IsExpand) picExpand_Click(sender, e);
-            dgvList_SelectionChanged(sender, e);    // reload data since SelectionChanged will not occured on current row
+            if (!IsDlg)
+            {
+                if (IsExpand) picExpand_Click(sender, e);
+                dgvList_SelectionChanged(sender, e);    // reload data since SelectionChanged will not occured on current row
+            }
+            else
+                btnSelect_Click(null, null);
         }
 
         private void btnActive_Click(object sender, EventArgs e)
@@ -888,7 +908,14 @@ namespace kCredit
         private void cboBranch_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cboBranch.SelectedIndex == -1 || btnNew.Enabled) return;
-            txtCustomerNo.Text = CustomerFacade.GetNextSrNo(cboBranch.SelectedValue.ToString()); //todo: Format No; from table
+            txtCustomerNo.Text = CustomerFacade.GetNextCustomerNo(cboBranch.SelectedValue.ToString()); //todo: Format No; from table
+        }
+
+        private void btnSelect_Click(object sender, EventArgs e)
+        {
+            CustomerNo = dgvList.CurrentRow.Cells["colCustomerNo"].Value.ToString();
+            FullName = dgvList.CurrentRow.Cells["colName"].Value.ToString();
+            DialogResult = System.Windows.Forms.DialogResult.OK;
         }
     }
 }

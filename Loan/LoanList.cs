@@ -88,11 +88,21 @@ namespace kCredit
             return r;
         }
 
+        private void AddRow(int no, DateTime repayment, double principal, double interest, double total, double outstanding)
+        {
+            var row = dataGridView1.Rows[no - 1];
+            row.Cells["colNo"].Value = no;
+            row.Cells["colDate"].Value = repayment;
+            row.Cells["colPrin"].Value = principal;
+            row.Cells["colInt"].Value = interest;
+            row.Cells["colTotal"].Value = total;
+            row.Cells["colOutstanding"].Value = outstanding;
+        }
+
         private void GenerateSchedule()
         {
             CalculateDates();
             dataGridView1.Rows.Clear();
-            dataGridView1.Rows.Add();
 
             int nInstallmentNo = int.Parse(txtInstallmentNo.Text);
             string sFrequencyUnit = cboFrequencyUnit.SelectedValue.ToString();
@@ -106,10 +116,10 @@ namespace kCredit
             DateTime dteFirstInstallment = dtpFirstInstallment.Value;
             DateTime dteRepayment = dteFirstInstallment;
 
-            double lPrincipalOut = dAmount;
+            double dPrincipalOut = dAmount;
 
             int iDayNum = (int)(dteRepayment - dtePrevious).TotalDays;
-            double dInterestCal = lPrincipalOut * iDayNum * dRatePerDay;
+            double dInterestCal = dPrincipalOut * iDayNum * dRatePerDay;
 
             double lInterestPay = dInterestCal;
             double dblTotalInterestCal = dInterestCal;
@@ -117,24 +127,21 @@ namespace kCredit
             double lTotalPay = dPrincipalPay + lInterestPay;
 
             dtePrevious = dteRepayment;
-            lPrincipalOut = dAmount - dPrincipalPay;
+            dPrincipalOut = dAmount - dPrincipalPay;
 
-            dataGridView1.Rows[0].Cells["colNo"].Value = 1;
-            dataGridView1.Rows[0].Cells["colDate"].Value = dteRepayment;
-            dataGridView1.Rows[0].Cells["colPrin"].Value = dPrincipalPay;
-            dataGridView1.Rows[0].Cells["colInt"].Value = dInterestCal;
-            dataGridView1.Rows[0].Cells["colTotal"].Value = lTotalPay;
+            dataGridView1.Rows.Add();
+            AddRow(1, dteRepayment, dPrincipalPay, dInterestCal, lTotalPay, dPrincipalOut);
 
             for (int i = 2; i < nInstallmentNo; i++)
             {
                 dteRepayment = GetNextRepaymentDate(dteFirstInstallment, i - 1);
                 iDayNum = (int)(dteRepayment - dtePrevious).TotalDays;
-                dInterestCal = lPrincipalOut * iDayNum * dRatePerDay;
+                dInterestCal = dPrincipalOut * iDayNum * dRatePerDay;
                 dblTotalInterestCal += dInterestCal;
 
                 lInterestPay = dInterestCal;
                 lTotalInterestPay = lTotalInterestPay + lInterestPay;
-                lPrincipalOut = dAmount - (i * dPrincipalPay);
+                dPrincipalOut = dAmount - (i * dPrincipalPay);
                 dtePrevious = dteRepayment;
                 if (i < nInstallmentNo)
                     lTotalPay = lTotalPay + dPrincipalPay + lInterestPay;
@@ -142,21 +149,12 @@ namespace kCredit
                     lTotalPay = lTotalPay + dPrincipalPayLast + lInterestPay;
 
                 dataGridView1.Rows.Add();
-                dataGridView1.Rows[i - 1].Cells["colNo"].Value = i;
-                dataGridView1.Rows[i - 1].Cells["colDate"].Value = dteRepayment;
-                dataGridView1.Rows[i - 1].Cells["colPrin"].Value = dPrincipalPay;
-                dataGridView1.Rows[i - 1].Cells["colInt"].Value = dInterestCal;
-                dataGridView1.Rows[i - 1].Cells["colTotal"].Value = dPrincipalPay + lInterestPay;
+                AddRow(i, dteRepayment, dPrincipalPay, dInterestCal, dPrincipalPay + lInterestPay, dPrincipalOut);
             }
             iDayNum = (int)(dteMaturity - dtePrevious).TotalDays;
-            dInterestCal = lPrincipalOut * iDayNum * dRatePerDay;
+            dInterestCal = dPrincipalOut * iDayNum * dRatePerDay;
             dblTotalInterestCal = dblTotalInterestCal + dInterestCal;
-
-            dataGridView1.Rows[nInstallmentNo - 1].Cells["colNo"].Value = nInstallmentNo;
-            dataGridView1.Rows[nInstallmentNo - 1].Cells["colDate"].Value = dteMaturity;
-            dataGridView1.Rows[nInstallmentNo - 1].Cells["colPrin"].Value = dPrincipalPayLast;
-            dataGridView1.Rows[nInstallmentNo - 1].Cells["colInt"].Value = dInterestCal;
-            dataGridView1.Rows[nInstallmentNo - 1].Cells["colTotal"].Value = dPrincipalPay + dInterestCal;
+            AddRow(nInstallmentNo, dteMaturity, dPrincipalPay, dInterestCal, dPrincipalPay + lInterestPay, 0);
         }
 
         private void RefreshGrid(long seq = 0)
@@ -206,13 +204,10 @@ namespace kCredit
 
         private void LockControls(bool l = true)
         {
-            //if (Id != 0 && l == false)
-            //    txtNo.ReadOnly = true;
-            //else
-            //    txtNo.ReadOnly = l;
             txtFrequency.ReadOnly = l;
-            txtFullName.ReadOnly = l;
             cboFrequencyUnit.Enabled = !l;
+            btnBrowse.Enabled = !l;
+            btnSchedule.Enabled = !l;
             cboPurpose.Enabled = !l;
             cboPaymentSite.Enabled = !l;
             cboAgent.Enabled = !l;
@@ -268,16 +263,16 @@ namespace kCredit
             var sMsg = new StringBuilder();
             Control cFocus = null;
             string No = txtAccountNo.Text.Trim();
-            if (No.Length == 0)
-            {
-                sMsg.AppendLine(LabelFacade.sy_msg_prefix + MessageFacade.code_not_empty);
-                cFocus = txtAccountNo;
-            }
-            else if (LoanFacade.Exists(No, Id))
-            {
-                sMsg.AppendLine(LabelFacade.sy_msg_prefix + MessageFacade.code_already_exists);
-                cFocus = txtAccountNo;
-            }
+            //if (No.Length == 0)
+            //{
+            //    sMsg.AppendLine(LabelFacade.sy_msg_prefix + MessageFacade.code_not_empty);
+            //    cFocus = txtAccountNo;
+            //}
+            //else if (LoanFacade.Exists(No, Id))
+            //{
+            //    sMsg.AppendLine(LabelFacade.sy_msg_prefix + MessageFacade.code_already_exists);
+            //    cFocus = txtAccountNo;
+            //}
             if (txtFrequency.Text.Trim().Length == 0)
             {
                 sMsg.AppendLine(LabelFacade.sy_msg_prefix + MessageFacade.code_already_exists);
@@ -303,7 +298,6 @@ namespace kCredit
             dtpDisburse.Value = DateTime.Today;
             dtpFirstInstallment.Checked = false;
             txtMaturity.Text = "";
-            //txtAccountNo.Text=    //todo: get new acc.
             txtCustomerNo.Text = "";
             txtFullName.Text = "";
             cboPaymentSite.SelectedIndex = -1;
@@ -325,6 +319,8 @@ namespace kCredit
                 {
                     var m = LoanFacade.Select(Id);
                     txtAccountNo.Text = m.Account_No;
+                    txtCustomerNo.Text = m.Customer_No;
+                    txtFullName.Text = dgvList.CurrentRow.Cells["colName"].Value.ToString();
                     cboFrequencyUnit.SelectedValue = m.Frequency_Unit;
                     txtFrequency.Text = m.Frequency.ToString();
                     txtInstallmentNo.Text = m.Installment_No.ToString();
@@ -342,9 +338,9 @@ namespace kCredit
                     cboPaymentSite.SelectedValue = m.Payment_Site;
                     cboAgent.SelectedValue = m.Credit_Agent_Id;
                     txtAccountStatus.Text = m.Account_Status;
-                    chkSaturday.Checked = (m.Non_Working_Day_Move.Contains("6"));
-                    chkSunday.Checked = (m.Non_Working_Day_Move.Contains("0"));
-                    chkHoliday.Checked = (m.Non_Working_Day_Move.Contains("H"));
+                    chkSaturday.Checked = (m.Never_On.Contains("6"));
+                    chkSunday.Checked = (m.Never_On.Contains("0"));
+                    chkHoliday.Checked = (m.Never_On.Contains("H"));
                     cboMove.SelectedValue = m.Non_Working_Day_Move;
                     txtNote.Text = m.Note;
                     SetStatus(m.Status);
@@ -475,7 +471,7 @@ namespace kCredit
             m.Calculation_Method = cboMethod.SelectedValue.ToString();
             m.Disburse_Date = dtpDisburse.Value;
             m.First_Installment_Date = dtpFirstInstallment.Value;
-            m.Maturity_Mate = dteMaturity;
+            m.Maturity_Date = dteMaturity;
             m.Account_No = txtAccountNo.Text;
             m.Customer_No = txtCustomerNo.Text;
             m.Purpose = cboPurpose.SelectedValue.ToString();
@@ -485,6 +481,7 @@ namespace kCredit
             if (chkSaturday.Checked) sNeverOn = "6";
             if (chkSunday.Checked) sNeverOn += "0";
             if (chkHoliday.Checked) sNeverOn += "H";
+            m.Never_On = sNeverOn;
             m.Non_Working_Day_Move = cboMove.SelectedValue.ToString();
             m.Note = txtNote.Text;
             if (m.Id == 0)
@@ -975,7 +972,7 @@ namespace kCredit
         private void cboBranch_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cboFrequencyUnit.SelectedIndex == -1 || btnNew.Enabled) return;
-            txtAccountNo.Text = LoanFacade.GetNextSrNo(cboFrequencyUnit.SelectedValue.ToString()); //todo: Format No; from table
+            txtAccountNo.Text = LoanFacade.GetNextAccountNo(cboFrequencyUnit.SelectedValue.ToString()); //todo: Format No; from table
         }
 
         private void txtMaturity_Enter(object sender, EventArgs e)
@@ -998,6 +995,16 @@ namespace kCredit
             else
                 lblOnNonWorkingDay.Enabled = !b;
             //if (!cboMove.Enabled) cboMove.SelectedValue = "";
+        }
+
+        private void btnBrowse_Click(object sender, EventArgs e)
+        {
+            var fCustomer = new frmCustomer();
+            fCustomer.IsDlg = true;
+            if (fCustomer.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
+            txtCustomerNo.Text = fCustomer.CustomerNo;
+            txtAccountNo.Text = LoanFacade.GetNextAccountNo(txtCustomerNo.Text);
+            txtFullName.Text = fCustomer.FullName;
         }
     }
 }

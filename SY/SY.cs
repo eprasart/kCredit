@@ -26,6 +26,7 @@ namespace kCredit
         public long Id { get; set; }
         public string Username { get; set; }
         public string Code { get; set; }
+
         public string Value
         {
             get { return _value; }
