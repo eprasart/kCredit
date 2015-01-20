@@ -1171,6 +1171,7 @@
             // 
             // dgvSchedule
             // 
+            this.dgvSchedule.AllowUserToAddRows = false;
             this.dgvSchedule.AllowUserToDeleteRows = false;
             this.dgvSchedule.AllowUserToResizeRows = false;
             dataGridViewCellStyle10.BackColor = System.Drawing.Color.Honeydew;
@@ -1200,6 +1201,7 @@
             this.dgvSchedule.Margin = new System.Windows.Forms.Padding(4);
             this.dgvSchedule.MultiSelect = false;
             this.dgvSchedule.Name = "dgvSchedule";
+            this.dgvSchedule.ReadOnly = true;
             this.dgvSchedule.RowHeadersVisible = false;
             this.dgvSchedule.RowHeadersWidth = 35;
             this.dgvSchedule.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -1207,14 +1209,13 @@
             this.dgvSchedule.Size = new System.Drawing.Size(774, 516);
             this.dgvSchedule.TabIndex = 1;
             this.dgvSchedule.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvList_CellDoubleClick);
-            this.dgvSchedule.SelectionChanged += new System.EventHandler(this.dgvList_SelectionChanged);
-            this.dgvSchedule.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvList_KeyDown);
             // 
             // dataGridViewTextBoxColumn1
             // 
             this.dataGridViewTextBoxColumn1.DataPropertyName = "id";
             this.dataGridViewTextBoxColumn1.HeaderText = "Id";
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
             this.dataGridViewTextBoxColumn1.Visible = false;
             // 
             // colNo
@@ -1226,6 +1227,7 @@
             this.colNo.DefaultCellStyle = dataGridViewCellStyle11;
             this.colNo.HeaderText = "No.";
             this.colNo.Name = "colNo";
+            this.colNo.ReadOnly = true;
             this.colNo.Width = 54;
             // 
             // colDate
@@ -1238,6 +1240,7 @@
             this.colDate.DefaultCellStyle = dataGridViewCellStyle12;
             this.colDate.HeaderText = "Date";
             this.colDate.Name = "colDate";
+            this.colDate.ReadOnly = true;
             this.colDate.Width = 62;
             // 
             // colPrin
@@ -1250,6 +1253,7 @@
             this.colPrin.DefaultCellStyle = dataGridViewCellStyle13;
             this.colPrin.HeaderText = "Principal";
             this.colPrin.Name = "colPrin";
+            this.colPrin.ReadOnly = true;
             this.colPrin.Width = 85;
             // 
             // colInt
@@ -1261,6 +1265,7 @@
             this.colInt.DefaultCellStyle = dataGridViewCellStyle14;
             this.colInt.HeaderText = "Interest";
             this.colInt.Name = "colInt";
+            this.colInt.ReadOnly = true;
             this.colInt.Width = 76;
             // 
             // colTotal
@@ -1273,6 +1278,7 @@
             this.colTotal.DefaultCellStyle = dataGridViewCellStyle15;
             this.colTotal.HeaderText = "Total";
             this.colTotal.Name = "colTotal";
+            this.colTotal.ReadOnly = true;
             this.colTotal.Width = 64;
             // 
             // colOutstanding
@@ -1283,6 +1289,7 @@
             this.colOutstanding.DefaultCellStyle = dataGridViewCellStyle16;
             this.colOutstanding.HeaderText = "Outstanding";
             this.colOutstanding.Name = "colOutstanding";
+            this.colOutstanding.ReadOnly = true;
             // 
             // mnuShow
             // 

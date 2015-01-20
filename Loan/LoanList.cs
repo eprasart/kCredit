@@ -90,6 +90,7 @@ namespace kCredit
 
         private void AddRow(int no, DateTime repayment, double principal, double interest, double total, double outstanding)
         {
+            dgvSchedule.Rows.Add();
             var row = dgvSchedule.Rows[no - 1];
             row.Cells["colNo"].Value = no;
             row.Cells["colDate"].Value = repayment;
@@ -102,6 +103,7 @@ namespace kCredit
         private void GenerateSchedule()
         {
             CalculateDates();
+            dgvSchedule.DataSource = null;
             dgvSchedule.Rows.Clear();
 
             int nInstallmentNo = int.Parse(txtInstallmentNo.Text);
@@ -129,7 +131,6 @@ namespace kCredit
             dtePrevious = dteRepayment;
             dPrincipalOut = dAmount - dPrincipalPay;
 
-            dgvSchedule.Rows.Add();
             AddRow(1, dteRepayment, dPrincipalPay, dInterestCal, lTotalPay, dPrincipalOut);
 
             for (int i = 2; i < nInstallmentNo; i++)
@@ -148,7 +149,6 @@ namespace kCredit
                 else
                     lTotalPay = lTotalPay + dPrincipalPayLast + lInterestPay;
 
-                dgvSchedule.Rows.Add();
                 AddRow(i, dteRepayment, dPrincipalPay, dInterestCal, dPrincipalPay + lInterestPay, dPrincipalOut);
             }
             iDayNum = (int)(dteMaturity - dtePrevious).TotalDays;
@@ -308,6 +308,8 @@ namespace kCredit
             chkHoliday.Checked = true;
             cboMove.SelectedIndex = 0;
             txtNote.Text = "";
+            dgvSchedule.DataSource = null;
+            dgvSchedule.Rows.Clear();
             IsDirty = false;
         }
 
@@ -333,7 +335,6 @@ namespace kCredit
                     dtpFirstInstallment.Checked = (dtpFirstInstallment.Value != GetNextRepaymentDate(dtpDisburse.Value));
                     txtAccountNo.Text = m.Account_No;
                     txtCustomerNo.Text = m.Customer_No;
-                    //txtFullName.Text = m   //todo: fullname                                        
                     cboPurpose.SelectedValue = m.Purpose;
                     cboPaymentSite.SelectedValue = m.Payment_Site;
                     cboAgent.SelectedValue = m.Credit_Agent_Id;
@@ -344,6 +345,8 @@ namespace kCredit
                     cboMove.SelectedValue = m.Non_Working_Day_Move;
                     txtNote.Text = m.Note;
                     SetStatus(m.Status);
+                    // Schedule
+                    dgvSchedule.DataSource = ScheduleFacade.GetDataTable(m.Account_No);
                     LockControls();
                     IsDirty = false;
                     SessionLogFacade.Log(Type.Priority_Information, Type.Module_Branch, Type.Log_View, "View. Id=" + m.Id + ", Account No.=" + m.Account_No);
@@ -505,24 +508,26 @@ namespace kCredit
                 ErrorLogFacade.Log(ex);
             }
             // Schedule
+            if (Id != 0 && dgvSchedule.Rows[0].Cells[0].Value == null)
+                ScheduleFacade.Delete(m.Account_No);
             for (int i = 0; i < dgvSchedule.RowCount; i++)
             {
                 var row = dgvSchedule.Rows[i];
                 var s = new Schedule();
                 s.account_no = m.Account_No;
-                s.no = (int)row.Cells["colNo"].Value;
+                s.no = int.Parse(row.Cells["colNo"].Value.ToString());
                 s.date = (DateTime)row.Cells["colDate"].Value;
-                s.principal = (double)row.Cells["colPrin"].Value;
-                s.interest = (double)row.Cells["colInt"].Value;
-                s.total = (double)row.Cells["colTotal"].Value;
-                s.outstanding = (double)row.Cells["colOutstanding"].Value;
+                s.principal = double.Parse(row.Cells["colPrin"].Value.ToString());
+                s.interest = double.Parse(row.Cells["colInt"].Value.ToString());
+                s.total = double.Parse(row.Cells["colTotal"].Value.ToString());
+                s.outstanding = double.Parse(row.Cells["colOutstanding"].Value.ToString());
                 ScheduleFacade.Save(s);
             }
             if (dgvList.CurrentRow != null) RowIndex = dgvList.CurrentRow.Index;
             RefreshGrid(m.Id);
             LockControls();
             Cursor = Cursors.Default;
-            log.Message = "Saved. Id=" + m.Id + ", Code=" + txtAccountNo.Text;
+            log.Message = "Saved. Id=" + m.Id + ", Account No.=" + m.Account_No;
             SessionLogFacade.Log(log);
             IsDirty = false;
             return true;

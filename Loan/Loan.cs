@@ -188,11 +188,11 @@ namespace kCredit
     {
         public static readonly string TableName = "schedule";
 
-        public static DataTable GetDataTable(long id)
+        public static DataTable GetDataTable(string account_no)
         {
-            var sql = SqlFacade.SqlSelect(TableName, "select id, date, no, principal, interest, total, outstanding", "id = :id", "no");
+            var sql = SqlFacade.SqlSelect(TableName, "id, date, no, principal, interest, total, outstanding", "account_no = :account_no", "no");
             var cmd = new NpgsqlCommand(sql);
-            cmd.Parameters.AddWithValue(":id", id);
+            cmd.Parameters.AddWithValue(":account_no", account_no);
             return SqlFacade.GetDataTable(cmd);
         }
 
