@@ -40,7 +40,7 @@ namespace kCredit
 
         public static void Close(Form f)
         {
-            if (frm == f) fMsg.Close();
+            if (frm == f && fMsg != null) fMsg.Close();
         }
     }
 }

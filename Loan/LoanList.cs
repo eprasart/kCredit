@@ -314,11 +314,11 @@ namespace kCredit
                     txtCustomerNo.Text = m.Customer_No;
                     txtFullName.Text = dgvList.CurrentRow.Cells["colName"].Value.ToString();
                     cboFrequencyUnit.SelectedValue = m.Frequency_Unit;
-                    txtFrequency.Text = m.Frequency.ToString();
-                    txtInstallmentNo.Text = m.Installment_No.ToString();
-                    txtAmount.Text = m.Amount.ToString();
+                    txtFrequency.Text = m.Frequency.ToString(txtFrequency.Format);
+                    txtInstallmentNo.Text =  m.Installment_No.ToString(txtInstallmentNo.Format);
+                    txtAmount.Text = m.Amount.ToString(txtAmount.Format);
                     cboCurrency.SelectedValue = m.Currency;
-                    txtInterestRate.Text = m.Interest_Rate.ToString();
+                    txtInterestRate.Text = m.Interest_Rate.ToString(txtInterestRate.Format);
                     cboMethod.SelectedValue = m.Calculation_Method;
                     dtpDisburse.Value = m.Disburse_Date;
                     CalculateDates();
