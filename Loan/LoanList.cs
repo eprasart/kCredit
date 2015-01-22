@@ -17,7 +17,7 @@ namespace kCredit
 
         DateTime dteMaturity;
 
-        frmMsg fMsg = null;
+        //frmMsg fMsg = null;
 
         StringFormat headerCellFormat = new StringFormat()
         {
@@ -60,6 +60,8 @@ namespace kCredit
         // First installment & Maturity date
         private void CalculateDates()
         {
+            if (!Util.IsInteger(txtFrequency.Text) || !Util.IsInteger(txtInstallmentNo.Text)) return;
+
             int nFrequency = int.Parse(txtFrequency.Text);
             int nInstallmentNo = int.Parse(txtInstallmentNo.Text);
 
@@ -72,9 +74,9 @@ namespace kCredit
             txtMaturity.Text = dteMaturity.ToString("ddd dd-MM-yy");
         }
 
-        private double GetRatePerDay(string sUnit, double Rate)
+        private decimal GetRatePerDay(string sUnit, decimal Rate)
         {
-            double r = 0.0;
+            decimal r = 0;
             if (Rate > 1) Rate /= 100;
             switch (sUnit)
             {
@@ -88,7 +90,7 @@ namespace kCredit
             return r;
         }
 
-        private void AddRow(int no, DateTime repayment, double principal, double interest, double total, double outstanding)
+        private void AddRow(int no, DateTime repayment, decimal principal, decimal interest, decimal total, decimal outstanding)
         {
             dgvSchedule.Rows.Add();
             var row = dgvSchedule.Rows[no - 1];
@@ -108,25 +110,25 @@ namespace kCredit
 
             int nInstallmentNo = int.Parse(txtInstallmentNo.Text);
             string sFrequencyUnit = cboFrequencyUnit.SelectedValue.ToString();
-            double dAmount = double.Parse(txtAmount.Text);
-            double dInterestRate = double.Parse(txtInterestRate.Text);
-            double dPrincipalPay = 1.0 * dAmount / nInstallmentNo;
-            double dPrincipalPayLast = dAmount - (dPrincipalPay * (nInstallmentNo - 1));
-            double dRatePerDay = GetRatePerDay(sFrequencyUnit, dInterestRate);
+            decimal dAmount = decimal.Parse(txtAmount.Text);
+            decimal dInterestRate = decimal.Parse(txtInterestRate.Text);
+            decimal dPrincipalPay = dAmount / nInstallmentNo;
+            decimal dPrincipalPayLast = dAmount - (dPrincipalPay * (nInstallmentNo - 1));
+            decimal dRatePerDay = GetRatePerDay(sFrequencyUnit, dInterestRate);
 
             DateTime dtePrevious = dtpDisburse.Value;
             DateTime dteFirstInstallment = dtpFirstInstallment.Value;
             DateTime dteRepayment = dteFirstInstallment;
 
-            double dPrincipalOut = dAmount;
+            decimal dPrincipalOut = dAmount;
 
             int iDayNum = (int)(dteRepayment - dtePrevious).TotalDays;
-            double dInterestCal = dPrincipalOut * iDayNum * dRatePerDay;
+            decimal dInterestCal = dPrincipalOut * iDayNum * dRatePerDay;
 
-            double lInterestPay = dInterestCal;
-            double dblTotalInterestCal = dInterestCal;
-            double lTotalInterestPay = lInterestPay;
-            double lTotalPay = dPrincipalPay + lInterestPay;
+            decimal lInterestPay = dInterestCal;
+            decimal dblTotalInterestCal = dInterestCal;
+            decimal lTotalInterestPay = lInterestPay;
+            decimal lTotalPay = dPrincipalPay + lInterestPay;
 
             dtePrevious = dteRepayment;
             dPrincipalOut = dAmount - dPrincipalPay;
@@ -237,7 +239,7 @@ namespace kCredit
             btnFind.Enabled = l;
             btnClear.Enabled = l;
             btnFilter.Enabled = l;
-            if (fMsg != null && !fMsg.IsDisposed) fMsg.Close();
+            Validator.Close(this);
         }
 
         private void SetStatus(string stat)
@@ -260,31 +262,19 @@ namespace kCredit
 
         private bool IsValidated()
         {
-            var sMsg = new StringBuilder();
-            Control cFocus = null;
+            var validator = new Validator(this, "loan");
             string No = txtAccountNo.Text.Trim();
-            //if (No.Length == 0)
-            //{
-            //    sMsg.AppendLine(LabelFacade.sy_msg_prefix + MessageFacade.code_not_empty);
-            //    cFocus = txtAccountNo;
-            //}
-            //else if (LoanFacade.Exists(No, Id))
-            //{
-            //    sMsg.AppendLine(LabelFacade.sy_msg_prefix + MessageFacade.code_already_exists);
-            //    cFocus = txtAccountNo;
-            //}
-            if (txtFrequency.Text.Trim().Length == 0)
-            {
-                sMsg.AppendLine(LabelFacade.sy_msg_prefix + MessageFacade.code_already_exists);
-                cFocus = txtFrequency;
-            }
-            if (sMsg.Length > 0)
-            {
-                MessageFacade.Show(this, ref fMsg, sMsg.ToString(), LabelFacade.sy_save);
-                cFocus.Focus();
-                return false;
-            }
-            return true;
+            if (cboFrequencyUnit.SelectedIndex == -1) validator.Add(cboFrequencyUnit, "frequency_unit_not_specified");
+            if (!Util.IsInteger(txtFrequency.Text)) validator.Add(txtFrequency, "frequency_invalid");
+            if (!Util.IsInteger(txtInstallmentNo.Text)) validator.Add(txtInstallmentNo, "installment_no_invalid");
+            if (!Util.IsDecimal(txtAmount.Text)) validator.Add(txtAmount, "amount_invalid");
+            if (cboCurrency.SelectedIndex == -1) validator.Add(cboCurrency, "currency_not_specified");
+            if (!Util.IsDecimal(txtInterestRate.Text)) validator.Add(txtInterestRate, "interest_rate_invalid");
+            if (dtpFirstInstallment.Checked && dtpFirstInstallment.Value <= dtpDisburse.Value) validator.Add(dtpFirstInstallment, "first_installment_date_invalid");
+            if (txtCustomerNo.Text.Length == 0) validator.Add(btnBrowse, "customer_not_specified");
+            if (cboPaymentSite.SelectedIndex == -1) validator.Add(cboPaymentSite, "payment_site_not_specified");
+            if (cboAgent.SelectedIndex == -1) validator.Add(cboAgent, "credit_agent_not_specified");
+            return validator.Show();
         }
 
         private void ClearAllBoxes()
@@ -469,9 +459,9 @@ namespace kCredit
             m.Frequency_Unit = cboFrequencyUnit.SelectedValue.ToString();
             m.Frequency = int.Parse(txtFrequency.Text);
             m.Installment_No = int.Parse(txtInstallmentNo.Text);
-            m.Amount = double.Parse(txtAmount.Text);
+            m.Amount = decimal.Parse(txtAmount.Text);
             m.Currency = cboCurrency.SelectedValue.ToString();
-            m.Interest_Rate = double.Parse(txtInterestRate.Text);
+            m.Interest_Rate = decimal.Parse(txtInterestRate.Text);
             m.Calculation_Method = cboMethod.SelectedValue.ToString();
             m.Disburse_Date = dtpDisburse.Value;
             m.First_Installment_Date = dtpFirstInstallment.Value;
@@ -517,10 +507,10 @@ namespace kCredit
                 s.account_no = m.Account_No;
                 s.no = int.Parse(row.Cells["colNo"].Value.ToString());
                 s.date = (DateTime)row.Cells["colDate"].Value;
-                s.principal = double.Parse(row.Cells["colPrin"].Value.ToString());
-                s.interest = double.Parse(row.Cells["colInt"].Value.ToString());
-                s.total = double.Parse(row.Cells["colTotal"].Value.ToString());
-                s.outstanding = double.Parse(row.Cells["colOutstanding"].Value.ToString());
+                s.principal = decimal.Parse(row.Cells["colPrin"].Value.ToString());
+                s.interest = decimal.Parse(row.Cells["colInt"].Value.ToString());
+                s.total = decimal.Parse(row.Cells["colTotal"].Value.ToString());
+                s.outstanding = decimal.Parse(row.Cells["colOutstanding"].Value.ToString());
                 ScheduleFacade.Save(s);
             }
             if (dgvList.CurrentRow != null) RowIndex = dgvList.CurrentRow.Index;

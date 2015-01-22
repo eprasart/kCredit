@@ -502,7 +502,7 @@
             this.txtNote.Multiline = true;
             this.txtNote.Name = "txtNote";
             this.txtNote.ReadOnly = true;
-            this.txtNote.Size = new System.Drawing.Size(766, 76);
+            this.txtNote.Size = new System.Drawing.Size(766, 72);
             this.txtNote.TabIndex = 29;
             this.txtNote.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
@@ -721,7 +721,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 4);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(780, 526);
+            this.tabPage2.Size = new System.Drawing.Size(780, 522);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Schedule";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -906,6 +906,7 @@
             this.txtFind.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtFind.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtFind.Format = null;
             this.txtFind.Location = new System.Drawing.Point(1, 1);
             this.txtFind.Margin = new System.Windows.Forms.Padding(4);
             this.txtFind.Name = "txtFind";
@@ -933,6 +934,7 @@
             // txtFrequency
             // 
             this.txtFrequency.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtFrequency.Format = null;
             this.txtFrequency.Location = new System.Drawing.Point(150, 72);
             this.txtFrequency.Margin = new System.Windows.Forms.Padding(4);
             this.txtFrequency.Name = "txtFrequency";
@@ -963,10 +965,11 @@
             // txtInstallmentNo
             // 
             this.txtInstallmentNo.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtInstallmentNo.Format = "N0";
             this.txtInstallmentNo.Location = new System.Drawing.Point(150, 105);
             this.txtInstallmentNo.Margin = new System.Windows.Forms.Padding(4);
             this.txtInstallmentNo.Name = "txtInstallmentNo";
-            this.txtInstallmentNo.Numeric = false;
+            this.txtInstallmentNo.Numeric = true;
             this.txtInstallmentNo.ReadOnly = true;
             this.txtInstallmentNo.Size = new System.Drawing.Size(230, 25);
             this.txtInstallmentNo.TabIndex = 11;
@@ -979,6 +982,7 @@
             // txtAmount
             // 
             this.txtAmount.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtAmount.Format = "#,0";
             this.txtAmount.Location = new System.Drawing.Point(150, 138);
             this.txtAmount.Margin = new System.Windows.Forms.Padding(4);
             this.txtAmount.Name = "txtAmount";
@@ -995,10 +999,11 @@
             // txtInterestRate
             // 
             this.txtInterestRate.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtInterestRate.Format = "N2";
             this.txtInterestRate.Location = new System.Drawing.Point(150, 202);
             this.txtInterestRate.Margin = new System.Windows.Forms.Padding(4);
             this.txtInterestRate.Name = "txtInterestRate";
-            this.txtInterestRate.Numeric = false;
+            this.txtInterestRate.Numeric = true;
             this.txtInterestRate.ReadOnly = true;
             this.txtInterestRate.Size = new System.Drawing.Size(230, 25);
             this.txtInterestRate.TabIndex = 11;
@@ -1024,6 +1029,7 @@
             // txtFullName
             // 
             this.txtFullName.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtFullName.Format = null;
             this.txtFullName.Location = new System.Drawing.Point(543, 107);
             this.txtFullName.Margin = new System.Windows.Forms.Padding(4);
             this.txtFullName.Name = "txtFullName";
@@ -1096,6 +1102,7 @@
             // 
             this.txtCustomerNo.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.txtCustomerNo.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCustomerNo.Format = null;
             this.txtCustomerNo.Location = new System.Drawing.Point(543, 74);
             this.txtCustomerNo.Margin = new System.Windows.Forms.Padding(4);
             this.txtCustomerNo.Name = "txtCustomerNo";
@@ -1112,6 +1119,7 @@
             // 
             this.txtAccountNo.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.txtAccountNo.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtAccountNo.Format = null;
             this.txtAccountNo.Location = new System.Drawing.Point(543, 41);
             this.txtAccountNo.Margin = new System.Windows.Forms.Padding(4);
             this.txtAccountNo.Name = "txtAccountNo";
@@ -1126,6 +1134,7 @@
             // txtAccountStatus
             // 
             this.txtAccountStatus.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtAccountStatus.Format = null;
             this.txtAccountStatus.Location = new System.Drawing.Point(543, 233);
             this.txtAccountStatus.Margin = new System.Windows.Forms.Padding(4);
             this.txtAccountStatus.Name = "txtAccountStatus";
@@ -1161,6 +1170,7 @@
             // txtMaturity
             // 
             this.txtMaturity.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtMaturity.Format = null;
             this.txtMaturity.Location = new System.Drawing.Point(150, 328);
             this.txtMaturity.Margin = new System.Windows.Forms.Padding(4);
             this.txtMaturity.Name = "txtMaturity";
@@ -1242,7 +1252,7 @@
             this.dgvSchedule.RowHeadersWidth = 35;
             this.dgvSchedule.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvSchedule.ShowEditingIcon = false;
-            this.dgvSchedule.Size = new System.Drawing.Size(774, 520);
+            this.dgvSchedule.Size = new System.Drawing.Size(774, 516);
             this.dgvSchedule.TabIndex = 1;
             this.dgvSchedule.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvList_CellDoubleClick);
             // 
@@ -1309,7 +1319,6 @@
             this.colTotal.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.colTotal.DataPropertyName = "total";
             dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle15.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle15.Format = "N2";
             this.colTotal.DefaultCellStyle = dataGridViewCellStyle15;
             this.colTotal.HeaderText = "Total";

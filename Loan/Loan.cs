@@ -19,9 +19,9 @@ namespace kCredit
         public string Frequency_Unit { get; set; }
         public int Frequency { get; set; }
         public int Installment_No { get; set; }
-        public double Amount { get; set; }
+        public decimal Amount { get; set; }
         public string Currency { get; set; }
-        public double Interest_Rate { get; set; }
+        public decimal Interest_Rate { get; set; }
         public string Calculation_Method { get; set; }
         public DateTime Disburse_Date { get; set; }
         public DateTime First_Installment_Date { get; set; }
@@ -80,7 +80,7 @@ namespace kCredit
             else
             {
                 m.Change_By = App.session.Username;
-                sql = "frequency_unit, frequency, installment_no, amount, currency, interest_rate, calculation_method, disburse_date, first_installment_date, " +
+                sql = "account_no, customer_no, branch_code, frequency_unit, frequency, installment_no, amount, currency, interest_rate, calculation_method, disburse_date, first_installment_date, " +
                     "maturity_date, never_on, non_working_day_move, purpose, payment_site, credit_agent_id, note, change_by, change_at, change_no";
                 sql = SqlFacade.SqlUpdate(TableName, sql, "change_at = now(), change_no = change_no + 1", "id = :id");
                 SqlFacade.Connection.Execute(sql, m);
@@ -171,11 +171,11 @@ namespace kCredit
         public string account_no { get; set; }
         public DateTime date { get; set; }
         public int no { get; set; }
-        public double principal { get; set; }
-        public double interest { get; set; }
-        public double total { get; set; }
-        public double outstanding { get; set; }
-        public double pay_off { get; set; }
+        public decimal principal { get; set; }
+        public decimal interest { get; set; }
+        public decimal total { get; set; }
+        public decimal outstanding { get; set; }
+        public decimal pay_off { get; set; }
         public string note { get; set; }
         public string status { get; set; }
         public string Insert_By { get; set; }

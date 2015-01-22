@@ -567,7 +567,10 @@ namespace kCredit
             var sql = SqlFacade.SqlSelect(TableName, "value", "code = lower(:code) and language = :language");
             var message = SqlFacade.Connection.ExecuteScalar<string>(sql, new { code, language });
             if (message == null)
+            {
                 ErrorLogFacade.Log("Message: code=" + code + " not exist");
+                message = code;
+            }
             return message;
         }
     }

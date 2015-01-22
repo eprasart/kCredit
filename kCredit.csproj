@@ -170,6 +170,7 @@
     <Compile Include="SY\Splash.Designer.cs">
       <DependentUpon>Splash.cs</DependentUpon>
     </Compile>
+    <Compile Include="Common\Validator.cs" />
     <EmbeddedResource Include="Customer\CustomerList.resx">
       <DependentUpon>CustomerList.cs</DependentUpon>
     </EmbeddedResource>
