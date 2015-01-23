@@ -223,6 +223,12 @@ namespace kCredit
             SqlFacade.Connection.Execute(sql, new { account_no });
         }
 
+
+        public static decimal EMI(decimal amount, decimal r, int n)
+        {
+            var pow = (decimal)Math.Pow((double)(1 + r), (double)n);
+            return amount * r * pow / (pow - 1);
+        }
         //public static Loan Select(long Id)
         //{
         //    var sql = SqlFacade.SqlSelect(TableName, "*", "id = :id");

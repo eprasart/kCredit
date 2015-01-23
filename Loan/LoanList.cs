@@ -76,8 +76,7 @@ namespace kCredit
 
         private decimal GetRatePerDay(string sUnit, decimal Rate)
         {
-            decimal r = 0;
-            if (Rate > 1) Rate /= 100;
+            decimal r = 0;         
             switch (sUnit)
             {
                 case "W":
@@ -112,9 +111,10 @@ namespace kCredit
             string sFrequencyUnit = cboFrequencyUnit.SelectedValue.ToString();
             decimal dAmount = decimal.Parse(txtAmount.Text);
             decimal dInterestRate = decimal.Parse(txtInterestRate.Text);
+            if (dInterestRate >= 1) dInterestRate /= 100;
             decimal dPrincipalPay = dAmount / nInstallmentNo;
             decimal dPrincipalPayLast = dAmount - (dPrincipalPay * (nInstallmentNo - 1));
-            decimal dRatePerDay = GetRatePerDay(sFrequencyUnit, dInterestRate);
+            decimal dRatePerDay = GetRatePerDay(sFrequencyUnit,  dInterestRate);
 
             DateTime dtePrevious = dtpDisburse.Value;
             DateTime dteFirstInstallment = dtpFirstInstallment.Value;
@@ -132,6 +132,11 @@ namespace kCredit
 
             dtePrevious = dteRepayment;
             dPrincipalOut = dAmount - dPrincipalPay;
+
+
+            // Test
+            Text = ScheduleFacade.EMI(dAmount, dInterestRate, nInstallmentNo).ToString();
+            return;
 
             AddRow(1, dteRepayment, dPrincipalPay, dInterestCal, lTotalPay, dPrincipalOut);
 
@@ -315,7 +320,7 @@ namespace kCredit
                     txtFullName.Text = dgvList.CurrentRow.Cells["colName"].Value.ToString();
                     cboFrequencyUnit.SelectedValue = m.Frequency_Unit;
                     txtFrequency.Text = m.Frequency.ToString(txtFrequency.Format);
-                    txtInstallmentNo.Text =  m.Installment_No.ToString(txtInstallmentNo.Format);
+                    txtInstallmentNo.Text = m.Installment_No.ToString(txtInstallmentNo.Format);
                     txtAmount.Text = m.Amount.ToString(txtAmount.Format);
                     cboCurrency.SelectedValue = m.Currency;
                     txtInterestRate.Text = m.Interest_Rate.ToString(txtInterestRate.Format);
@@ -958,6 +963,7 @@ namespace kCredit
 
         private void btnExport_Click(object sender, EventArgs e)
         {
+            return;
             Cursor = Cursors.WaitCursor;
             Application.DoEvents();
             LoanFacade.Export();
@@ -992,7 +998,7 @@ namespace kCredit
 
         private void btnSchedule_Click(object sender, EventArgs e)
         {
-            tabControl1.SelectedIndex = 1;
+            //tabControl1.SelectedIndex = 1;
             GenerateSchedule();
         }
 
