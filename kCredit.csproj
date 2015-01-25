@@ -61,6 +61,8 @@
     <Reference Include="Dapper">
       <HintPath>packages\Dapper.1.38\lib\net45\Dapper.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
     <Reference Include="Mono.Security, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\Npgsql.2.2.3\lib\net45\Mono.Security.dll</HintPath>
@@ -76,12 +78,19 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Data.cs" />
     <Compile Include="Common\Identity.cs" />
+    <Compile Include="Common\Report.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\Report.designer.cs">
+      <DependentUpon>Report.cs</DependentUpon>
+    </Compile>
     <Compile Include="Common\Util.cs" />
     <Compile Include="Common\SqlFacade.cs" />
     <Compile Include="Common\Static.cs" />
@@ -103,6 +112,11 @@
     <Compile Include="Customer\Customer.cs" />
     <Compile Include="General\Branch.cs" />
     <Compile Include="Loan\Loan.cs" />
+    <Compile Include="Loan\LoanDS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LoanDS.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Loan\LoanList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -171,6 +185,10 @@
       <DependentUpon>Splash.cs</DependentUpon>
     </Compile>
     <Compile Include="Common\Validator.cs" />
+    <EmbeddedResource Include="bin\Debug\Report\Schedule.rdlc" />
+    <EmbeddedResource Include="Common\Report.resx">
+      <DependentUpon>Report.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Customer\CustomerList.resx">
       <DependentUpon>CustomerList.cs</DependentUpon>
     </EmbeddedResource>
@@ -210,6 +228,17 @@
       <DependentUpon>Splash.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="Loan\LoanDS.xsc">
+      <DependentUpon>LoanDS.xsd</DependentUpon>
+    </None>
+    <None Include="Loan\LoanDS.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>LoanDS.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Loan\LoanDS.xss">
+      <DependentUpon>LoanDS.xsd</DependentUpon>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -318,6 +347,10 @@
   <ItemGroup>
     <None Include="Resources\Refresh.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Preview.png" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

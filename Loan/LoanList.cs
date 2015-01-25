@@ -4,6 +4,7 @@ using kCredit.SM;
 using kCredit.SYS;
 using System.Text;
 using System.Drawing;
+using Microsoft.Reporting.WinForms;
 
 namespace kCredit
 {
@@ -323,7 +324,7 @@ namespace kCredit
             dtpFirstInstallment.Checked = false;
             txtMaturity.Text = "";
             txtCustomerNo.Text = "";
-            txtFullName.Text = "";
+            txtCustomerName.Text = "";
             cboPaymentSite.SelectedIndex = -1;
             cboAgent.SelectedIndex = -1;
             txtAccountStatus.Text = "Active";
@@ -346,7 +347,7 @@ namespace kCredit
                     var m = LoanFacade.Select(Id);
                     txtAccountNo.Text = m.Account_No;
                     txtCustomerNo.Text = m.Customer_No;
-                    txtFullName.Text = dgvList.CurrentRow.Cells["colName"].Value.ToString();
+                    txtCustomerName.Text = dgvList.CurrentRow.Cells["colName"].Value.ToString();
                     cboFrequencyUnit.SelectedValue = m.Frequency_Unit;
                     txtFrequency.Text = m.Frequency.ToString(txtFrequency.Format);
                     txtInstallmentNo.Text = m.Installment_No.ToString(txtInstallmentNo.Format);
@@ -994,7 +995,6 @@ namespace kCredit
 
         private void btnExport_Click(object sender, EventArgs e)
         {
-            return;
             Cursor = Cursors.WaitCursor;
             Application.DoEvents();
             LoanFacade.Export();
@@ -1054,12 +1054,38 @@ namespace kCredit
             if (fCustomer.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
             txtCustomerNo.Text = fCustomer.CustomerNo;
             txtAccountNo.Text = LoanFacade.GetNextAccountNo(txtCustomerNo.Text);
-            txtFullName.Text = fCustomer.FullName;
+            txtCustomerName.Text = fCustomer.FullName;
         }
 
-        private void btnSchedule_MouseUp(object sender, MouseEventArgs e)
+        private void btnGenerate_Click(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor;
+            GenerateSchedule();
+            if (ModifierKeys != Keys.Control)
+                tabControl1.SelectedIndex = 1;
+            Cursor = Cursors.Default;
+        }
 
+        private void btnPreview_Click(object sender, EventArgs e)
+        {
+            Cursor = Cursors.WaitCursor;
+            var fReport = new frmReport("Repayment Schedule");
+            fReport.FileName = "Schedule.rdlc";
+            //fReport.SetParameters(new ReportParameter("pFromDate", fromDate), new ReportParameter("pToDate", toDate),
+            //                    new ReportParameter("pFilter", Filter));
+            var sql = "select frequency_unit, frequency, amount, currency, interest_rate, calculation_method, disburse_date, maturity_date, payment_site, name credit_agent_name, phone credit_agent_phone," +
+                "\nlast_name || ' ' || first_name customer_name," +
+                "\nl.account_no, date, no, principal, interest, total, outstanding, pay_off" +
+                "\nfrom schedule s" +
+                "\ninner join loan l on s.account_no = l.account_no" +
+                "\ninner join customer c on l.customer_no = c.customer_no" +
+                "\ninner join agent a on l.credit_agent_id = a.id" +
+                "\nwhere l.account_no = :account_no";
+            var cmd = new Npgsql.NpgsqlCommand(sql);
+            cmd.Parameters.AddWithValue(":account_no", txtAccountNo.Text);
+            fReport.ReportSource = SqlFacade.GetDataTable(cmd);
+            fReport.PreviewReport();
+            Cursor = Cursors.Default;
         }
     }
 }
