@@ -129,7 +129,7 @@ namespace kCredit
             var bExists = false;
             try
             {
-                bExists = SqlFacade.Connection.ExecuteScalar<bool>(sql, new { Id, Status = Type.RecordStatus_Deleted, No = customer_no });
+                bExists = SqlFacade.Connection.ExecuteScalar<bool>(sql, new { Id, Status = Type.RecordStatus_Deleted, customer_no });
             }
             catch (Exception ex)
             {

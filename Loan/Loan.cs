@@ -225,7 +225,7 @@ namespace kCredit
 
 
         public static decimal EMI(decimal amount, decimal r, int n)
-        {
+        {   // PMT
             var pow = (decimal)Math.Pow((double)(1 + r), (double)n);
             return amount * r * pow / (pow - 1);
         }

@@ -391,9 +391,11 @@
             this.txtFind.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtFind.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtFind.Format = null;
             this.txtFind.Location = new System.Drawing.Point(1, 1);
             this.txtFind.Margin = new System.Windows.Forms.Padding(4);
             this.txtFind.Name = "txtFind";
+            this.txtFind.Numeric = false;
             this.txtFind.Size = new System.Drawing.Size(224, 25);
             this.txtFind.TabIndex = 4;
             this.txtFind.TabOnEnter = false;
@@ -529,9 +531,11 @@
             // txtAddress
             // 
             this.txtAddress.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtAddress.Format = null;
             this.txtAddress.Location = new System.Drawing.Point(506, 41);
             this.txtAddress.Margin = new System.Windows.Forms.Padding(4);
             this.txtAddress.Name = "txtAddress";
+            this.txtAddress.Numeric = false;
             this.txtAddress.ReadOnly = true;
             this.txtAddress.Size = new System.Drawing.Size(230, 25);
             this.txtAddress.TabIndex = 19;
@@ -576,9 +580,11 @@
             // 
             this.txtCustomerNo.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.txtCustomerNo.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCustomerNo.Format = null;
             this.txtCustomerNo.Location = new System.Drawing.Point(124, 134);
             this.txtCustomerNo.Margin = new System.Windows.Forms.Padding(4);
             this.txtCustomerNo.Name = "txtCustomerNo";
+            this.txtCustomerNo.Numeric = false;
             this.txtCustomerNo.ReadOnly = true;
             this.txtCustomerNo.Size = new System.Drawing.Size(230, 25);
             this.txtCustomerNo.TabIndex = 7;
@@ -646,9 +652,11 @@
             // txtFirstName
             // 
             this.txtFirstName.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtFirstName.Format = null;
             this.txtFirstName.Location = new System.Drawing.Point(124, 200);
             this.txtFirstName.Margin = new System.Windows.Forms.Padding(4);
             this.txtFirstName.Name = "txtFirstName";
+            this.txtFirstName.Numeric = false;
             this.txtFirstName.ReadOnly = true;
             this.txtFirstName.Size = new System.Drawing.Size(230, 25);
             this.txtFirstName.TabIndex = 11;
@@ -684,9 +692,11 @@
             // txtLastName
             // 
             this.txtLastName.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtLastName.Format = null;
             this.txtLastName.Location = new System.Drawing.Point(124, 167);
             this.txtLastName.Margin = new System.Windows.Forms.Padding(4);
             this.txtLastName.Name = "txtLastName";
+            this.txtLastName.Numeric = false;
             this.txtLastName.ReadOnly = true;
             this.txtLastName.Size = new System.Drawing.Size(230, 25);
             this.txtLastName.TabIndex = 9;
@@ -932,9 +942,11 @@
             // txtContactValue4
             // 
             this.txtContactValue4.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtContactValue4.Format = null;
             this.txtContactValue4.Location = new System.Drawing.Point(193, 278);
             this.txtContactValue4.Margin = new System.Windows.Forms.Padding(4);
             this.txtContactValue4.Name = "txtContactValue4";
+            this.txtContactValue4.Numeric = false;
             this.txtContactValue4.ReadOnly = true;
             this.txtContactValue4.Size = new System.Drawing.Size(230, 25);
             this.txtContactValue4.TabIndex = 13;
@@ -943,9 +955,11 @@
             // txtContactValue3
             // 
             this.txtContactValue3.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtContactValue3.Format = null;
             this.txtContactValue3.Location = new System.Drawing.Point(193, 245);
             this.txtContactValue3.Margin = new System.Windows.Forms.Padding(4);
             this.txtContactValue3.Name = "txtContactValue3";
+            this.txtContactValue3.Numeric = false;
             this.txtContactValue3.ReadOnly = true;
             this.txtContactValue3.Size = new System.Drawing.Size(230, 25);
             this.txtContactValue3.TabIndex = 11;
@@ -954,9 +968,11 @@
             // txtContactValue2
             // 
             this.txtContactValue2.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtContactValue2.Format = null;
             this.txtContactValue2.Location = new System.Drawing.Point(193, 212);
             this.txtContactValue2.Margin = new System.Windows.Forms.Padding(4);
             this.txtContactValue2.Name = "txtContactValue2";
+            this.txtContactValue2.Numeric = false;
             this.txtContactValue2.ReadOnly = true;
             this.txtContactValue2.Size = new System.Drawing.Size(230, 25);
             this.txtContactValue2.TabIndex = 9;
@@ -965,9 +981,11 @@
             // txtIDValue3
             // 
             this.txtIDValue3.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtIDValue3.Format = null;
             this.txtIDValue3.Location = new System.Drawing.Point(193, 110);
             this.txtIDValue3.Margin = new System.Windows.Forms.Padding(4);
             this.txtIDValue3.Name = "txtIDValue3";
+            this.txtIDValue3.Numeric = false;
             this.txtIDValue3.ReadOnly = true;
             this.txtIDValue3.Size = new System.Drawing.Size(230, 25);
             this.txtIDValue3.TabIndex = 5;
@@ -976,9 +994,11 @@
             // txtContactValue1
             // 
             this.txtContactValue1.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtContactValue1.Format = null;
             this.txtContactValue1.Location = new System.Drawing.Point(193, 179);
             this.txtContactValue1.Margin = new System.Windows.Forms.Padding(4);
             this.txtContactValue1.Name = "txtContactValue1";
+            this.txtContactValue1.Numeric = false;
             this.txtContactValue1.ReadOnly = true;
             this.txtContactValue1.Size = new System.Drawing.Size(230, 25);
             this.txtContactValue1.TabIndex = 7;
@@ -987,9 +1007,11 @@
             // txtIDValue2
             // 
             this.txtIDValue2.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtIDValue2.Format = null;
             this.txtIDValue2.Location = new System.Drawing.Point(193, 77);
             this.txtIDValue2.Margin = new System.Windows.Forms.Padding(4);
             this.txtIDValue2.Name = "txtIDValue2";
+            this.txtIDValue2.Numeric = false;
             this.txtIDValue2.ReadOnly = true;
             this.txtIDValue2.Size = new System.Drawing.Size(230, 25);
             this.txtIDValue2.TabIndex = 3;
@@ -998,9 +1020,11 @@
             // txtIDValue1
             // 
             this.txtIDValue1.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtIDValue1.Format = null;
             this.txtIDValue1.Location = new System.Drawing.Point(193, 44);
             this.txtIDValue1.Margin = new System.Windows.Forms.Padding(4);
             this.txtIDValue1.Name = "txtIDValue1";
+            this.txtIDValue1.Numeric = false;
             this.txtIDValue1.ReadOnly = true;
             this.txtIDValue1.Size = new System.Drawing.Size(230, 25);
             this.txtIDValue1.TabIndex = 1;
@@ -1042,7 +1066,7 @@
             // 
             // colCustomerNo
             // 
-            this.colCustomerNo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.colCustomerNo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.colCustomerNo.DataPropertyName = "customer_no";
             this.colCustomerNo.HeaderText = "Customer No.";
             this.colCustomerNo.Name = "colCustomerNo";
@@ -1071,12 +1095,14 @@
             // 
             // Column3
             // 
+            this.Column3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.Column3.DataPropertyName = "date_of_birth";
             dataGridViewCellStyle3.Format = "dd-MM-yy";
             this.Column3.DefaultCellStyle = dataGridViewCellStyle3;
             this.Column3.HeaderText = "Date of Birth";
             this.Column3.Name = "Column3";
             this.Column3.ReadOnly = true;
+            this.Column3.Width = 105;
             // 
             // frmCustomer
             // 
