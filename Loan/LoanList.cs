@@ -440,7 +440,7 @@ namespace kCredit
                 SetIconDisplayType(ConfigFacade.sy_toolbar_icon_display_type);
                 splitContainer1.SplitterDistance = ConfigFacade.ic_unit_measure_splitter_distance;
 
-                SetCodeCasing();
+                //SetCodeCasing();
                 //txtAccountNo.MaxLength = ConfigFacade.sy_code_max_length;
 
                 //todo: implement this
@@ -1069,6 +1069,7 @@ namespace kCredit
         private void btnPreview_Click(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor;
+            if (dgvSchedule.RowCount == 0) btnSchedule_Click(null, null);
             var fReport = new frmReport("Repayment Schedule");
             fReport.FileName = "Schedule.rdlc";
             //fReport.SetParameters(new ReportParameter("pFromDate", fromDate), new ReportParameter("pToDate", toDate),
