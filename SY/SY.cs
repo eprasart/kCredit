@@ -137,6 +137,8 @@ namespace kCredit
 
     static class ConfigFacade
     {
+        const string TableName = "sy_config";
+
         static string Username = App.session.Username;
 
         static Config _sy_customer_no_format = new Config("", Util.GetMemberName(() => _sy_customer_no_format), "0000", "Customer number format");
@@ -172,6 +174,46 @@ namespace kCredit
         static Config _sy_sql_export_branch = new Config("", Util.GetMemberName(() => _sy_sql_export_branch),
                     "*", "");
 
+        private static void Add(string username, string code, string value, string note = "")
+        {
+            var sql = SqlFacade.SqlInsert(TableName, "username, code, value, note", "", true);
+            SqlFacade.Connection.ExecuteScalar<long>(sql, new { username, code, value, note });
+        }
+
+        public static string GetString(string username, string code, string defaultValue = "")
+        {
+            var sWhere = "code ~* :code";
+            if (Username.Length > 0)
+                sWhere = "username ~* :username and " + sWhere;
+            var sql = SqlFacade.SqlSelect(TableName, "id, value as value", sWhere);
+
+            string result = null;
+            if (username.Length > 0)
+                result = SqlFacade.Connection.Query<string>(sql, new { username, code }).FirstOrDefault();
+            else
+                result = SqlFacade.Connection.Query<string>(sql, new { code }).FirstOrDefault();
+            if (result == null)
+            {
+                Add(username, code, defaultValue);
+                result = defaultValue;
+            }
+            return result;
+        }
+
+        public static string GetString(string code, string defaultValue = "")
+        {
+            return GetString("", code, defaultValue);
+        }
+
+        public static string GetStringUpper(string code, string defaultValue = "")
+        {
+            return GetString(code, defaultValue).ToUpper();
+        }
+
+        public static int GetInt(string code)
+        {
+            return int.Parse(GetString(code));
+        }
 
         public static string sy_customer_no_format
         {
