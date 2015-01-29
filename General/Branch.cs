@@ -38,7 +38,7 @@ namespace kCredit
         {
             var sql = SqlFacade.SqlSelect(TableName, "id, code, name", "1 = 1");
             if (status.Length == 0)
-                sql += " and status <> '" + Type.RecordStatus_Deleted + "'";
+                sql += " and status <> '" + Constant.RecordStatus_Deleted + "'";
             else
                 sql += " and status = '" + status + "'";
             if (filter.Length > 0)
@@ -106,7 +106,7 @@ namespace kCredit
             var bExists = false;
             try
             {
-                bExists = SqlFacade.Connection.ExecuteScalar<bool>(sql, new { Id, Status = Type.RecordStatus_Deleted, Code });
+                bExists = SqlFacade.Connection.ExecuteScalar<bool>(sql, new { Id, Status = Constant.RecordStatus_Deleted, Code });
             }
             catch (Exception ex)
             {
@@ -118,7 +118,7 @@ namespace kCredit
 
         public static void Export()
         {
-            string sql = SqlFacade.SqlSelect(TableName, ConfigFacade.sy_sql_export_branch, "status <> '" + Type.RecordStatus_Deleted + "'", "code");
+            string sql = SqlFacade.SqlSelect(TableName, ConfigFacade.sy_sql_export_branch, "status <> '" + Constant.RecordStatus_Deleted + "'", "code");
             SqlFacade.ExportToCSV(sql);
         }
     }

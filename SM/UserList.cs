@@ -102,7 +102,7 @@ namespace kCredit.SM
             RefreshGrid();
             Text += " v. " + App.version;
             LockControls();
-            SessionLogFacade.Log(Type.Priority_Information, Module, Type.Log_Open, "Form opened");
+            SessionLogFacade.Log(Constant.Priority_Information, Module, Constant.Log_Open, "Form opened");
         }
 
         private void btnNew_Click(object sender, EventArgs e)
@@ -122,7 +122,7 @@ namespace kCredit.SM
             txtPwd.Enabled = true;
             txtPwdAgain.Enabled = true;
             if (dgvList.RowCount > 0) rowIndex = dgvList.CurrentRow.Index;
-            SessionLogFacade.Log(Type.Priority_Information, Module, Type.Log_New, "New clicked");
+            SessionLogFacade.Log(Constant.Priority_Information, Module, Constant.Log_New, "New clicked");
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -142,13 +142,13 @@ namespace kCredit.SM
             if (dtpEnd.Checked) m.End_On = dtpEnd.Value;
             if (m.Id == 0)
             {
-                log.Priority = Type.Priority_Information;
-                log.Type = Type.Log_Insert;
+                log.Priority = Constant.Priority_Information;
+                log.Type = Constant.Log_Insert;
             }
             else
             {
-                log.Priority = Type.Priority_Caution;
-                log.Type = Type.Log_Update;
+                log.Priority = Constant.Priority_Caution;
+                log.Type = Constant.Log_Update;
             }
             ////m.Id = UserFacade.Save(m);
             if (dgvList.RowCount > 0) rowIndex = dgvList.CurrentRow.Index;
@@ -188,7 +188,7 @@ namespace kCredit.SM
 
         private void btnSaveNew_Click(object sender, EventArgs e)
         {
-            SessionLogFacade.Log(Type.Priority_Information, Module, Type.Log_SaveAndNew, "Save and new. Id=" + dgvList.Id + ", Username=" + txtUsernane.Text);
+            SessionLogFacade.Log(Constant.Priority_Information, Module, Constant.Log_SaveAndNew, "Save and new. Id=" + dgvList.Id + ", Username=" + txtUsernane.Text);
             btnSave_Click(sender, e);
             btnNew_Click(sender, e);
         }
@@ -298,7 +298,7 @@ namespace kCredit.SM
         
         private void btnPwdReset_Click(object sender, EventArgs e)
         {
-            SessionLogFacade.Log(Type.Priority_Caution, Module, Type.Log_ResetPwd, "Reset pwd clicked.");
+            SessionLogFacade.Log(Constant.Priority_Caution, Module, Constant.Log_ResetPwd, "Reset pwd clicked.");
             if (dgvList.Id == 0) return;
             var fPwdReset = new SM.frmPwdReset(txtUsernane.Text, txtFullName.Text);
             fPwdReset.Id = dgvList.Id;

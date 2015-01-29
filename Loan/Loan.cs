@@ -49,7 +49,7 @@ namespace kCredit
             var sql = "select l.id, account_no, last_name || ' ' || first_name full_name, frequency_unit, frequency, installment_no, amount, currency, interest_rate, disburse_date" +
                 "\nfrom loan l\ninner join customer c on c.customer_no = l.customer_no";
             if (status.Length == 0)
-                sql += " and l.status <> '" + Type.RecordStatus_Deleted + "'";
+                sql += " and l.status <> '" + Constant.RecordStatus_Deleted + "'";
             else
                 sql += " and l.status = '" + status + "'";
             if (filter.Length > 0)
@@ -123,7 +123,7 @@ namespace kCredit
             var bExists = false;
             try
             {
-                bExists = SqlFacade.Connection.ExecuteScalar<bool>(sql, new { Id, Status = Type.RecordStatus_Deleted, No = account_no });
+                bExists = SqlFacade.Connection.ExecuteScalar<bool>(sql, new { Id, Status = Constant.RecordStatus_Deleted, No = account_no });
             }
             catch (Exception ex)
             {
@@ -135,7 +135,7 @@ namespace kCredit
 
         public static void Export()
         {
-            string sql = SqlFacade.SqlSelect(TableName, ConfigFacade.sy_sql_export_customer, "status <> '" + Type.RecordStatus_Deleted + "'", "account_no");
+            string sql = SqlFacade.SqlSelect(TableName, ConfigFacade.sy_sql_export_customer, "status <> '" + Constant.RecordStatus_Deleted + "'", "account_no");
             SqlFacade.ExportToCSV(sql);
         }
 

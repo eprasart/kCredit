@@ -56,12 +56,12 @@ namespace kCredit
         {
             var sql = SqlFacade.SqlSelect(TableName, "id, customer_no, last_name || ' ' || first_name as name, gender, date_of_birth", "1 = 1");
             if (status.Length == 0)
-                sql += " and status <> '" + Type.RecordStatus_Deleted + "'";
+                sql += " and status <> '" + Constant.RecordStatus_Deleted + "'";
             else
                 sql += " and status = '" + status + "'";
             if (filter.Length > 0)
                 sql += " and (" + SqlFacade.SqlILike("no, last_name || ' ' || first_name ") + ")";
-            sql += "\norder by customer_no\nlimit " + ConfigFacade.sy_select_limit;
+            sql += "\norder by customer_no\nlimit " + ConfigFacade.Get(Constant.Select_Limit); //ConfigFacade.sy_select_limit;
 
             var cmd = new NpgsqlCommand(sql);
             if (filter.Length > 0)
@@ -129,7 +129,7 @@ namespace kCredit
             var bExists = false;
             try
             {
-                bExists = SqlFacade.Connection.ExecuteScalar<bool>(sql, new { Id, Status = Type.RecordStatus_Deleted, customer_no });
+                bExists = SqlFacade.Connection.ExecuteScalar<bool>(sql, new { Id, Status = Constant.RecordStatus_Deleted, customer_no });
             }
             catch (Exception ex)
             {
@@ -141,7 +141,7 @@ namespace kCredit
 
         public static void Export()
         {
-            string sql = SqlFacade.SqlSelect(TableName, ConfigFacade.sy_sql_export_customer, "status <> '" + Type.RecordStatus_Deleted + "'", "code");
+            string sql = SqlFacade.SqlSelect(TableName, ConfigFacade.sy_sql_export_customer, "status <> '" + Constant.RecordStatus_Deleted + "'", "code");
             SqlFacade.ExportToCSV(sql);
         }
 

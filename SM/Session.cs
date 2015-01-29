@@ -168,7 +168,7 @@ namespace kCredit.SM
         {
             var sql = "select id, code, description, name, phone, fax, email, address from " + TableName + "\nwhere 1 = 1";
             if (status.Length == 0)
-                sql += " and status <> '" + Type.RecordStatus_Deleted + "'";
+                sql += " and status <> '" + Constant.RecordStatus_Deleted + "'";
             else
                 sql += " and status = '" + status + "'";
             if (filter.Length > 0)
@@ -220,7 +220,7 @@ namespace kCredit.SM
         {
             string sql = SqlFacade.SqlSelect(TableName, "id \"Id\", code \"Code\", description \"Description\", address \"Address\", name \"Contact Name\", phone \"Phone\", fax \"Fax\", " +
                 "email \"Email\", note \"Note\", status \"Status\", insert_by \"Inserted By\", insert_at \"Inserted At\", change_by \"Changed By\", change_at \"Changed At\"",
-                "status <> '" + Type.RecordStatus_Deleted + "'", "code");
+                "status <> '" + Constant.RecordStatus_Deleted + "'", "code");
             SqlFacade.ExportToCSV(sql);
         }
     }

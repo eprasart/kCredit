@@ -38,7 +38,7 @@ namespace kCredit.GL
         {
             var sql = SqlFacade.SqlSelect(TableName, "id, branch_code, code, description, type, name, phone, fax, email, address", "1 = 1");
             if (status.Length == 0)
-                sql += " and status <> '" + Type.RecordStatus_Deleted + "'";
+                sql += " and status <> '" + Constant.RecordStatus_Deleted + "'";
             else
                 sql += " and status = '" + status + "'";
             if (filter.Length > 0)
@@ -106,7 +106,7 @@ namespace kCredit.GL
             var bExists = false;
             try
             {
-                bExists = SqlFacade.Connection.ExecuteScalar<bool>(sql, new { Id, Status = Type.RecordStatus_Deleted, Code });
+                bExists = SqlFacade.Connection.ExecuteScalar<bool>(sql, new { Id, Status = Constant.RecordStatus_Deleted, Code });
             }
             catch (Exception ex)
             {
@@ -120,7 +120,7 @@ namespace kCredit.GL
         {
             string sql = SqlFacade.SqlSelect(TableName, "id \"Id\", branch_code \"Branch Code\", code \"Code\", description \"Description\", type \"Type\", address \"Address\", name \"Contact Name\", phone \"Phone\", fax \"Fax\", " +
                 "email \"Email\", note \"Note\", status \"Status\", insert_by \"Inserted By\", insert_at \"Inserted At\", change_by \"Changed By\", change_at \"Changed At\"",
-                "status <> '" + Type.RecordStatus_Deleted + "'", "code");
+                "status <> '" + Constant.RecordStatus_Deleted + "'", "code");
             SqlFacade.ExportToCSV(sql);
         }
     }

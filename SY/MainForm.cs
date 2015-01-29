@@ -50,13 +50,13 @@ namespace kCredit.SYS
             }
             App.fUserList.Focus();
             Cursor = Cursors.Default;
-            SM.SessionLogFacade.Log(Type.Priority_Information, Module, Type.Log_Open, "User List opened.");
+            SM.SessionLogFacade.Log(Constant.Priority_Information, Module, Constant.Log_Open, "User List opened.");
         }
 
         private void btnAuditLog_Click(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor;
-            SM.SessionLogFacade.Log(Type.Priority_Information, Module, Type.Log_Open, "Audit Log opened.");
+            SM.SessionLogFacade.Log(Constant.Priority_Information, Module, Constant.Log_Open, "Audit Log opened.");
             if (App.fAuditLog == null || App.fAuditLog.IsDisposed == true)
             {
                 App.fAuditLog = new SM.frmAuditLog();

@@ -33,9 +33,9 @@ namespace kCredit
         {
             var status = "";
             if (mnuShowA.Checked && !mnuShowI.Checked)
-                status = Type.RecordStatus_Active;
+                status = Constant.RecordStatus_Active;
             else if (mnuShowI.Checked && !mnuShowA.Checked)
-                status = Type.RecordStatus_InActive;
+                status = Constant.RecordStatus_InActive;
             return status;
         }
 
@@ -118,7 +118,7 @@ namespace kCredit
 
         private void SetStatus(string stat)
         {
-            if (stat == Type.RecordStatus_Active)
+            if (stat == Constant.RecordStatus_Active)
             {
                 if (btnActive.Text == LabelFacade.sy_button_inactive) return;
                 btnActive.Text = LabelFacade.sy_button_inactive;
@@ -193,7 +193,7 @@ namespace kCredit
                     SetStatus(m.Status);
                     LockControls();
                     IsDirty = false;
-                    SessionLogFacade.Log(Type.Priority_Information, Type.Module_Branch, Type.Log_View, "View. Id=" + m.Id + ", Code=" + m.Code);
+                    SessionLogFacade.Log(Constant.Priority_Information, Constant.Module_Branch, Constant.Log_View, "View. Id=" + m.Id + ", Code=" + m.Code);
                 }
                 catch (Exception ex)
                 {
@@ -305,7 +305,7 @@ namespace kCredit
             if (!IsValidated()) return false;
             Cursor = Cursors.WaitCursor;
             var m = new Branch();
-            var log = new SessionLog { Module = Type.Module_Branch };
+            var log = new SessionLog { Module = Constant.Module_Branch };
             m.Id = Id;
             m.Code = txtCode.Text.Trim();
             m.Name = txtName.Text;
@@ -319,13 +319,13 @@ namespace kCredit
             m.Note = txtNote.Text;
             if (m.Id == 0)
             {
-                log.Priority = Type.Priority_Information;
-                log.Type = Type.Log_Insert;
+                log.Priority = Constant.Priority_Information;
+                log.Type = Constant.Log_Insert;
             }
             else
             {
-                log.Priority = Type.Priority_Caution;
-                log.Type = Type.Log_Update;
+                log.Priority = Constant.Priority_Caution;
+                log.Type = Constant.Log_Update;
             }
             try
             {
@@ -357,7 +357,7 @@ namespace kCredit
                 Data.LoadCurrency(cboCurrency);
                 Data.LoadRegional(cboProvince, "'P', 'M'"); // Province and Municipality                
                 Data.LoadBranch(cboParent);
-                SessionLogFacade.Log(Type.Priority_Information, Type.Module_Branch, Type.Log_Open, "Opened");
+                SessionLogFacade.Log(Constant.Priority_Information, Constant.Module_Branch, Constant.Log_Open, "Opened");
                 RefreshGrid();
                 LoadData();
             }
@@ -370,10 +370,10 @@ namespace kCredit
 
         private void btnNew_Click(object sender, EventArgs e)
         {
-            if (!Privilege.CanAccess(Type.Function_IC_Unit_Measure, Type.Privilege_New))
+            if (!Privilege.CanAccess(Constant.Function_IC_Unit_Measure, Constant.Privilege_New))
             {
                 MessageFacade.Show(MessageFacade.privilege_no_access, LabelFacade.sy_new, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                SessionLogFacade.Log(Type.Priority_Caution, Type.Module_Branch, Type.Log_NoAccess, "New: No access");
+                SessionLogFacade.Log(Constant.Priority_Caution, Constant.Module_Branch, Constant.Log_NoAccess, "New: No access");
                 return;
             }
             if (IsExpand) picExpand_Click(sender, e);
@@ -384,7 +384,7 @@ namespace kCredit
             LockControls(false);
 
             if (dgvList.CurrentRow != null) RowIndex = dgvList.CurrentRow.Index;
-            SessionLogFacade.Log(Type.Priority_Information, Type.Module_Branch, Type.Log_New, "New clicked");
+            SessionLogFacade.Log(Constant.Priority_Information, Constant.Module_Branch, Constant.Log_New, "New clicked");
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -409,7 +409,7 @@ namespace kCredit
 
         private void btnSaveNew_Click(object sender, EventArgs e)
         {
-            SessionLogFacade.Log(Type.Priority_Information, Type.Module_Branch, Type.Log_SaveAndNew, "Saved and new. Id=" + dgvList.Id + ", Code=" + txtCode.Text);
+            SessionLogFacade.Log(Constant.Priority_Information, Constant.Module_Branch, Constant.Log_SaveAndNew, "Saved and new. Id=" + dgvList.Id + ", Code=" + txtCode.Text);
             btnSave_Click(sender, e);
             if (btnSaveNew.Enabled) return;
             btnNew_Click(sender, e);
@@ -429,10 +429,10 @@ namespace kCredit
                 if (lInfo.Locked)
                 {
                     msg = string.Format(MessageFacade.delete_locked, lInfo.Lock_By, lInfo.Lock_At);
-                    if (!Privilege.CanAccess(Type.Function_IC_Unit_Measure, "O"))
+                    if (!Privilege.CanAccess(Constant.Function_IC_Unit_Measure, "O"))
                     {
                         MessageFacade.Show(msg, LabelFacade.sy_delete, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        SessionLogFacade.Log(Type.Priority_Caution, Type.Module_Branch, Type.Log_Delete, "Cannot delete. Currently locked by '" + lInfo.Lock_By + "' since '" + lInfo.Lock_At + "' . Id=" + dgvList.Id + ", Code=" + txtCode.Text);
+                        SessionLogFacade.Log(Constant.Priority_Caution, Constant.Module_Branch, Constant.Log_Delete, "Cannot delete. Currently locked by '" + lInfo.Lock_By + "' since '" + lInfo.Lock_At + "' . Id=" + dgvList.Id + ", Code=" + txtCode.Text);
                         return;
                     }
                 }
@@ -443,7 +443,7 @@ namespace kCredit
                     return;
                 try
                 {
-                    BranchFacade.SetStatus(Id, Type.RecordStatus_Deleted);
+                    BranchFacade.SetStatus(Id, Constant.RecordStatus_Deleted);
                 }
                 catch (Exception ex)
                 {
@@ -452,7 +452,7 @@ namespace kCredit
                 }
                 RefreshGrid();
                 // log
-                SessionLogFacade.Log(Type.Priority_Warning, Type.Module_Branch, Type.Log_Delete, "Deleted. Id=" + dgvList.Id + ", Code=" + txtCode.Text);
+                SessionLogFacade.Log(Constant.Priority_Warning, Constant.Module_Branch, Constant.Log_Delete, "Deleted. Id=" + dgvList.Id + ", Code=" + txtCode.Text);
             }
             catch (Exception ex)
             {
@@ -463,17 +463,17 @@ namespace kCredit
 
         private void btnCopy_Click(object sender, EventArgs e)
         {
-            if (!Privilege.CanAccess(Type.Function_IC_Unit_Measure, Type.Privilege_New))
+            if (!Privilege.CanAccess(Constant.Function_IC_Unit_Measure, Constant.Privilege_New))
             {
                 MessageFacade.Show(MessageFacade.privilege_no_access, LabelFacade.sy_copy, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                SessionLogFacade.Log(Type.Priority_Information, Type.Module_Branch, Type.Log_NoAccess, "Copy: No access");
+                SessionLogFacade.Log(Constant.Priority_Information, Constant.Module_Branch, Constant.Log_NoAccess, "Copy: No access");
                 return;
             }
             Id = 0;
             if (IsExpand) picExpand_Click(sender, e);
             txtCode.Focus();
             LockControls(false);
-            SessionLogFacade.Log(Type.Priority_Information, Type.Module_Branch, Type.Log_Copy, "Copy from Id=" + dgvList.Id + "Code=" + txtCode.Text);
+            SessionLogFacade.Log(Constant.Priority_Information, Constant.Module_Branch, Constant.Log_Copy, "Copy from Id=" + dgvList.Id + "Code=" + txtCode.Text);
             IsDirty = false;
         }
 
@@ -506,7 +506,7 @@ namespace kCredit
             var Id = dgvList.Id;
             if (Id == 0) return;
 
-            string status = btnActive.Text == LabelFacade.sy_button_inactive ? Type.RecordStatus_InActive : Type.RecordStatus_Active;
+            string status = btnActive.Text == LabelFacade.sy_button_inactive ? Constant.RecordStatus_InActive : Constant.RecordStatus_Active;
             // If referenced
             //todo: check if already used in ic_item
 
@@ -515,7 +515,7 @@ namespace kCredit
             if (lInfo.Locked)
             {
                 string msg = string.Format(MessageFacade.lock_currently, lInfo.Lock_By, lInfo.Lock_At);
-                if (!Privilege.CanAccess(Type.Function_IC_Unit_Measure, "O"))
+                if (!Privilege.CanAccess(Constant.Function_IC_Unit_Measure, "O"))
                 {
                     MessageFacade.Show(msg, MessageFacade.active_inactive, MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
@@ -534,15 +534,15 @@ namespace kCredit
                 ErrorLogFacade.Log(ex);
             }
             RefreshGrid();
-            SessionLogFacade.Log(Type.Priority_Caution, Type.Module_Branch, status == Type.RecordStatus_InActive ? Type.Log_Inactive : Type.Log_Active, "Id=" + dgvList.Id + ", Code=" + txtCode.Text);
+            SessionLogFacade.Log(Constant.Priority_Caution, Constant.Module_Branch, status == Constant.RecordStatus_InActive ? Constant.Log_Inactive : Constant.Log_Active, "Id=" + dgvList.Id + ", Code=" + txtCode.Text);
         }
 
         private void btnUnlock_Click(object sender, EventArgs e)
         {
-            if (!Privilege.CanAccess(Type.Function_IC_Unit_Measure, Type.Privilege_Update))
+            if (!Privilege.CanAccess(Constant.Function_IC_Unit_Measure, Constant.Privilege_Update))
             {
                 MessageFacade.Show(MessageFacade.privilege_no_access, LabelFacade.sy_button_unlock, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                SessionLogFacade.Log(Type.Priority_Information, Type.Module_Branch, Type.Log_NoAccess, "Copy: No access");
+                SessionLogFacade.Log(Constant.Priority_Information, Constant.Module_Branch, Constant.Log_NoAccess, "Copy: No access");
                 return;
             }
             if (IsExpand) picExpand_Click(sender, e);
@@ -574,7 +574,7 @@ namespace kCredit
                 }
                 if (dgvList.CurrentRow != null && !dgvList.CurrentRow.Selected)
                     dgvList.CurrentRow.Selected = true;
-                SessionLogFacade.Log(Type.Priority_Information, Type.Module_Branch, Type.Log_Unlock, "Unlock cancel. Id=" + dgvList.Id + ", Code=" + txtCode.Text);
+                SessionLogFacade.Log(Constant.Priority_Information, Constant.Module_Branch, Constant.Log_Unlock, "Unlock cancel. Id=" + dgvList.Id + ", Code=" + txtCode.Text);
                 btnUnlock.ToolTipText = "Unlock (Ctrl+L)";
                 IsDirty = false;
                 return;
@@ -588,14 +588,14 @@ namespace kCredit
                 if (lInfo.Locked) // Check if record is locked
                 {
                     string msg = string.Format(MessageFacade.lock_currently, lInfo.Lock_By, lInfo.Lock_At);
-                    if (!Privilege.CanAccess(Type.Function_IC_Unit_Measure, "O"))
+                    if (!Privilege.CanAccess(Constant.Function_IC_Unit_Measure, "O"))
                     {
                         MessageFacade.Show(msg, LabelFacade.sy_unlock, MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return;
                     }
                     else
                         if (MessageFacade.Show(msg + "\r\n" + MessageFacade.lock_override, LabelFacade.sy_unlock, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.Yes)
-                            SessionLogFacade.Log(Type.Priority_Caution, Type.Module_Branch, Type.Log_Lock, "Override lock. Id=" + dgvList.Id + ", Code=" + txtCode.Text);
+                            SessionLogFacade.Log(Constant.Priority_Caution, Constant.Module_Branch, Constant.Log_Lock, "Override lock. Id=" + dgvList.Id + ", Code=" + txtCode.Text);
                         else
                             return;
                 }
@@ -619,7 +619,7 @@ namespace kCredit
                 ErrorLogFacade.Log(ex);
                 return;
             }
-            SessionLogFacade.Log(Type.Priority_Information, Type.Module_Branch, Type.Log_Lock, "Locked. Id=" + dgvList.Id + ", Code=" + txtCode.Text);
+            SessionLogFacade.Log(Constant.Priority_Information, Constant.Module_Branch, Constant.Log_Lock, "Locked. Id=" + dgvList.Id + ", Code=" + txtCode.Text);
             btnUnlock.ToolTipText = "Cancel (Esc or Ctrl+L)";
         }
 

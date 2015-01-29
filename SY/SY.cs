@@ -15,6 +15,75 @@ namespace kCredit
 
     }
 
+    class ConfigItem
+    {
+        const string TableName = "sy_config";
+        private string _value;
+
+        public long Id { private get; set; }
+        public string Code { get; set; }
+        public string Username { get; set; }
+        public bool Changed { private get; set; }
+
+        public ConfigItem()
+        { }
+
+        public ConfigItem(string code, string username, string defaultValue)
+        {
+            Code = code;
+            Username = username;
+            Value = defaultValue;
+            Get();
+            //Changed = false;
+        }
+
+        public string Value
+        {
+            get { return _value; }
+            set
+            {
+                if (_value != value)
+                {
+                    _value = value;
+                    Changed = true;
+                }
+            }
+        }
+
+        public void Save()
+        {
+            if (!Changed) return;
+            //todo: save
+        }
+
+        private void Get()
+        {
+            var sWhere = "code ~* :code";
+            if (Username.Length > 0)
+                sWhere = "username ~* :username and " + sWhere;
+            var sql = SqlFacade.SqlSelect(TableName, "id, value", sWhere);
+
+            ConfigItem result = null;
+            if (Username.Length > 0)
+                result = SqlFacade.Connection.Query<ConfigItem>(sql, new { Username, Code }).FirstOrDefault();
+            else
+                result = SqlFacade.Connection.Query<ConfigItem>(sql, new { Code }).FirstOrDefault();
+            if (result == null)
+                Add();
+            else
+            {
+                Id = result.Id;
+                Value = result.Value;
+            }
+        }
+
+        private void Add()
+        {
+            var sql = SqlFacade.SqlInsert(TableName, "username, code, value", "", true);
+            Id = SqlFacade.Connection.ExecuteScalar<long>(sql, new { Username, Code, Value });
+        }
+    }
+
     class Config
     {
         const string TableName = "sy_config";
@@ -42,7 +111,6 @@ namespace kCredit
 
         public string Note { get; set; }
         public String Status { get; set; }
-
 
         public Config() { }
 
@@ -138,8 +206,12 @@ namespace kCredit
     static class ConfigFacade
     {
         const string TableName = "sy_config";
+        static Dictionary<string, ConfigItem> configList = new Dictionary<string, ConfigItem>();
 
         static string Username = App.session.Username;
+
+        public static string Language = Get(Constant.Language, "ENG");
+
 
         static Config _sy_customer_no_format = new Config("", Util.GetMemberName(() => _sy_customer_no_format), "0000", "Customer number format");
         static Config _sy_select_limit = new Config("", Util.GetMemberName(() => _sy_select_limit), "1000", "Maximum number of row [1000] display in data grid");
@@ -148,7 +220,6 @@ namespace kCredit
         static Config _sy_export_open_file_after = new Config(Username, Util.GetMemberName(() => _sy_export_open_file_after), "Y", "Open file after export. [Y]=Yes or N=No");
         static Config _sy_code_casing = new Config("", Util.GetMemberName(() => _sy_code_casing), "U", "Code character casing. [U]=Upper, L=Lower or N=Normal");
         static Config _sy_code_max_length = new Config("", Util.GetMemberName(() => _sy_code_max_length), "15", "Maximum length of code [15]");
-        static Config _sy_language = new Config(Username, Util.GetMemberName(() => _sy_language), "ENG", "Language. e.g ENG or KHM");
 
         static Config _ic_location_spitter_distance = new Config(Username, Util.GetMemberName(() => _ic_location_spitter_distance), "207", "Data grid splitter distance [228]");
         static Config _ic_location_window_state = new Config(Username, Util.GetMemberName(() => _ic_location_window_state), "0", "Window state. Normal, Maximize and Minimize");
@@ -174,45 +245,49 @@ namespace kCredit
         static Config _sy_sql_export_branch = new Config("", Util.GetMemberName(() => _sy_sql_export_branch),
                     "*", "");
 
+        public static void LoadConfig()
+        {
+
+
+        }
+
+
+
         private static void Add(string username, string code, string value, string note = "")
         {
             var sql = SqlFacade.SqlInsert(TableName, "username, code, value, note", "", true);
             SqlFacade.Connection.ExecuteScalar<long>(sql, new { username, code, value, note });
         }
 
-        public static string GetString(string username, string code, string defaultValue = "")
+        public static string Get(string code, string username, string defaultValue = "")
         {
-            var sWhere = "code ~* :code";
-            if (Username.Length > 0)
-                sWhere = "username ~* :username and " + sWhere;
-            var sql = SqlFacade.SqlSelect(TableName, "id, value as value", sWhere);
-
-            string result = null;
-            if (username.Length > 0)
-                result = SqlFacade.Connection.Query<string>(sql, new { username, code }).FirstOrDefault();
-            else
-                result = SqlFacade.Connection.Query<string>(sql, new { code }).FirstOrDefault();
-            if (result == null)
+            ConfigItem s;
+            if (!configList.TryGetValue(code, out s))
             {
-                Add(username, code, defaultValue);
-                result = defaultValue;
+                s = new ConfigItem(code, username, defaultValue);
+                configList.Add(code, s);
             }
-            return result;
+            return s.Value;
         }
 
-        public static string GetString(string code, string defaultValue = "")
+        public static string Get(string code, string defaultValue = "")
         {
-            return GetString("", code, defaultValue);
+            return Get(code, "", defaultValue);
         }
 
-        public static string GetStringUpper(string code, string defaultValue = "")
+        public static string GetUpper(string code, string defaultValue = "")
         {
-            return GetString(code, defaultValue).ToUpper();
+            return Get(code, defaultValue).ToUpper();
         }
 
         public static int GetInt(string code)
         {
-            return int.Parse(GetString(code));
+            return int.Parse(Get(code));
+        }
+
+        public static FormWindowState GetWindowState(string code, string defaultValue = "")
+        {
+            return (FormWindowState)int.Parse(Get(code, App.session.Username, defaultValue));
         }
 
         public static string sy_customer_no_format
@@ -255,12 +330,6 @@ namespace kCredit
         {
             get { return _sy_code_max_length.ValueInt; }
             set { _sy_code_max_length.Value = value.ToString(); }
-        }
-
-        public static string sy_language
-        {
-            get { return _sy_language.Value; }
-            set { _sy_language.Value = value; }
         }
 
         // ic_location
@@ -499,7 +568,7 @@ namespace kCredit
 
         public static string GetLabel(string code)
         {
-            var language = ConfigFacade.sy_language;
+            var language = ConfigFacade.Language;
             var sql = SqlFacade.SqlSelect(TableName, "value", "code = lower(:code) and language = :language");
             var label = SqlFacade.Connection.ExecuteScalar<string>(sql, new { code, language });
             if (label == null)
@@ -605,7 +674,7 @@ namespace kCredit
 
         public static string GetMessage(string code)
         {
-            var language = ConfigFacade.sy_language;
+            var language = ConfigFacade.Language;
             var sql = SqlFacade.SqlSelect(TableName, "value", "code = lower(:code) and language = :language");
             var message = SqlFacade.Connection.ExecuteScalar<string>(sql, new { code, language });
             if (message == null)

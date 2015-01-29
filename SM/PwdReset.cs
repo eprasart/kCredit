@@ -46,7 +46,7 @@ namespace kCredit.SM
             };
             UserFacade.UpdatePwd(usr);
             DialogResult = System.Windows.Forms.DialogResult.OK;
-            SessionLogFacade.Log(Type.Priority_Caution, "User", Type.Log_ResetPwd, "Password reset successfully. Username=" + txtUsernane.Text);
+            SessionLogFacade.Log(Constant.Priority_Caution, "User", Constant.Log_ResetPwd, "Password reset successfully. Username=" + txtUsernane.Text);
         }
     }
 }

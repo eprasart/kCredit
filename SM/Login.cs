@@ -69,7 +69,7 @@ namespace kCredit.SM
             {
                 lblMsg.Text = "Invalid username or password";
                 txtUsername.Focus();
-                SessionLogFacade.Log(Type.Priority_Warning, Module, Type.Log_Login, "Username=" + txtUsername.Text.Trim() + " not exist");
+                SessionLogFacade.Log(Constant.Priority_Warning, Module, Constant.Log_Login, "Username=" + txtUsername.Text.Trim() + " not exist");
                 return;
             }
             // Check password
@@ -77,7 +77,7 @@ namespace kCredit.SM
             {
                 lblMsg.Text = "Invalid username or password";
                 txtUsername.Focus(); 
-                SessionLogFacade.Log(Type.Priority_Warning, Module, Type.Log_Login, "Password not correct");
+                SessionLogFacade.Log(Constant.Priority_Warning, Module, Constant.Log_Login, "Password not correct");
                 return;
             }
             //todo: validate start on, end on, status
@@ -86,7 +86,7 @@ namespace kCredit.SM
             App.session.Username = usr.Username;
             SessionFacade.Save(App.session);
 
-            SessionLogFacade.Log(Type.Priority_Information, Module, Type.Log_Login,  "Username=" + txtUsername.Text.Trim() + " authenticates OK");
+            SessionLogFacade.Log(Constant.Priority_Information, Module, Constant.Log_Login,  "Username=" + txtUsername.Text.Trim() + " authenticates OK");
             // Save username
             App.setting.Set("Username", txtUsername.Text.Trim());
             App.setting.Save();

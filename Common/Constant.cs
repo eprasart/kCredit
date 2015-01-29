@@ -2,7 +2,7 @@
 
 namespace kCredit
 {
-    public static class Type
+    public static class Constant
     {
         // Record status type
         public static readonly string RecordStatus_Active = "A";
@@ -65,6 +65,24 @@ namespace kCredit
         public static readonly string Privilege_Print = "";
         public static readonly string Privilege_Generate = "";
 
+        // Config
+        public static readonly string Customer_No_Format = "sys_customer_no_format";
+        public static readonly string Language = "sys_language";
+        public static readonly string Select_Limit = "sys_select_limit";
+        public static readonly string Code_Casing = "sys_code_casing";
+        public static readonly string Code_Max_Length = "sys_code_max_length";
+        public static readonly string Toolbar_Icon = "sys_toolbar_icon_display_type";
+        public static readonly string Export_Delimiter = "sys_export_delimiter";
+        public static readonly string Export_Open_File_After = "sys_export_open_file_after";
+
+        public static readonly string Splitter_Distance_ = "spitter_distance_";
+        public static readonly string Window_State_ = "window_state_";
+        public static readonly string Location_ = "location_";
+        public static readonly string Size_ = "size_";
+        public static readonly string Sql_Export_ = "sql_export_";
 
     }
+
+
+
 }

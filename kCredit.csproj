@@ -93,7 +93,7 @@
     </Compile>
     <Compile Include="Common\Util.cs" />
     <Compile Include="Common\SqlFacade.cs" />
-    <Compile Include="Common\Static.cs" />
+    <Compile Include="Common\Constant.cs" />
     <Compile Include="Common\Security.cs" />
     <Compile Include="Common\Setting.cs" />
     <Compile Include="Customer\CustomerList.cs">

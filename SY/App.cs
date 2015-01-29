@@ -49,7 +49,7 @@ namespace kCredit
                 SqlFacade.OpenConnection(); // Database connection: open/test
 
                 fSplash.ShowMsg("Ensuring database setup ...");
-                SqlFacade.EnsureDBSetup();  // Create tables if not exist
+                //SqlFacade.EnsureDBSetup();  // Create tables if not exist
             }
             catch (Exception ex)
             {
@@ -75,7 +75,7 @@ namespace kCredit
             AccessLog.FileName = Path.Combine(Application.StartupPath, "Access.log");
             AccessLog.Write(DateTime.Now.ToString("yyy-MM-dd ddd hh:mm:ss tt") + " Application started. Process Id: " + ProcessID + ", Machine: " + session.Machine_Name + ", machine's username: " + session.Machine_User_Name + ", version: " + session.Version);
             session.Id = SessionFacade.Save(session);
-            SessionLogFacade.Log(Type.Priority_Information, "Application", Type.Log_Launch, "Application started");
+            SessionLogFacade.Log(Constant.Priority_Information, "Application", Constant.Log_Launch, "Application started");
 
             return true;
         }
