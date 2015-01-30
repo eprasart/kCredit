@@ -32,7 +32,7 @@ namespace kCredit
         {
             Code = code;
             Username = username;
-            Value = defaultValue;
+            _value = defaultValue;    // Not "Value = defaultValue" to avoid "Changed = True"
             Get();
             //Changed = false;
         }
@@ -53,7 +53,8 @@ namespace kCredit
         public void Save()
         {
             if (!Changed) return;
-            //todo: save
+            var sql = SqlFacade.SqlUpdate(TableName, "value", "value = :value", "id = :id");
+            Id = SqlFacade.Connection.ExecuteScalar<long>(sql, new { Value, Id });
         }
 
         private void Get()
@@ -73,7 +74,7 @@ namespace kCredit
             else
             {
                 Id = result.Id;
-                Value = result.Value;
+                _value = result.Value;
             }
         }
 
@@ -248,10 +249,7 @@ namespace kCredit
         public static void LoadConfig()
         {
 
-
         }
-
-
 
         private static void Add(string username, string code, string value, string note = "")
         {
@@ -268,6 +266,18 @@ namespace kCredit
                 configList.Add(code, s);
             }
             return s.Value;
+        }
+
+        public static void Set(string code, string value)
+        {
+            if (configList.ContainsKey(code))
+                if (configList[code].Value != value)
+                    configList[code].Value = value;
+        }
+
+        public static void Set(string code, int value)
+        {
+            Set(code, value.ToString());
         }
 
         public static string Get(string code, string defaultValue = "")
@@ -288,6 +298,59 @@ namespace kCredit
         public static FormWindowState GetWindowState(string code, string defaultValue = "")
         {
             return (FormWindowState)int.Parse(Get(code, App.session.Username, defaultValue));
+        }
+
+        public static void Set(string code, FormWindowState value)
+        {
+            string s = ((int)value).ToString();
+            Set(code, s);
+        }
+
+        public static Size GetSize(string code, string defaultValue = "")
+        {
+            string s = Get(code, App.session.Username, defaultValue);
+            int width = -1, height = -1;
+            if (s.Contains(","))
+            {
+                string[] dims = s.Split(',');
+                int.TryParse(dims[0], out width);
+                int.TryParse(dims[1], out height);
+            }
+            return new System.Drawing.Size(width, height);
+        }
+
+        public static void Set(string code, Size value)
+        {
+            string s = string.Format("{0}, {1}", value.Width, value.Height);
+            Set(code, s);
+        }
+
+        public static Point GetPoint(string code, string defaultValue = "")
+        {
+            string s = Get(code, App.session.Username, defaultValue);
+            int x = -1, y = -1;
+            if (s.Contains(","))
+            {
+                string[] dims = s.Split(',');
+                int.TryParse(dims[0], out x);
+                int.TryParse(dims[1], out y);
+            }
+            return new System.Drawing.Point(x, y);
+        }
+
+        public static void Set(string code, Point value)
+        {
+            string s = string.Format("{0}, {1}", value.X, value.Y);
+            Set(code, s);
+        }
+
+        // Save [only] changes to database
+        public static void Save()
+        {
+            foreach (KeyValuePair<string, ConfigItem> p in configList)
+            {
+                p.Value.Save();
+            }
         }
 
         public static string sy_customer_no_format

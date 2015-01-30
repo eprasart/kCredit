@@ -93,5 +93,24 @@ namespace kCredit
             decimal isNumber = 0;
             return decimal.TryParse(value, out isNumber);
         }
+
+        public static void SaveFormSate(Form frm)
+        {
+            ConfigFacade.Set(frm.Name + Constant.Location, frm.Location);
+            ConfigFacade.Set(frm.Name + Constant.Window_State, frm.WindowState);
+            if (frm.WindowState == FormWindowState.Normal) ConfigFacade.Set(frm.Name + Constant.Size, frm.Size);
+        }
+
+        public static void SetFormState(Form frm)
+        {
+            frm.Icon = Properties.Resources.Icon;
+            var lo = ConfigFacade.GetPoint(frm.Name + Constant.Location);
+            if (lo != new System.Drawing.Point(-1, -1))
+                frm.Location = lo;
+            var si = ConfigFacade.GetSize(frm.Name + Constant.Size);
+            if (si != new System.Drawing.Size(-1, -1))
+                frm.Size = si;
+            frm.WindowState = ConfigFacade.GetWindowState(frm.Name + Constant.Window_State, "0");
+        }
     }
 }

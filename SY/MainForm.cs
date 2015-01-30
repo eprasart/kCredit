@@ -22,7 +22,9 @@ namespace kCredit.SYS
         private void frmMain_Load(object sender, EventArgs e)
         {
             lblVersion.Text = " v " + App.version;
-            Icon = Properties.Resources.Icon;
+           
+
+            Util.SetFormState(this);
 
             App.fSplash.ShowMsg("");
             App.fSplash.StartTimer();
@@ -68,6 +70,8 @@ namespace kCredit.SYS
 
         private void frmMain_FormClosed(object sender, FormClosedEventArgs e)
         {
+            Util.SaveFormSate(this);
+
             App.Close();
         }
 

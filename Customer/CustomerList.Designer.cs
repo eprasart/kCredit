@@ -553,6 +553,7 @@
             this.dtpDOB.Size = new System.Drawing.Size(230, 25);
             this.dtpDOB.TabIndex = 17;
             this.dtpDOB.TabOnEnter = true;
+            this.dtpDOB.ValueChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // lblDescription
             // 
@@ -575,6 +576,7 @@
             this.cboCategory.Size = new System.Drawing.Size(230, 25);
             this.cboCategory.TabIndex = 5;
             this.cboCategory.TabOnEnter = true;
+            this.cboCategory.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // txtAddress
             // 
@@ -601,6 +603,7 @@
             this.cboType.TabIndex = 3;
             this.cboType.TabOnEnter = true;
             this.cboType.SelectedIndexChanged += new System.EventHandler(this.cboType_SelectedIndexChanged);
+            this.cboType.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // label1
             // 
@@ -623,6 +626,7 @@
             this.cboGender.Size = new System.Drawing.Size(230, 25);
             this.cboGender.TabIndex = 15;
             this.cboGender.TabOnEnter = true;
+            this.cboGender.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // txtCustomerNo
             // 
@@ -651,6 +655,7 @@
             this.cboBranch.TabIndex = 1;
             this.cboBranch.TabOnEnter = true;
             this.cboBranch.SelectedIndexChanged += new System.EventHandler(this.cboBranch_SelectedIndexChanged);
+            this.cboBranch.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // label3
             // 
@@ -673,6 +678,7 @@
             this.cboVillage.Size = new System.Drawing.Size(230, 25);
             this.cboVillage.TabIndex = 27;
             this.cboVillage.TabOnEnter = true;
+            this.cboVillage.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // label2
             // 
@@ -696,6 +702,7 @@
             this.cboCommune.TabIndex = 25;
             this.cboCommune.TabOnEnter = true;
             this.cboCommune.SelectedIndexChanged += new System.EventHandler(this.cboCommune_SelectedIndexChanged);
+            this.cboCommune.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // txtFirstName
             // 
@@ -724,6 +731,7 @@
             this.cboDistrict.TabIndex = 23;
             this.cboDistrict.TabOnEnter = true;
             this.cboDistrict.SelectedIndexChanged += new System.EventHandler(this.cboDistrict_SelectedIndexChanged);
+            this.cboDistrict.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // cboProvince
             // 
@@ -736,6 +744,7 @@
             this.cboProvince.TabIndex = 21;
             this.cboProvince.TabOnEnter = true;
             this.cboProvince.SelectedIndexChanged += new System.EventHandler(this.cboProvince_SelectedIndexChanged);
+            this.cboProvince.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // txtLastName
             // 
@@ -909,6 +918,7 @@
             this.cboContactType4.Size = new System.Drawing.Size(150, 25);
             this.cboContactType4.TabIndex = 12;
             this.cboContactType4.TabOnEnter = true;
+            this.cboContactType4.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // cboContactType3
             // 
@@ -920,6 +930,7 @@
             this.cboContactType3.Size = new System.Drawing.Size(150, 25);
             this.cboContactType3.TabIndex = 10;
             this.cboContactType3.TabOnEnter = true;
+            this.cboContactType3.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // groupLabel2
             // 
@@ -942,6 +953,7 @@
             this.cboContactType2.Size = new System.Drawing.Size(150, 25);
             this.cboContactType2.TabIndex = 8;
             this.cboContactType2.TabOnEnter = true;
+            this.cboContactType2.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // cboIDType3
             // 
@@ -953,6 +965,7 @@
             this.cboIDType3.Size = new System.Drawing.Size(150, 25);
             this.cboIDType3.TabIndex = 4;
             this.cboIDType3.TabOnEnter = true;
+            this.cboIDType3.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // cboContactType1
             // 
@@ -964,6 +977,7 @@
             this.cboContactType1.Size = new System.Drawing.Size(150, 25);
             this.cboContactType1.TabIndex = 6;
             this.cboContactType1.TabOnEnter = true;
+            this.cboContactType1.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // cboIDType2
             // 
@@ -975,6 +989,7 @@
             this.cboIDType2.Size = new System.Drawing.Size(150, 25);
             this.cboIDType2.TabIndex = 2;
             this.cboIDType2.TabOnEnter = true;
+            this.cboIDType2.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // cboIDType1
             // 
@@ -986,6 +1001,7 @@
             this.cboIDType1.Size = new System.Drawing.Size(150, 25);
             this.cboIDType1.TabIndex = 0;
             this.cboIDType1.TabOnEnter = true;
+            this.cboIDType1.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // txtContactValue4
             // 
@@ -999,6 +1015,7 @@
             this.txtContactValue4.Size = new System.Drawing.Size(230, 25);
             this.txtContactValue4.TabIndex = 13;
             this.txtContactValue4.TabOnEnter = true;
+            this.txtContactValue4.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // txtContactValue3
             // 
@@ -1012,6 +1029,7 @@
             this.txtContactValue3.Size = new System.Drawing.Size(230, 25);
             this.txtContactValue3.TabIndex = 11;
             this.txtContactValue3.TabOnEnter = true;
+            this.txtContactValue3.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // txtContactValue2
             // 
@@ -1025,6 +1043,7 @@
             this.txtContactValue2.Size = new System.Drawing.Size(230, 25);
             this.txtContactValue2.TabIndex = 9;
             this.txtContactValue2.TabOnEnter = true;
+            this.txtContactValue2.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // txtIDValue3
             // 
@@ -1038,6 +1057,7 @@
             this.txtIDValue3.Size = new System.Drawing.Size(230, 25);
             this.txtIDValue3.TabIndex = 5;
             this.txtIDValue3.TabOnEnter = true;
+            this.txtIDValue3.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // txtContactValue1
             // 
@@ -1051,6 +1071,7 @@
             this.txtContactValue1.Size = new System.Drawing.Size(230, 25);
             this.txtContactValue1.TabIndex = 7;
             this.txtContactValue1.TabOnEnter = true;
+            this.txtContactValue1.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // txtIDValue2
             // 
@@ -1064,6 +1085,7 @@
             this.txtIDValue2.Size = new System.Drawing.Size(230, 25);
             this.txtIDValue2.TabIndex = 3;
             this.txtIDValue2.TabOnEnter = true;
+            this.txtIDValue2.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // txtIDValue1
             // 
@@ -1077,6 +1099,7 @@
             this.txtIDValue1.Size = new System.Drawing.Size(230, 25);
             this.txtIDValue1.TabIndex = 1;
             this.txtIDValue1.TabOnEnter = true;
+            this.txtIDValue1.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // mnuShow
             // 

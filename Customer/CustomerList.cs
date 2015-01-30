@@ -84,7 +84,6 @@ namespace kCredit
                 ClearAllBoxes();
             }
             IsIgnore = false;
-            //LoadData();
             Cursor = Cursors.Default;
         }
 
@@ -241,7 +240,7 @@ namespace kCredit
                     MessageFacade.Show(MessageFacade.error_load_record + "\r\n" + ex.Message, LabelFacade.sy_customer, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     ErrorLogFacade.Log(ex);
                 }
-            else    // when delete all => disable buttons and clear all controls
+            else    // when grid is empty => disable buttons and clear all controls
             {
                 if (dgvList.RowCount == 0)
                 {
@@ -301,13 +300,7 @@ namespace kCredit
 
                 SetCodeCasing();
                 txtCustomerNo.MaxLength = ConfigFacade.sy_code_max_length;
-                var lo = ConfigFacade.ic_unit_measure_location;
-                if (lo != new System.Drawing.Point(-1, -1))
-                    Location = lo;
-                var si = ConfigFacade.ic_unit_measure_size;
-                if (si != new System.Drawing.Size(-1, -1))
-                    Size = si;
-                WindowState = (FormWindowState)ConfigFacade.ic_unit_measure_window_state;
+                Util.SetFormState(this);
             }
             catch (Exception ex)
             {
@@ -335,10 +328,9 @@ namespace kCredit
             colCustomerNo.HeaderText = LabelFacade.GetLabel(prefix + "code") ?? colCustomerNo.HeaderText;
             lblCode.Text = colCustomerNo.HeaderText;
             lblName.Text = LabelFacade.GetLabel(prefix + "default_factor") ?? lblName.Text;
-            //colDescription.HeaderText = LabelFacade.GetLabel(prefix + "description") ?? lblDescription.Text;
-            //lblDescription.Text = colDescription.HeaderText;
             glbGeneral.Caption = LabelFacade.GetLabel(prefix + "general") ?? glbGeneral.Caption;
             glbNote.Caption = LabelFacade.GetLabel(prefix + "note") ?? glbNote.Caption;
+            //todo: load the rest
         }
 
         private bool Save()
@@ -463,6 +455,7 @@ namespace kCredit
             cboBranch_SelectedIndexChanged(null, null);
             if (dgvList.CurrentRow != null) RowIndex = dgvList.CurrentRow.Index;
             SessionLogFacade.Log(Constant.Priority_Information, Constant.Module_Branch, Constant.Log_New, "New clicked");
+            IsDirty = false;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -794,13 +787,9 @@ namespace kCredit
             IsDirty = false;
             if (btnUnlock.Text == LabelFacade.sy_button_cancel)
                 btnUnlock_Click(null, null);
-            //todo: work on this
-            // Set config values
-            //if (!IsExpand)
-            //    ConfigFacade.ic_unit_measure_splitter_distance = splitContainer1.SplitterDistance;
-            //ConfigFacade.ic_unit_measure_location = Location;
-            //ConfigFacade.ic_unit_measure_window_state = (int)WindowState;
-            //if (WindowState == FormWindowState.Normal) ConfigFacade.ic_unit_measure_size = Size;
+            if (!IsExpand)
+                ConfigFacade.Set(Name + Constant.Splitter_Distance, splitContainer1.SplitterDistance);
+            Util.SaveFormSate(this);    
         }
 
         private void txtCode_Leave(object sender, EventArgs e)

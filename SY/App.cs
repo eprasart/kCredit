@@ -82,7 +82,6 @@ namespace kCredit
 
         private static void SetVersion()
         {
-            //version = Util.RemoveLastDotZero(Assembly.GetEntryAssembly().GetName().Version.ToString());
             version = Util.RemoveLastDotZero(Application.ProductVersion);
         }
 
@@ -105,6 +104,7 @@ namespace kCredit
             SM.SessionFacade.UpdateLogout(App.session);
 
             setting.Save();
+            ConfigFacade.Save();
             ConfigFacade.SaveAll();
         }
     }

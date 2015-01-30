@@ -75,14 +75,11 @@ namespace kCredit
         public static readonly string Export_Delimiter = "sys_export_delimiter";
         public static readonly string Export_Open_File_After = "sys_export_open_file_after";
 
-        public static readonly string Splitter_Distance_ = "spitter_distance_";
-        public static readonly string Window_State_ = "window_state_";
-        public static readonly string Location_ = "location_";
-        public static readonly string Size_ = "size_";
-        public static readonly string Sql_Export_ = "sql_export_";
+        public static readonly string Splitter_Distance = "_spitter_distance";
+        public static readonly string Window_State = "_window_state";
+        public static readonly string Location = "_location";
+        public static readonly string Size = "_size";
+        public static readonly string Sql_Export = "sql_export_";
 
     }
-
-
-
 }

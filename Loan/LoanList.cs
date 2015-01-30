@@ -18,15 +18,6 @@ namespace kCredit
 
         DateTime dteMaturity;
 
-        //frmMsg fMsg = null;
-
-        StringFormat headerCellFormat = new StringFormat()
-        {
-            // right alignment might actually make more sense for numbers
-            Alignment = StringAlignment.Near,
-            LineAlignment = StringAlignment.Center
-        };
-
         public frmLoan()
         {
             InitializeComponent();
@@ -235,7 +226,6 @@ namespace kCredit
                 ClearAllBoxes();
             }
             IsIgnore = false;
-            //LoadData();
             Cursor = Cursors.Default;
         }
 
@@ -327,7 +317,7 @@ namespace kCredit
             txtCustomerName.Text = "";
             cboPaymentSite.SelectedIndex = -1;
             cboAgent.SelectedIndex = -1;
-            txtAccountStatus.Text = "Active";
+            txtAccountStatus.Text = "";
             chkSaturday.Checked = true;
             chkSunday.Checked = true;
             chkHoliday.Checked = true;
@@ -382,7 +372,7 @@ namespace kCredit
                     MessageFacade.Show(MessageFacade.error_load_record + "\r\n" + ex.Message, LabelFacade.sy_customer, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     ErrorLogFacade.Log(ex);
                 }
-            else    // when delete all => disable buttons and clear all controls
+            else    // when grid is empty => disable buttons and clear all controls
             {
                 if (dgvList.RowCount == 0)
                 {
@@ -443,14 +433,7 @@ namespace kCredit
                 //SetCodeCasing();
                 //txtAccountNo.MaxLength = ConfigFacade.sy_code_max_length;
 
-                //todo: implement this
-                //var lo = ConfigFacade.ic_unit_measure_location;
-                //if (lo != new System.Drawing.Point(-1, -1))
-                //    Location = lo;
-                //var si = ConfigFacade.ic_unit_measure_size;
-                //if (si != new System.Drawing.Size(-1, -1))
-                //    Size = si;
-                WindowState = ConfigFacade.GetWindowState(Constant.Window_State_ + Name, "0" );
+                Util.SetFormState(this);
             }
             catch (Exception ex)
             {
@@ -475,13 +458,11 @@ namespace kCredit
             btnClear.Text = "     " + (LabelFacade.sy_button_clear ?? btnClear.Text.Replace(" ", ""));
             btnFilter.Text = "     " + (LabelFacade.sy_button_filter ?? btnFilter.Text.Replace(" ", ""));
 
-            colCode.HeaderText = LabelFacade.GetLabel(prefix + "code") ?? colCode.HeaderText;
-
+            colAccountNo.HeaderText = LabelFacade.GetLabel(prefix + "code") ?? colAccountNo.HeaderText;
             lblName.Text = LabelFacade.GetLabel(prefix + "default_factor") ?? lblName.Text;
-            //colDescription.HeaderText = LabelFacade.GetLabel(prefix + "description") ?? lblDescription.Text;
-            //lblDescription.Text = colDescription.HeaderText;
             glbGeneral.Caption = LabelFacade.GetLabel(prefix + "general") ?? glbGeneral.Caption;
             glbNote.Caption = LabelFacade.GetLabel(prefix + "note") ?? glbNote.Caption;
+            //todo: Label for the rest
         }
 
         private bool Save()
@@ -562,7 +543,6 @@ namespace kCredit
 
         private void frmUnitMeasureList_Load(object sender, EventArgs e)
         {
-            Icon = Properties.Resources.Icon;
             try
             {
                 dgvList.ShowLessColumns(true);
@@ -602,9 +582,10 @@ namespace kCredit
             Id = 0;
             LockControls(false);
             cboPurpose.Focus();
-            cboBranch_SelectedIndexChanged(null, null);
+            cboFrequencyUnit_SelectedIndexChanged(null, null);
             if (dgvList.CurrentRow != null) RowIndex = dgvList.CurrentRow.Index;
             SessionLogFacade.Log(Constant.Priority_Information, Constant.Module_Branch, Constant.Log_New, "New clicked");
+            IsDirty = false;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -693,7 +674,7 @@ namespace kCredit
             if (IsExpand) picExpand_Click(sender, e);
             txtAccountNo.Focus();
             LockControls(false);
-            cboBranch_SelectedIndexChanged(null, null);
+            cboFrequencyUnit_SelectedIndexChanged(null, null);
             SessionLogFacade.Log(Constant.Priority_Information, Constant.Module_Branch, Constant.Log_Copy, "Copy from Id=" + dgvList.Id + "Code=" + txtAccountNo.Text);
             IsDirty = false;
         }
@@ -931,13 +912,9 @@ namespace kCredit
             IsDirty = false;
             if (btnUnlock.Text == LabelFacade.sy_button_cancel)
                 btnUnlock_Click(null, null);
-            //todo: work on this
-            // Set config values
-            //if (!IsExpand)
-            //    ConfigFacade.ic_unit_measure_splitter_distance = splitContainer1.SplitterDistance;
-            //ConfigFacade.ic_unit_measure_location = Location;
-            //ConfigFacade.ic_unit_measure_window_state = (int)WindowState;
-            //if (WindowState == FormWindowState.Normal) ConfigFacade.ic_unit_measure_size = Size;
+            if (!IsExpand)
+                ConfigFacade.Set(Name + Constant.Splitter_Distance, splitContainer1.SplitterDistance);
+            Util.SaveFormSate(this);
         }
 
         private void txtCode_Leave(object sender, EventArgs e)
@@ -961,7 +938,7 @@ namespace kCredit
             }
             else
             {
-                splitContainer1.SplitterDistance = ConfigFacade.GetInt(Constant.Splitter_Distance_ + Name); //ConfigFacade.ic_unit_measure_splitter_distance;
+                splitContainer1.SplitterDistance = ConfigFacade.GetInt(Constant.Splitter_Distance + Name); //ConfigFacade.ic_unit_measure_splitter_distance;
                 splitContainer1.FixedPanel = FixedPanel.Panel1;
             }
             dgvList.ShowLessColumns(IsExpand);
@@ -1016,7 +993,7 @@ namespace kCredit
             lblSearch.Visible = (txtFind.Text.Length == 0);
         }
 
-        private void cboBranch_SelectedIndexChanged(object sender, EventArgs e)
+        private void cboFrequencyUnit_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cboFrequencyUnit.SelectedIndex == -1 || btnNew.Enabled) return;
             txtAccountNo.Text = LoanFacade.GetNextAccountNo(cboFrequencyUnit.SelectedValue.ToString()); //todo: Format No; from table
@@ -1044,6 +1021,7 @@ namespace kCredit
                 cboMove.Enabled = false;
             else
                 lblOnNonWorkingDay.Enabled = !b;
+            IsDirty = true;
             //if (!cboMove.Enabled) cboMove.SelectedValue = "";
         }
 
@@ -1087,6 +1065,11 @@ namespace kCredit
             fReport.ReportSource = SqlFacade.GetDataTable(cmd);
             fReport.PreviewReport();
             Cursor = Cursors.Default;
+        }
+
+        private void cboFrequencyUnit_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
