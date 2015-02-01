@@ -287,19 +287,19 @@ namespace kCredit
 
         private bool IsValidated()
         {
-            var validator = new Validator(this, "loan");
+            var valid = new Validator(this, "loan");
             string No = txtAccountNo.Text.Trim();
-            if (cboFrequencyUnit.SelectedIndex == -1) validator.Add(cboFrequencyUnit, "frequency_unit_not_specified");
-            if (!Util.IsInteger(txtFrequency.Text)) validator.Add(txtFrequency, "frequency_invalid");
-            if (!Util.IsInteger(txtInstallmentNo.Text)) validator.Add(txtInstallmentNo, "installment_no_invalid");
-            if (!Util.IsDecimal(txtAmount.Text)) validator.Add(txtAmount, "amount_invalid");
-            if (cboCurrency.SelectedIndex == -1) validator.Add(cboCurrency, "currency_not_specified");
-            if (!Util.IsDecimal(txtInterestRate.Text)) validator.Add(txtInterestRate, "interest_rate_invalid");
-            if (dtpFirstInstallment.Checked && dtpFirstInstallment.Value <= dtpDisburse.Value) validator.Add(dtpFirstInstallment, "first_installment_date_invalid");
-            if (txtCustomerNo.Text.Length == 0) validator.Add(btnBrowse, "customer_not_specified");
-            if (cboPaymentSite.SelectedIndex == -1) validator.Add(cboPaymentSite, "payment_site_not_specified");
-            if (cboAgent.SelectedIndex == -1) validator.Add(cboAgent, "credit_agent_not_specified");
-            return validator.Show();
+            if (cboFrequencyUnit.SelectedIndex == -1) valid.Add(cboFrequencyUnit, "frequency_unit_unspecified");
+            if (!Util.IsInteger(txtFrequency.Text)) valid.Add(txtFrequency, "frequency_invalid");
+            if (!Util.IsInteger(txtInstallmentNo.Text)) valid.Add(txtInstallmentNo, "installment_no_invalid");
+            if (!Util.IsDecimal(txtAmount.Text)) valid.Add(txtAmount, "amount_invalid");
+            if (cboCurrency.SelectedIndex == -1) valid.Add(cboCurrency, "currency_unspecified");
+            if (!Util.IsDecimal(txtInterestRate.Text)) valid.Add(txtInterestRate, "interest_rate_invalid");
+            if (dtpFirstInstallment.Checked && dtpFirstInstallment.Value <= dtpDisburse.Value) valid.Add(dtpFirstInstallment, "first_installment_date_invalid");
+            if (txtCustomerNo.Text.Length == 0) valid.Add(btnBrowse, "customer_unspecified");
+            if (cboPaymentSite.SelectedIndex == -1) valid.Add(cboPaymentSite, "payment_site_unspecified");
+            if (cboAgent.SelectedIndex == -1) valid.Add(cboAgent, "credit_agent_unspecified");
+            return valid.Show();
         }
 
         private void ClearAllBoxes()
@@ -408,7 +408,7 @@ namespace kCredit
         private void SetCodeCasing()
         {
             CharacterCasing cs;
-            switch (ConfigFacade.sy_code_casing)
+            switch (ConfigFacade.Code_Casing)
             {
                 case "U":
                     cs = CharacterCasing.Upper;
@@ -427,8 +427,8 @@ namespace kCredit
         {
             try
             {
-                SetIconDisplayType(ConfigFacade.sy_toolbar_icon_display_type);
-                splitContainer1.SplitterDistance = ConfigFacade.ic_unit_measure_splitter_distance;
+                SetIconDisplayType(ConfigFacade.Toolbar_Icon_Display_Type);
+                splitContainer1.SplitterDistance = ConfigFacade.GetSplitterDistance(Name);
 
                 //SetCodeCasing();
                 //txtAccountNo.MaxLength = ConfigFacade.sy_code_max_length;
@@ -689,7 +689,7 @@ namespace kCredit
             }
             else
             {
-                splitContainer1.SplitterDistance = ConfigFacade.ic_unit_measure_splitter_distance;
+                splitContainer1.SplitterDistance = ConfigFacade.GetInt(Name + Constant.Splitter_Distance);
                 splitContainer1.FixedPanel = FixedPanel.Panel1;
             }
             dgvList.ShowLessColumns(IsExpand);
@@ -932,7 +932,6 @@ namespace kCredit
             splitContainer1.IsSplitterFixed = !IsExpand;
             if (!IsExpand)
             {
-                ConfigFacade.ic_unit_measure_splitter_distance = splitContainer1.SplitterDistance;
                 splitContainer1.SplitterDistance = splitContainer1.Size.Width;
                 splitContainer1.FixedPanel = FixedPanel.Panel2;
             }
@@ -1054,11 +1053,12 @@ namespace kCredit
             //                    new ReportParameter("pFilter", Filter));
             var sql = "select frequency_unit, frequency, amount, currency, interest_rate, calculation_method, disburse_date, maturity_date, payment_site, name credit_agent_name, phone credit_agent_phone," +
                 "\nlast_name || ' ' || first_name customer_name," +
-                "\nl.account_no, date, no, principal, interest, total, outstanding, pay_off" +
+                "\nl.account_no, day_short || ' ' || to_char(date, 'dd-MM-yy') date, no, principal, interest, total, outstanding, pay_off" +
                 "\nfrom schedule s" +
                 "\ninner join loan l on s.account_no = l.account_no" +
                 "\ninner join customer c on l.customer_no = c.customer_no" +
                 "\ninner join agent a on l.credit_agent_id = a.id" +
+                "\ninner join day d on extract(dow from date) = d.code" +
                 "\nwhere l.account_no = :account_no";
             var cmd = new Npgsql.NpgsqlCommand(sql);
             cmd.Parameters.AddWithValue(":account_no", txtAccountNo.Text);

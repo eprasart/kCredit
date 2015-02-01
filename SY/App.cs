@@ -105,7 +105,6 @@ namespace kCredit
 
             setting.Save();
             ConfigFacade.Save();
-            ConfigFacade.SaveAll();
         }
     }
 }

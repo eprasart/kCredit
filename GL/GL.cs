@@ -43,7 +43,7 @@ namespace kCredit.GL
                 sql += " and status = '" + status + "'";
             if (filter.Length > 0)
                 sql += " and (" + SqlFacade.SqlILike("code, description, phone, fax, email, address, note") + ")";
-            sql += "\norder by code\nlimit " + ConfigFacade.sy_select_limit;
+            sql += "\norder by code\nlimit " + ConfigFacade.Select_Limit;
 
             var cmd = new NpgsqlCommand(sql);
             if (filter.Length > 0)

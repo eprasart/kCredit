@@ -248,7 +248,7 @@ namespace kCredit
                 for (int i = 0; i < dr.FieldCount; i++) // Column headers
                 {
                     sLine += dr.GetName(i);
-                    if (i < dr.FieldCount - 1) sLine += ConfigFacade.sy_export_delimiter;
+                    if (i < dr.FieldCount - 1) sLine += ConfigFacade.Export_Delimiter;
                 }
                 sb.AppendLine(sLine);
 
@@ -258,7 +258,7 @@ namespace kCredit
                     for (int i = 0; i < dr.FieldCount; i++)
                     {
                         sLine += "\"" + dr[i].ToString() + "\"";
-                        if (i < dr.FieldCount - 1) sLine += ConfigFacade.sy_export_delimiter;
+                        if (i < dr.FieldCount - 1) sLine += ConfigFacade.Export_Delimiter;
                     }
                     sb.AppendLine(sLine);
                 }
@@ -284,7 +284,7 @@ namespace kCredit
                 sw.Write(sb);
             }
             fNotification.ShowMsg(string.Format(MessageFacade.export_opening, fileName));
-            if (ConfigFacade.sy_export_open_file_after) System.Diagnostics.Process.Start(path);   // Open file
+            if (ConfigFacade.Export_Open_File_After) System.Diagnostics.Process.Start(path);   // Open file
             fNotification.Close();
             return result;
         }

@@ -54,7 +54,7 @@ namespace kCredit
                 sql += " and l.status = '" + status + "'";
             if (filter.Length > 0)
                 sql += " and (" + SqlFacade.SqlILike("account_no, l.customer_no, l.branch_code") + ")";
-            sql += "\norder by account_no\nlimit " + ConfigFacade.sy_select_limit;
+            sql += "\norder by account_no\nlimit " + ConfigFacade.Select_Limit;
 
             var cmd = new NpgsqlCommand(sql);
             if (filter.Length > 0)
@@ -135,7 +135,9 @@ namespace kCredit
 
         public static void Export()
         {
-            string sql = SqlFacade.SqlSelect(TableName, ConfigFacade.sy_sql_export_customer, "status <> '" + Constant.RecordStatus_Deleted + "'", "account_no");
+            var cols = "*";
+            cols = ConfigFacade.Get(Constant.Sql_Export + TableName, cols);
+            string sql = SqlFacade.SqlSelect(TableName, cols, "status <> '" + Constant.RecordStatus_Deleted + "'", "account_no");
             SqlFacade.ExportToCSV(sql);
         }
 

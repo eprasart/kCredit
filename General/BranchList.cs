@@ -136,31 +136,14 @@ namespace kCredit
 
         private bool IsValidated()
         {
-            var sMsg = new StringBuilder();
-            Control cFocus = null;
+            var valid = new Validator(this, "branch");
             string Code = txtCode.Text.Trim();
-            if (Code.Length == 0)
-            {
-                sMsg.AppendLine(LabelFacade.sy_msg_prefix + MessageFacade.code_not_empty);
-                cFocus = txtCode;
-            }
+            if (Code.Length == 0) 
+                valid.Add(txtCode, "code_blank");
             else if (BranchFacade.Exists(Code, Id))
-            {
-                sMsg.AppendLine(LabelFacade.sy_msg_prefix + MessageFacade.code_already_exists);
-                cFocus = txtCode;
-            }
-            if (txtName.Text.Trim().Length == 0)
-            {
-                sMsg.AppendLine(LabelFacade.sy_msg_prefix + MessageFacade.code_already_exists);
-                cFocus = txtName;
-            }
-            if (sMsg.Length > 0)
-            {
-                MessageFacade.Show(this, ref fMsg, sMsg.ToString(), LabelFacade.sy_save);
-                cFocus.Focus();
-                return false;
-            }
-            return true;
+                valid.Add(txtCode, "code_exists");
+            if (txtName.Text.Trim().Length == 0) valid.Add(txtName, "name_blank");           
+            return valid.Show();
         }
 
         private void ClearAllBoxes()
@@ -236,7 +219,7 @@ namespace kCredit
         private void SetCodeCasing()
         {
             CharacterCasing cs;
-            switch (ConfigFacade.sy_code_casing)
+            switch (ConfigFacade.Code_Casing)
             {
                 case "U":
                     cs = CharacterCasing.Upper;
@@ -255,18 +238,12 @@ namespace kCredit
         {
             try
             {
-                SetIconDisplayType(ConfigFacade.sy_toolbar_icon_display_type);
-                splitContainer1.SplitterDistance = ConfigFacade.ic_unit_measure_splitter_distance;
+                SetIconDisplayType(ConfigFacade.Toolbar_Icon_Display_Type);
+                splitContainer1.SplitterDistance = ConfigFacade.GetSplitterDistance(Name);
 
                 SetCodeCasing();
-                txtCode.MaxLength = ConfigFacade.sy_code_max_length;
-                var lo = ConfigFacade.ic_unit_measure_location;
-                if (lo != new System.Drawing.Point(-1, -1))
-                    Location = lo;
-                var si = ConfigFacade.ic_unit_measure_size;
-                if (si != new System.Drawing.Size(-1, -1))
-                    Size = si;
-                WindowState = (FormWindowState)ConfigFacade.ic_unit_measure_window_state;
+                txtCode.MaxLength = ConfigFacade.Code_Max_Length;
+                Util.SetFormState(this);
             }
             catch (Exception ex)
             {
@@ -487,7 +464,7 @@ namespace kCredit
             }
             else
             {
-                splitContainer1.SplitterDistance = ConfigFacade.ic_unit_measure_splitter_distance;
+                splitContainer1.SplitterDistance = ConfigFacade.GetInt(Name + Constant.Splitter_Distance);
                 splitContainer1.FixedPanel = FixedPanel.Panel1;
             }
             dgvList.ShowLessColumns(IsExpand);
@@ -712,10 +689,8 @@ namespace kCredit
 
             // Set config values
             if (!IsExpand)
-                ConfigFacade.ic_unit_measure_splitter_distance = splitContainer1.SplitterDistance;
-            ConfigFacade.ic_unit_measure_location = Location;
-            ConfigFacade.ic_unit_measure_window_state = (int)WindowState;
-            if (WindowState == FormWindowState.Normal) ConfigFacade.ic_unit_measure_size = Size;
+                ConfigFacade.Set(Name + Constant.Splitter_Distance, splitContainer1.SplitterDistance);
+            Util.SaveFormSate(this);    
         }
 
         private void txtCode_Leave(object sender, EventArgs e)
@@ -733,13 +708,12 @@ namespace kCredit
             splitContainer1.IsSplitterFixed = !IsExpand;
             if (!IsExpand)
             {
-                ConfigFacade.ic_unit_measure_splitter_distance = splitContainer1.SplitterDistance;
                 splitContainer1.SplitterDistance = splitContainer1.Size.Width;
                 splitContainer1.FixedPanel = FixedPanel.Panel2;
             }
             else
             {
-                splitContainer1.SplitterDistance = ConfigFacade.ic_unit_measure_splitter_distance;
+                splitContainer1.SplitterDistance = ConfigFacade.GetInt(Name + Constant.Splitter_Distance);
                 splitContainer1.FixedPanel = FixedPanel.Panel1;
             }
             dgvList.ShowLessColumns(IsExpand);

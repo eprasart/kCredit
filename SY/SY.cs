@@ -212,39 +212,13 @@ namespace kCredit
         static string Username = App.session.Username;
 
         public static string Language = Get(Constant.Language, "ENG");
+        public static string Select_Limit = Get(Constant.Select_Limit, "1000");
+        public static string Code_Casing = Get(Constant.Code_Casing, "N");
+        public static int Code_Max_Length = GetInt(Constant.Code_Max_Length, "15");
 
-
-        static Config _sy_customer_no_format = new Config("", Util.GetMemberName(() => _sy_customer_no_format), "0000", "Customer number format");
-        static Config _sy_select_limit = new Config("", Util.GetMemberName(() => _sy_select_limit), "1000", "Maximum number of row [1000] display in data grid");
-        static Config _sy_toolbar_icon_display_type = new Config(Username, Util.GetMemberName(() => _sy_toolbar_icon_display_type), "IT", "Icon display type. [IT]=ImageAndText, I=Image, T=Text");
-        static Config _sy_export_delimiter = new Config(Username, Util.GetMemberName(() => _sy_export_delimiter), ",", "Export delimiter [,]");
-        static Config _sy_export_open_file_after = new Config(Username, Util.GetMemberName(() => _sy_export_open_file_after), "Y", "Open file after export. [Y]=Yes or N=No");
-        static Config _sy_code_casing = new Config("", Util.GetMemberName(() => _sy_code_casing), "U", "Code character casing. [U]=Upper, L=Lower or N=Normal");
-        static Config _sy_code_max_length = new Config("", Util.GetMemberName(() => _sy_code_max_length), "15", "Maximum length of code [15]");
-
-        static Config _ic_location_spitter_distance = new Config(Username, Util.GetMemberName(() => _ic_location_spitter_distance), "207", "Data grid splitter distance [228]");
-        static Config _ic_location_window_state = new Config(Username, Util.GetMemberName(() => _ic_location_window_state), "0", "Window state. Normal, Maximize and Minimize");
-        static Config _ic_location_location = new Config(Username, Util.GetMemberName(() => _ic_location_location), "-1, -1", "Window location");
-        static Config _ic_location_size = new Config(Username, Util.GetMemberName(() => _ic_location_size), "1024, 601", "Form size [1024, 601]");
-
-        static Config _ic_category_spitter_distance = new Config(Username, Util.GetMemberName(() => _ic_category_spitter_distance), "207", "Data grid splitter distance [228]");
-        static Config _ic_category_window_state = new Config(Username, Util.GetMemberName(() => _ic_category_window_state), "0", "Window state. Normal, Maximize and Minimize");
-        static Config _ic_category_location = new Config(Username, Util.GetMemberName(() => _ic_category_location), "-1, -1", "Window location");
-        static Config _ic_category_size = new Config(Username, Util.GetMemberName(() => _ic_category_size), "1024, 601", "Form size [1024, 601]");
-
-        static Config _ic_unit_measure_spitter_distance = new Config(Username, Util.GetMemberName(() => _ic_unit_measure_spitter_distance), "207", "Data grid splitter distance [228]");
-        static Config _ic_unit_measure_window_state = new Config(Username, Util.GetMemberName(() => _ic_unit_measure_window_state), "0", "Window state. Normal, Maximize and Minimize");
-        static Config _ic_unit_measure_location = new Config(Username, Util.GetMemberName(() => _ic_unit_measure_location), "-1, -1", "Window location");
-        static Config _ic_unit_measure_size = new Config(Username, Util.GetMemberName(() => _ic_unit_measure_size), "1024, 601", "Form size [1024, 601]");
-
-        // SQL export
-        static Config _sy_sql_export_location = new Config("", Util.GetMemberName(() => _sy_sql_export_location),
-            "id \"Id\", branch_code \"Branch Code\", code \"Code\", description \"Description\", type \"Type\", address \"Address\", name \"Contact Name\", phone \"Phone\", fax \"Fax\", " +
-            "email \"Email\", note \"Note\", status \"Status\", insert_by \"Inserted By\", insert_at \"Inserted At\", change_by \"Changed By\", change_at \"Changed At\"", "");
-        static Config _sy_sql_export_customer = new Config("", Util.GetMemberName(() => _sy_sql_export_customer),
-            "id \"Id\", code \"Code\", description \"Description\", note \"Note\", status \"Status\", insert_by \"Inserted By\", insert_at \"Inserted At\", change_by \"Changed By\", change_at \"Changed At\"", "");
-        static Config _sy_sql_export_branch = new Config("", Util.GetMemberName(() => _sy_sql_export_branch),
-                    "*", "");
+        public static string Toolbar_Icon_Display_Type = Get(Constant.Toolbar_Icon, Username, "IT");
+        public static string Export_Delimiter = Get(Constant.Code_Max_Length, ",");
+        public static bool Export_Open_File_After = Get(Constant.Code_Max_Length, "Y") == "Y";
 
         public static void LoadConfig()
         {
@@ -290,9 +264,14 @@ namespace kCredit
             return Get(code, defaultValue).ToUpper();
         }
 
-        public static int GetInt(string code)
+        public static int GetInt(string code, string defaultValue = "0")
         {
-            return int.Parse(Get(code));
+            return int.Parse(Get(code, defaultValue));
+        }
+
+        public static int GetSplitterDistance(string frmName, string defaultValue = "230")
+        {
+            return int.Parse(Get(frmName + Constant.Splitter_Distance, Username, defaultValue));
         }
 
         public static FormWindowState GetWindowState(string code, string defaultValue = "")
@@ -351,192 +330,6 @@ namespace kCredit
             {
                 p.Value.Save();
             }
-        }
-
-        public static string sy_customer_no_format
-        {
-            get { return _sy_customer_no_format.Value; }
-            set { _sy_customer_no_format.Value = value; }
-        }
-
-        public static int sy_select_limit
-        {
-            get { return _sy_select_limit.ValueInt; }
-            set { _sy_select_limit.Value = value.ToString(); }
-        }
-
-        public static string sy_toolbar_icon_display_type
-        {
-            get { return _sy_toolbar_icon_display_type.Value; }
-            set { _sy_toolbar_icon_display_type.Value = value; }
-        }
-
-        public static string sy_export_delimiter
-        {
-            get { return _sy_export_delimiter.Value; }
-            set { _sy_export_delimiter.Value = value; }
-        }
-
-        public static bool sy_export_open_file_after
-        {
-            get { return _sy_export_open_file_after.ValueBool; }
-            set { _sy_export_open_file_after.Value = value == true ? "Y" : "N"; }
-        }
-
-        public static string sy_code_casing
-        {
-            get { return _sy_code_casing.Value; }
-            set { _sy_export_open_file_after.Value = value; }
-        }
-
-        public static int sy_code_max_length
-        {
-            get { return _sy_code_max_length.ValueInt; }
-            set { _sy_code_max_length.Value = value.ToString(); }
-        }
-
-        // ic_location
-        public static int ic_location_splitter_distance
-        {
-            get { return _ic_location_spitter_distance.ValueInt; }
-            set { _ic_location_spitter_distance.Value = value.ToString(); }
-        }
-
-        public static int ic_location_window_state
-        {
-            get { return _ic_location_window_state.ValueInt; }
-            set { _ic_location_window_state.Value = value.ToString(); }
-        }
-
-        public static Point ic_location_location
-        {
-            get { return _ic_location_location.ValuePoint; }
-            set
-            {
-                var val = Util.RemoveCharacters(value.ToString(), "{}XY= ");
-                _ic_location_location.Value = val;
-            }
-        }
-
-        public static Size ic_location_size
-        {
-            get { return _ic_location_size.ValueSize; }
-            set
-            {
-                var val = Util.RemoveCharacters(value.ToString().ToUpper(), "{}WIDTHEG= ");
-                _ic_location_size.Value = val;
-            }
-        }
-
-        // ic_category
-        public static int ic_category_splitter_distance
-        {
-            get { return _ic_category_spitter_distance.ValueInt; }
-            set { _ic_category_spitter_distance.Value = value.ToString(); }
-        }
-
-        public static int ic_category_window_state
-        {
-            get { return _ic_category_window_state.ValueInt; }
-            set { _ic_category_window_state.Value = value.ToString(); }
-        }
-
-        public static Point ic_category_location
-        {
-            get { return _ic_category_location.ValuePoint; }
-            set
-            {
-                var val = Util.RemoveCharacters(value.ToString(), "{}XY= ");
-                _ic_category_location.Value = val;
-            }
-        }
-
-        public static Size ic_category_size
-        {
-            get { return _ic_category_size.ValueSize; }
-            set
-            {
-                var val = Util.RemoveCharacters(value.ToString().ToUpper(), "{}WIDTHEG= ");
-                _ic_category_size.Value = val;
-            }
-        }
-
-        // ic_unit_measure
-        public static int ic_unit_measure_splitter_distance
-        {
-            get { return _ic_unit_measure_spitter_distance.ValueInt; }
-            set { _ic_unit_measure_spitter_distance.Value = value.ToString(); }
-        }
-
-        public static int ic_unit_measure_window_state
-        {
-            get { return _ic_unit_measure_window_state.ValueInt; }
-            set { _ic_unit_measure_window_state.Value = value.ToString(); }
-        }
-
-        public static Point ic_unit_measure_location
-        {
-            get { return _ic_unit_measure_location.ValuePoint; }
-            set
-            {
-                var val = Util.RemoveCharacters(value.ToString(), "{}XY= ");
-                _ic_unit_measure_location.Value = val;
-            }
-        }
-
-        public static Size ic_unit_measure_size
-        {
-            get { return _ic_unit_measure_size.ValueSize; }
-            set
-            {
-                var val = Util.RemoveCharacters(value.ToString().ToUpper(), "{}WIDTHEG= ");
-                _ic_unit_measure_size.Value = val;
-            }
-        }
-
-        // SQL Export
-        public static string sy_sql_export_customer
-        {
-            get { return _sy_sql_export_customer.Value; }
-            set { _sy_sql_export_customer.Value = value; }
-        }
-
-        public static string sy_sql_export_location
-        {
-            get { return _sy_sql_export_location.Value; }
-            set { _sy_sql_export_location.Value = value; }
-        }
-
-        public static string sy_sql_export_branch
-        {
-            get { return _sy_sql_export_branch.Value; }
-            set { _sy_sql_export_branch.Value = value; }
-        }
-
-        // Save configs back to table
-        public static void SaveAll()
-        {
-            _sy_select_limit.Save();
-            _sy_toolbar_icon_display_type.Save();
-            _sy_export_delimiter.Save();
-            _sy_export_open_file_after.Save();
-            _sy_code_casing.Save();
-
-            _ic_location_spitter_distance.Save();
-            _ic_location_window_state.Save();
-            _ic_location_location.Save();
-            _ic_location_size.Save();
-
-            _ic_category_spitter_distance.Save();
-            _ic_category_window_state.Save();
-            _ic_category_location.Save();
-            _ic_category_size.Save();
-
-            _ic_unit_measure_spitter_distance.Save();
-            _ic_unit_measure_window_state.Save();
-            _ic_unit_measure_location.Save();
-            _ic_unit_measure_size.Save();
-            //todo: repeated; should loop thru all auto.
         }
     }
 

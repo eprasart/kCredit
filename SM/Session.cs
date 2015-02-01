@@ -173,7 +173,7 @@ namespace kCredit.SM
                 sql += " and status = '" + status + "'";
             if (filter.Length > 0)
                 sql += " and (code ilike :filter or description ilike :filter or phone ilike :filter or fax ilike :filter or email ilike :filter or address ilike :filter or note ilike :filter)";
-            sql += "\norder by code\nlimit " + ConfigFacade.sy_select_limit;
+            sql += "\norder by code\nlimit " + ConfigFacade.Select_Limit;
 
             var cmd = new NpgsqlCommand(sql);
             if (filter.Length > 0)

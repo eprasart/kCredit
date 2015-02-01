@@ -157,31 +157,23 @@ namespace kCredit
 
         private bool IsValidated()
         {
-            var sMsg = new StringBuilder();
-            Control cFocus = null;
-            string No = txtCustomerNo.Text.Trim();
-            if (No.Length == 0)
-            {
-                sMsg.AppendLine(LabelFacade.sy_msg_prefix + MessageFacade.code_not_empty);
-                cFocus = txtCustomerNo;
-            }
-            else if (CustomerFacade.Exists(No, Id))
-            {
-                sMsg.AppendLine(LabelFacade.sy_msg_prefix + MessageFacade.code_already_exists);
-                cFocus = txtCustomerNo;
-            }
-            if (txtFirstName.Text.Trim().Length == 0)
-            {
-                sMsg.AppendLine(LabelFacade.sy_msg_prefix + MessageFacade.code_already_exists);
-                cFocus = txtFirstName;
-            }
-            if (sMsg.Length > 0)
-            {
-                MessageFacade.Show(this, ref fMsg, sMsg.ToString(), LabelFacade.sy_save);
-                cFocus.Focus();
-                return false;
-            }
-            return true;
+            var valid = new Validator(this, "customer");
+            //string No = txtCustomerNo.Text.Trim();
+            //if (No.Length == 0) 
+            //    validator.Add(txtCustomerNo, "code_blank");
+            //else if (CustomerFacade.Exists(No, Id))
+                //validator.Add(txtCustomerNo, "code_exists");
+            if (cboType.Unspecified) valid.Add(cboType, "type_unspecified");
+            if (txtLastName.IsEmptyTrim) valid.Add(txtLastName, "first_name_blank");
+            if (txtFirstName.IsEmptyTrim) valid.Add(txtFirstName, "first_name_blank");
+            if (cboGender.Unspecified) valid.Add(cboGender, "gender_unspecified");
+            if (DateTime.Today.Year - dtpDOB.Value.Year < 15) valid.Add(dtpDOB, "date_of_birth_invalid");
+            if (cboProvince.Unspecified) valid.Add(cboProvince, "province_unspecified");
+            if (cboDistrict.Unspecified) valid.Add(cboDistrict, "district_unspecified");
+            if (cboCommune.Unspecified) valid.Add(cboCommune, "commune_unspecified");
+            if (cboVillage.Unspecified) valid.Add(cboVillage, "village_unspecified");
+            //todo: Additional tab: when number is not blank but type is blank
+            return valid.Show();           
         }
 
         private void ClearAllBoxes()
@@ -276,7 +268,7 @@ namespace kCredit
         private void SetCodeCasing()
         {
             CharacterCasing cs;
-            switch (ConfigFacade.sy_code_casing)
+            switch (ConfigFacade.Export_Delimiter)
             {
                 case "U":
                     cs = CharacterCasing.Upper;
@@ -295,11 +287,11 @@ namespace kCredit
         {
             try
             {
-                SetIconDisplayType(ConfigFacade.sy_toolbar_icon_display_type);
-                splitContainer1.SplitterDistance = ConfigFacade.ic_unit_measure_splitter_distance;
+                SetIconDisplayType(ConfigFacade.Toolbar_Icon_Display_Type);
+                splitContainer1.SplitterDistance = ConfigFacade.GetSplitterDistance(Name);
 
                 SetCodeCasing();
-                txtCustomerNo.MaxLength = ConfigFacade.sy_code_max_length;
+                //txtCustomerNo.MaxLength = ConfigFacade.Code_Max_Length;
                 Util.SetFormState(this);
             }
             catch (Exception ex)
@@ -559,7 +551,7 @@ namespace kCredit
             }
             else
             {
-                splitContainer1.SplitterDistance = ConfigFacade.ic_unit_measure_splitter_distance;
+                splitContainer1.SplitterDistance = ConfigFacade.GetInt(Name + Constant.Splitter_Distance);
                 splitContainer1.FixedPanel = FixedPanel.Panel1;
             }
             dgvList.ShowLessColumns(IsExpand);
@@ -789,7 +781,7 @@ namespace kCredit
                 btnUnlock_Click(null, null);
             if (!IsExpand)
                 ConfigFacade.Set(Name + Constant.Splitter_Distance, splitContainer1.SplitterDistance);
-            Util.SaveFormSate(this);    
+            Util.SaveFormSate(this);
         }
 
         private void txtCode_Leave(object sender, EventArgs e)
@@ -807,13 +799,12 @@ namespace kCredit
             splitContainer1.IsSplitterFixed = !IsExpand;
             if (!IsExpand)
             {
-                ConfigFacade.ic_unit_measure_splitter_distance = splitContainer1.SplitterDistance;
                 splitContainer1.SplitterDistance = splitContainer1.Size.Width;
                 splitContainer1.FixedPanel = FixedPanel.Panel2;
             }
             else
             {
-                splitContainer1.SplitterDistance = ConfigFacade.ic_unit_measure_splitter_distance;
+                splitContainer1.SplitterDistance = ConfigFacade.GetInt(Name + Constant.Splitter_Distance);
                 splitContainer1.FixedPanel = FixedPanel.Panel1;
             }
             dgvList.ShowLessColumns(IsExpand);

@@ -586,7 +586,7 @@ namespace kCredit.LoanDS {
                         string payment_site, 
                         string credit_agent, 
                         short no, 
-                        System.DateTime date, 
+                        string date, 
                         decimal principal, 
                         decimal interest, 
                         decimal total, 
@@ -697,7 +697,7 @@ namespace kCredit.LoanDS {
                 base.Columns.Add(this.columncredit_agent);
                 this.columnno = new global::System.Data.DataColumn("no", typeof(short), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnno);
-                this.columndate = new global::System.Data.DataColumn("date", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                this.columndate = new global::System.Data.DataColumn("date", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columndate);
                 this.columnprincipal = new global::System.Data.DataColumn("principal", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnprincipal);
@@ -1107,10 +1107,10 @@ namespace kCredit.LoanDS {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public System.DateTime date {
+            public string date {
                 get {
                     try {
-                        return ((global::System.DateTime)(this[this.tableSchedule.dateColumn]));
+                        return ((string)(this[this.tableSchedule.dateColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'date\' in table \'Schedule\' is DBNull.", e);

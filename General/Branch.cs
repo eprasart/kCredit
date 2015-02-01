@@ -43,7 +43,7 @@ namespace kCredit
                 sql += " and status = '" + status + "'";
             if (filter.Length > 0)
                 sql += " and (" + SqlFacade.SqlILike("code, name") + ")";
-            sql += "\norder by code\nlimit " + ConfigFacade.sy_select_limit;
+            sql += "\norder by code\nlimit " + ConfigFacade.Select_Limit;
 
             var cmd = new NpgsqlCommand(sql);
             if (filter.Length > 0)
@@ -118,7 +118,9 @@ namespace kCredit
 
         public static void Export()
         {
-            string sql = SqlFacade.SqlSelect(TableName, ConfigFacade.sy_sql_export_branch, "status <> '" + Constant.RecordStatus_Deleted + "'", "code");
+            var cols = "*";
+            cols = ConfigFacade.Get(Constant.Sql_Export + TableName, cols);
+            string sql = SqlFacade.SqlSelect(TableName, cols, "status <> '" + Constant.RecordStatus_Deleted + "'", "code");
             SqlFacade.ExportToCSV(sql);
         }
     }

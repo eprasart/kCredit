@@ -105,6 +105,7 @@ namespace kCredit
         {
             frm.Icon = Properties.Resources.Icon;
             var lo = ConfigFacade.GetPoint(frm.Name + Constant.Location);
+            //todo: location = "-32000, -32000"
             if (lo != new System.Drawing.Point(-1, -1))
                 frm.Location = lo;
             var si = ConfigFacade.GetSize(frm.Name + Constant.Size);

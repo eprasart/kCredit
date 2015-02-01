@@ -61,7 +61,7 @@ namespace kCredit
                 sql += " and status = '" + status + "'";
             if (filter.Length > 0)
                 sql += " and (" + SqlFacade.SqlILike("no, last_name || ' ' || first_name ") + ")";
-            sql += "\norder by customer_no\nlimit " + ConfigFacade.Get(Constant.Select_Limit); //ConfigFacade.sy_select_limit;
+            sql += "\norder by customer_no\nlimit " + ConfigFacade.Select_Limit; //ConfigFacade.sy_select_limit;
 
             var cmd = new NpgsqlCommand(sql);
             if (filter.Length > 0)
@@ -141,7 +141,9 @@ namespace kCredit
 
         public static void Export()
         {
-            string sql = SqlFacade.SqlSelect(TableName, ConfigFacade.sy_sql_export_customer, "status <> '" + Constant.RecordStatus_Deleted + "'", "code");
+            var cols = "*";
+            cols = ConfigFacade.Get(Constant.Sql_Export + TableName, cols);
+            string sql = SqlFacade.SqlSelect(TableName, cols, "status <> '" + Constant.RecordStatus_Deleted + "'", "customer_no");
             SqlFacade.ExportToCSV(sql);
         }
 
@@ -174,7 +176,7 @@ namespace kCredit
                 SaveSrNo(branch_code, 2);
                 lNo = 1;
             }
-            var sNo = branch_code + "-" + lNo.ToString(ConfigFacade.sy_customer_no_format);
+            var sNo = branch_code + "-" + lNo.ToString(ConfigFacade.Get(Constant.Customer_No_Format));
             return sNo;
         }
     }
