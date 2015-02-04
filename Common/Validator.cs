@@ -31,7 +31,7 @@ namespace kCredit
         {
             if (Msg.Length > 0)
             {
-                MessageFacade.Show(frm, ref fMsg, Msg.ToString(), LabelFacade.sy_save);
+                MessageFacade.Show(frm, ref fMsg, Msg.ToString(), LabelFacade.sys_save);
                 cFocus.Focus();
                 return false;
             }

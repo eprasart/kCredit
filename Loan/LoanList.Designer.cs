@@ -1385,8 +1385,8 @@
             this.Name = "frmLoan";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Loan";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmUnitMeasureList_FormClosing);
-            this.Load += new System.EventHandler(this.frmUnitMeasureList_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmLoanList_FormClosing);
+            this.Load += new System.EventHandler(this.frmLoanList_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);

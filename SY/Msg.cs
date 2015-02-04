@@ -130,13 +130,13 @@ namespace kCredit
 
         private void frmMsgValidation_Load(object sender, EventArgs e)
         {
-            btnAbort.Text = LabelFacade.sy_button_abort ?? btnAbort.Text;
-            btnCancel.Text = LabelFacade.sy_button_cancel ?? btnCancel.Text;
-            btnIgnore.Text = LabelFacade.sy_button_ignore ?? btnIgnore.Text;
-            btnNo.Text = LabelFacade.sy_button_no ?? btnNo.Text;
-            btnYes.Text = LabelFacade.sy_button_yes ?? btnYes.Text;
-            btnOK.Text = LabelFacade.sy_button_ok ?? btnOK.Text;
-            btnRetry.Text = LabelFacade.sy_button_retry ?? btnRetry.Text;
+            btnAbort.Text = LabelFacade.sys_button_abort ?? btnAbort.Text;
+            btnCancel.Text = LabelFacade.sys_button_cancel ?? btnCancel.Text;
+            btnIgnore.Text = LabelFacade.sys_button_ignore ?? btnIgnore.Text;
+            btnNo.Text = LabelFacade.sys_button_no ?? btnNo.Text;
+            btnYes.Text = LabelFacade.sys_button_yes ?? btnYes.Text;
+            btnOK.Text = LabelFacade.sys_button_ok ?? btnOK.Text;
+            btnRetry.Text = LabelFacade.sys_button_retry ?? btnRetry.Text;
 
             txtMsg_TextChanged(null, null);
         }

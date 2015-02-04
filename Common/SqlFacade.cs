@@ -266,13 +266,13 @@ namespace kCredit
             }
             catch (Exception ex)
             {
-                MessageFacade.Show(MessageFacade.error_export + "\r\n" + ex.Message, LabelFacade.sy_export, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageFacade.Show(MessageFacade.error_export + "\r\n" + ex.Message, LabelFacade.sys_export, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 ErrorLogFacade.Log(ex);
                 return -1;
             }
             while (Util.IsFileLocked(path))   // Check if file is being used
             {
-                if (MessageFacade.Show(string.Format(MessageFacade.file_being_used_try_again, fileName), LabelFacade.sy_export, MessageBoxButtons.RetryCancel, MessageBoxIcon.Question) == DialogResult.Cancel)
+                if (MessageFacade.Show(string.Format(MessageFacade.file_being_used_try_again, fileName), LabelFacade.sys_export, MessageBoxButtons.RetryCancel, MessageBoxIcon.Question) == DialogResult.Cancel)
                 {
                     fNotification.Close();
                     return 0;

@@ -17,7 +17,7 @@ namespace kCredit
 
     class ConfigItem
     {
-        const string TableName = "sy_config";
+        const string TableName = "sys_config";
         private string _value;
 
         public long Id { private get; set; }
@@ -87,7 +87,7 @@ namespace kCredit
 
     class Config
     {
-        const string TableName = "sy_config";
+        const string TableName = "sys_config";
 
         private string _value;
 
@@ -206,7 +206,7 @@ namespace kCredit
 
     static class ConfigFacade
     {
-        const string TableName = "sy_config";
+        const string TableName = "sys_config";
         static Dictionary<string, ConfigItem> configList = new Dictionary<string, ConfigItem>();
 
         static string Username = App.session.Username;
@@ -225,10 +225,10 @@ namespace kCredit
 
         }
 
-        private static void Add(string username, string code, string value, string note = "")
+        private static void Insert(string username, string code, string value)
         {
             var sql = SqlFacade.SqlInsert(TableName, "username, code, value, note", "", true);
-            SqlFacade.Connection.ExecuteScalar<long>(sql, new { username, code, value, note });
+            SqlFacade.Connection.ExecuteScalar<long>(sql, new { username, code, value });
         }
 
         public static string Get(string code, string username, string defaultValue = "")
@@ -335,94 +335,50 @@ namespace kCredit
 
     class LabelFacade
     {
-        const string TableName = "sy_label";
+        const string TableName = "sys_label";
 
-        public static readonly string sy_msg_prefix = "- ";
+        public static readonly string sy_msg_prefix = "- ";//Get("sys_msg_prefix", "- ");
 
-        public static string sy_location;
-        public static string sy_customer;
-        public static string sy_branch;
+        public static string sys_location;//Get("sys_location");
+        public static string sys_customer;//=Get("sys_customer");
+        public static string sys_branch;//Get("sys_branch");
 
-        public static string sy_cancel;
-        public static string sy_close;
-        public static string sy_copy;
-        public static string sy_delete;
+        public static string sys_cancel;//Get("sys_cancel");
+        public static string sys_close;//Get("sys_close");
+        public static string sys_copy;//Get("sys_copy");
+        public static string sys_delete;//Get("sys_delete");
 
-        public static string sy_lock;
-        public static string sy_new;
-        public static string sy_save;
-        public static string sy_unlock;
+        public static string sys_lock;//Get("sys_lock");
+        public static string sys_new;//Get("sys_new");
+        public static string sys_save;//Get("sys_save");
+        public static string sys_unlock;//Get("sys_unlock");
 
-        public static string sy_button_new;
-        public static string sy_button_copy;
-        public static string sy_button_cancel;
-        public static string sy_button_unlock;
-        public static string sy_button_save;
-        public static string sy_button_save_new;
-        public static string sy_button_active;
-        public static string sy_button_inactive;
-        public static string sy_button_delete;
-        public static string sy_button_mode;
-        public static string sy_export;
+        public static string sys_button_new;//Get("sys_button_new");
+        public static string sys_button_copy;//Get("sys_button_copy");
+        public static string sys_button_cancel;//Get("sys_button_cancel");
+        public static string sys_button_unlock;//Get("sys_button_unlock");
+        public static string sys_button_save;//Get("sys_button_save");
+        public static string sys_button_save_new;//Get("sys_button_save_new");
+        public static string sys_button_active;//Get("sys_button_active");
+        public static string sys_button_inactive;//Get("sys_button_inactive");
+        public static string sys_button_delete;//Get("sys_button_delete");
+        public static string sys_button_mode;//Get("sys_button_mode");
+        public static string sys_export;//Get("sys_export");
 
-        public static string sy_button_find;
-        public static string sy_button_clear;
-        public static string sy_button_filter;
+        public static string sys_button_find;//Get("sys_button_find");
+        public static string sys_button_clear;//Get("sys_button_clear");
+        public static string sys_button_filter;//Get("sys_button_filter");
 
         // Message Box Buttons
-        public static string sy_button_abort;
-        public static string sy_button_retry;
-        public static string sy_button_ignore;
-        public static string sy_button_ok;
-        public static string sy_button_yes;
-        public static string sy_button_no;
-        public static string sy_search_place_holder;
+        public static string sys_button_abort;//Get("sys_button_abort");
+        public static string sys_button_retry;//Get("sys_button_retry");
+        public static string sys_button_ignore;//Get("sys_button_ignore");
+        public static string sys_button_ok;//Get("sys_button_ok");
+        public static string sys_button_yes;//Get("sys_button_yes");
+        public static string sys_button_no;//Get("sys_button_no");
+        public static string sys_search_place_holder;//Get("sys_search_place_holder");
 
-        public static void LoadSystemLabel()
-        {
-            //todo: recall when switching a language
-
-            sy_location = GetLabel(Util.GetMemberName(() => sy_location));
-            sy_customer = GetLabel(Util.GetMemberName(() => sy_customer));
-
-            // sy
-            sy_cancel = GetLabel(Util.GetMemberName(() => sy_cancel));
-            sy_close = GetLabel(Util.GetMemberName(() => sy_close));
-            sy_copy = GetLabel(Util.GetMemberName(() => sy_copy));
-            sy_delete = GetLabel(Util.GetMemberName(() => sy_delete));
-            sy_lock = GetLabel(Util.GetMemberName(() => sy_lock));
-            sy_new = GetLabel(Util.GetMemberName(() => sy_new));
-            sy_save = GetLabel(Util.GetMemberName(() => sy_save));
-            sy_unlock = GetLabel(Util.GetMemberName(() => sy_unlock));
-            sy_search_place_holder = GetLabel(Util.GetMemberName(() => sy_search_place_holder));
-
-            // Buttons            
-            sy_button_new = GetLabel(Util.GetMemberName(() => sy_button_new));
-            sy_button_copy = GetLabel(Util.GetMemberName(() => sy_button_copy));
-            sy_button_cancel = GetLabel(Util.GetMemberName(() => sy_button_cancel));
-            sy_button_unlock = GetLabel(Util.GetMemberName(() => sy_button_unlock));
-            sy_button_save = GetLabel(Util.GetMemberName(() => sy_button_save));
-            sy_button_save_new = GetLabel(Util.GetMemberName(() => sy_button_save_new));
-            sy_button_active = GetLabel(Util.GetMemberName(() => sy_button_active));
-            sy_button_inactive = GetLabel(Util.GetMemberName(() => sy_button_inactive));
-            sy_button_delete = GetLabel(Util.GetMemberName(() => sy_button_delete));
-            sy_button_mode = GetLabel(Util.GetMemberName(() => sy_button_mode));
-            sy_export = GetLabel(Util.GetMemberName(() => sy_export));
-
-            sy_button_find = GetLabel(Util.GetMemberName(() => sy_button_find));
-            sy_button_clear = GetLabel(Util.GetMemberName(() => sy_button_clear));
-            sy_button_filter = GetLabel(Util.GetMemberName(() => sy_button_filter));
-
-            // Message Box Buttons
-            sy_button_abort = GetLabel(Util.GetMemberName(() => sy_button_abort));
-            sy_button_retry = GetLabel(Util.GetMemberName(() => sy_button_retry));
-            sy_button_ignore = GetLabel(Util.GetMemberName(() => sy_button_ignore));
-            sy_button_ok = GetLabel(Util.GetMemberName(() => sy_button_ok));
-            sy_button_yes = GetLabel(Util.GetMemberName(() => sy_button_yes));
-            sy_button_no = GetLabel(Util.GetMemberName(() => sy_button_no));
-        }
-
-        public static string GetLabel(string code)
+        public static string Get(string code)
         {
             var language = ConfigFacade.Language;
             var sql = SqlFacade.SqlSelect(TableName, "value", "code = lower(:code) and language = :language");
@@ -431,11 +387,70 @@ namespace kCredit
                 ErrorLogFacade.Log("Label: code=" + code + " not exist");
             return label;
         }
+
+        private static void Insert(string code, string value)
+        {
+            var sql = SqlFacade.SqlInsert(TableName, "code, language, value", "", true);
+            SqlFacade.Connection.ExecuteScalar<long>(sql, new { code, language = ConfigFacade.Language , value });
+        }
+
+        public static string Get(string code, string defaultValue)
+        {
+            string label = Get(code);
+            if (label == null)
+            {
+                Insert(code, defaultValue);
+                label = defaultValue;
+            }
+            return label;
+        }
+
+        public static void LoadLabel()
+        {
+            sys_location = Get("sys_location");
+            sys_customer = Get("sys_customer");
+            sys_branch = Get("sys_branch");
+
+            sys_cancel = Get("sys_cancel");
+            sys_close = Get("sys_close");
+            sys_copy = Get("sys_copy");
+            sys_delete = Get("sys_delete");
+
+            sys_lock = Get("sys_lock");
+            sys_new = Get("sys_new");
+            sys_save = Get("sys_save");
+            sys_unlock = Get("sys_unlock");
+
+            sys_button_new = Get("sys_button_new");
+            sys_button_copy = Get("sys_button_copy");
+            sys_button_cancel = Get("sys_button_cancel");
+            sys_button_unlock = Get("sys_button_unlock");
+            sys_button_save = Get("sys_button_save");
+            sys_button_save_new = Get("sys_button_save_new");
+            sys_button_active = Get("sys_button_active");
+            sys_button_inactive = Get("sys_button_inactive");
+            sys_button_delete = Get("sys_button_delete");
+            sys_button_mode = Get("sys_button_mode");
+            sys_export = Get("sys_export");
+
+            sys_button_find = Get("sys_button_find");
+            sys_button_clear = Get("sys_button_clear");
+            sys_button_filter = Get("sys_button_filter");
+
+            
+            sys_button_abort = Get("sys_button_abort");
+            sys_button_retry = Get("sys_button_retry");
+            sys_button_ignore = Get("sys_button_ignore");
+            sys_button_ok = Get("sys_button_ok");
+            sys_button_yes = Get("sys_button_yes");
+            sys_button_no = Get("sys_button_no");
+            sys_search_place_holder = Get("sys_search_place_holder");
+        }
     }
 
     class MessageFacade
     {
-        const string TableName = "sy_message";
+        const string TableName = "sys_message";
 
         public static string active_inactive;
         public static string error_active_inactive;
