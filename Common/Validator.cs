@@ -23,7 +23,7 @@ namespace kCredit
 
         public void Add(Control c, string messageCode)
         {
-            Msg.AppendLine(LabelFacade.sy_msg_prefix + MessageFacade.GetMessage(codePrefix + messageCode));
+            Msg.AppendLine(LabelFacade.sys_msg_prefix + MessageFacade.GetMessage(codePrefix + messageCode));
             if (cFocus == null) cFocus = c;
         }
 

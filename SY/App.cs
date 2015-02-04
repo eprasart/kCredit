@@ -67,7 +67,7 @@ namespace kCredit
             session.Machine_User_Name = Environment.UserName;
             session.Version = version;
 
-            LabelFacade.LoadLabel();
+            LabelFacade.Load();
             MessageFacade.LoadSystemMessage();            
             // Log
             ErrorLogFacade.logFile.FileName = Path.Combine(Application.StartupPath, "Error.log");

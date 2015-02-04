@@ -337,46 +337,46 @@ namespace kCredit
     {
         const string TableName = "sys_label";
 
-        public static readonly string sy_msg_prefix = "- ";//Get("sys_msg_prefix", "- ");
+        public static string sys_msg_prefix = Get("sys_msg_prefix", "- ");
 
-        public static string sys_location;//Get("sys_location");
-        public static string sys_customer;//=Get("sys_customer");
-        public static string sys_branch;//Get("sys_branch");
+        public static string sys_location = Get("sys_location");
+        public static string sys_customer = Get("sys_customer");
+        public static string sys_branch = Get("sys_branch");
 
-        public static string sys_cancel;//Get("sys_cancel");
-        public static string sys_close;//Get("sys_close");
-        public static string sys_copy;//Get("sys_copy");
-        public static string sys_delete;//Get("sys_delete");
+        public static string sys_cancel = Get("sys_cancel");
+        public static string sys_close = Get("sys_close");
+        public static string sys_copy = Get("sys_copy");
+        public static string sys_delete = Get("sys_delete");
 
-        public static string sys_lock;//Get("sys_lock");
-        public static string sys_new;//Get("sys_new");
-        public static string sys_save;//Get("sys_save");
-        public static string sys_unlock;//Get("sys_unlock");
+        public static string sys_lock = Get("sys_lock");
+        public static string sys_new = Get("sys_new");
+        public static string sys_save = Get("sys_save");
+        public static string sys_unlock = Get("sys_unlock");
 
-        public static string sys_button_new;//Get("sys_button_new");
-        public static string sys_button_copy;//Get("sys_button_copy");
-        public static string sys_button_cancel;//Get("sys_button_cancel");
-        public static string sys_button_unlock;//Get("sys_button_unlock");
-        public static string sys_button_save;//Get("sys_button_save");
-        public static string sys_button_save_new;//Get("sys_button_save_new");
-        public static string sys_button_active;//Get("sys_button_active");
-        public static string sys_button_inactive;//Get("sys_button_inactive");
-        public static string sys_button_delete;//Get("sys_button_delete");
-        public static string sys_button_mode;//Get("sys_button_mode");
-        public static string sys_export;//Get("sys_export");
+        public static string sys_button_new = Get("sys_button_new");
+        public static string sys_button_copy = Get("sys_button_copy");
+        public static string sys_button_cancel = Get("sys_button_cancel");
+        public static string sys_button_unlock = Get("sys_button_unlock");
+        public static string sys_button_save = Get("sys_button_save");
+        public static string sys_button_save_new = Get("sys_button_save_new");
+        public static string sys_button_active = Get("sys_button_active");
+        public static string sys_button_inactive = Get("sys_button_inactive");
+        public static string sys_button_delete = Get("sys_button_delete");
+        public static string sys_button_mode = Get("sys_button_mode");
+        public static string sys_export = Get("sys_export");
 
-        public static string sys_button_find;//Get("sys_button_find");
-        public static string sys_button_clear;//Get("sys_button_clear");
-        public static string sys_button_filter;//Get("sys_button_filter");
+        public static string sys_button_find = Get("sys_button_find");
+        public static string sys_button_clear = Get("sys_button_clear");
+        public static string sys_button_filter = Get("sys_button_filter");
 
         // Message Box Buttons
-        public static string sys_button_abort;//Get("sys_button_abort");
-        public static string sys_button_retry;//Get("sys_button_retry");
-        public static string sys_button_ignore;//Get("sys_button_ignore");
-        public static string sys_button_ok;//Get("sys_button_ok");
-        public static string sys_button_yes;//Get("sys_button_yes");
-        public static string sys_button_no;//Get("sys_button_no");
-        public static string sys_search_place_holder;//Get("sys_search_place_holder");
+        public static string sys_button_abort = Get("sys_button_abort");
+        public static string sys_button_retry = Get("sys_button_retry");
+        public static string sys_button_ignore = Get("sys_button_ignore");
+        public static string sys_button_ok = Get("sys_button_ok");
+        public static string sys_button_yes = Get("sys_button_yes");
+        public static string sys_button_no = Get("sys_button_no");
+        public static string sys_search_place_holder = Get("sys_search_place_holder");
 
         public static string Get(string code)
         {
@@ -391,7 +391,7 @@ namespace kCredit
         private static void Insert(string code, string value)
         {
             var sql = SqlFacade.SqlInsert(TableName, "code, language, value", "", true);
-            SqlFacade.Connection.ExecuteScalar<long>(sql, new { code, language = ConfigFacade.Language , value });
+            SqlFacade.Connection.ExecuteScalar<long>(sql, new { code, language = ConfigFacade.Language, value });
         }
 
         public static string Get(string code, string defaultValue)
@@ -405,46 +405,9 @@ namespace kCredit
             return label;
         }
 
-        public static void LoadLabel()
+        public static void Load()
         {
-            sys_location = Get("sys_location");
-            sys_customer = Get("sys_customer");
-            sys_branch = Get("sys_branch");
-
-            sys_cancel = Get("sys_cancel");
-            sys_close = Get("sys_close");
-            sys_copy = Get("sys_copy");
-            sys_delete = Get("sys_delete");
-
-            sys_lock = Get("sys_lock");
-            sys_new = Get("sys_new");
-            sys_save = Get("sys_save");
-            sys_unlock = Get("sys_unlock");
-
-            sys_button_new = Get("sys_button_new");
-            sys_button_copy = Get("sys_button_copy");
-            sys_button_cancel = Get("sys_button_cancel");
-            sys_button_unlock = Get("sys_button_unlock");
-            sys_button_save = Get("sys_button_save");
-            sys_button_save_new = Get("sys_button_save_new");
-            sys_button_active = Get("sys_button_active");
-            sys_button_inactive = Get("sys_button_inactive");
-            sys_button_delete = Get("sys_button_delete");
-            sys_button_mode = Get("sys_button_mode");
-            sys_export = Get("sys_export");
-
-            sys_button_find = Get("sys_button_find");
-            sys_button_clear = Get("sys_button_clear");
-            sys_button_filter = Get("sys_button_filter");
-
             
-            sys_button_abort = Get("sys_button_abort");
-            sys_button_retry = Get("sys_button_retry");
-            sys_button_ignore = Get("sys_button_ignore");
-            sys_button_ok = Get("sys_button_ok");
-            sys_button_yes = Get("sys_button_yes");
-            sys_button_no = Get("sys_button_no");
-            sys_search_place_holder = Get("sys_search_place_holder");
         }
     }
 

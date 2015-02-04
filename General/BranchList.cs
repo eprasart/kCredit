@@ -699,7 +699,7 @@ namespace kCredit
             if (txtCode.ReadOnly) return;
             if (BranchFacade.Exists(txtCode.Text.Trim()))
             {
-                MessageFacade.Show(this, ref fMsg, LabelFacade.sy_msg_prefix + MessageFacade.code_already_exists, LabelFacade.sys_branch);
+                MessageFacade.Show(this, ref fMsg, LabelFacade.sys_msg_prefix + MessageFacade.code_already_exists, LabelFacade.sys_branch);
             }
         }
 
