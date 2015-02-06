@@ -476,37 +476,37 @@ namespace kCredit
         public static void LoadSystemMessage()
         {
             //todo: reload when language changed
-            active_inactive = GetMessage(Util.GetMemberName(() => active_inactive));
-            error_active_inactive = GetMessage(Util.GetMemberName(() => error_active_inactive));
-            error_retrieve_data = GetMessage(Util.GetMemberName(() => error_retrieve_data));
-            delete_confirmation = GetMessage(Util.GetMemberName(() => delete_confirmation));
-            error_delete = GetMessage(Util.GetMemberName(() => error_delete));
-            delete_locked = GetMessage(Util.GetMemberName(() => delete_locked));
-            lock_currently = GetMessage(Util.GetMemberName(() => lock_currently));
-            error_lock = GetMessage(Util.GetMemberName(() => error_lock));
-            lock_override = GetMessage(Util.GetMemberName(() => lock_override));
-            privilege_no_access = GetMessage(Util.GetMemberName(() => privilege_no_access));
-            proceed_confirmation = GetMessage(Util.GetMemberName(() => proceed_confirmation));
-            error_load_record = GetMessage(Util.GetMemberName(() => error_load_record));
-            save_confirmation = GetMessage(Util.GetMemberName(() => save_confirmation));
-            error_save = GetMessage(Util.GetMemberName(() => error_save));
-            error_unlock = GetMessage(Util.GetMemberName(() => error_unlock));
-            error_load_form = GetMessage(Util.GetMemberName(() => error_load_form));
-            error_query = GetMessage(Util.GetMemberName(() => error_query));
-            error_export = GetMessage(Util.GetMemberName(() => error_export));
+            active_inactive = Get(Util.GetMemberName(() => active_inactive));
+            error_active_inactive = Get(Util.GetMemberName(() => error_active_inactive));
+            error_retrieve_data = Get(Util.GetMemberName(() => error_retrieve_data));
+            delete_confirmation = Get(Util.GetMemberName(() => delete_confirmation));
+            error_delete = Get(Util.GetMemberName(() => error_delete));
+            delete_locked = Get(Util.GetMemberName(() => delete_locked));
+            lock_currently = Get(Util.GetMemberName(() => lock_currently));
+            error_lock = Get(Util.GetMemberName(() => error_lock));
+            lock_override = Get(Util.GetMemberName(() => lock_override));
+            privilege_no_access = Get(Util.GetMemberName(() => privilege_no_access));
+            proceed_confirmation = Get(Util.GetMemberName(() => proceed_confirmation));
+            error_load_record = Get(Util.GetMemberName(() => error_load_record));
+            save_confirmation = Get(Util.GetMemberName(() => save_confirmation));
+            error_save = Get(Util.GetMemberName(() => error_save));
+            error_unlock = Get(Util.GetMemberName(() => error_unlock));
+            error_load_form = Get(Util.GetMemberName(() => error_load_form));
+            error_query = Get(Util.GetMemberName(() => error_query));
+            error_export = Get(Util.GetMemberName(() => error_export));
 
-            code_already_exists = GetMessage(Util.GetMemberName(() => code_already_exists));
-            code_not_empty = GetMessage(Util.GetMemberName(() => code_not_empty));
+            code_already_exists = Get(Util.GetMemberName(() => code_already_exists));
+            code_not_empty = Get(Util.GetMemberName(() => code_not_empty));
 
-            email_not_valid = GetMessage(Util.GetMemberName(() => email_not_valid));
-            location_type_not_empty = GetMessage(Util.GetMemberName(() => location_type_not_empty));
+            email_not_valid = Get(Util.GetMemberName(() => email_not_valid));
+            location_type_not_empty = Get(Util.GetMemberName(() => location_type_not_empty));
 
-            export_exporting = GetMessage(Util.GetMemberName(() => export_exporting));
-            export_opening = GetMessage(Util.GetMemberName(() => export_opening));
-            file_being_used_try_again = Util.EscapeNewLine(GetMessage(Util.GetMemberName(() => file_being_used_try_again)));
+            export_exporting = Get(Util.GetMemberName(() => export_exporting));
+            export_opening = Get(Util.GetMemberName(() => export_opening));
+            file_being_used_try_again = Util.EscapeNewLine(Get(Util.GetMemberName(() => file_being_used_try_again)));
         }
 
-        public static string GetMessage(string code)
+        public static string Get(string code)
         {
             var language = ConfigFacade.Language;
             var sql = SqlFacade.SqlSelect(TableName, "value", "code = lower(:code) and language = :language");
