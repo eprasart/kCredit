@@ -176,7 +176,7 @@ namespace kCredit
                 SaveSrNo(branch_code, 2);
                 lNo = 1;
             }
-            var sNo = branch_code + "-" + lNo.ToString(ConfigFacade.Get(Constant.Customer_No_Format));
+            var sNo = branch_code + "-" + lNo.ToString(ConfigFacade.Get("sys_customer_no_format"));
             return sNo;
         }
     }

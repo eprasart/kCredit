@@ -67,15 +67,16 @@ namespace kCredit
             session.Machine_User_Name = Environment.UserName;
             session.Version = version;
 
+            fSplash.ShowMsg("Loading configurations...");
+            ConfigFacade.Load();
             LabelFacade.Load();
-            MessageFacade.LoadSystemMessage();            
+            MessageFacade.Load();            
             // Log
             ErrorLogFacade.logFile.FileName = Path.Combine(Application.StartupPath, "Error.log");
             AccessLog.FileName = Path.Combine(Application.StartupPath, "Access.log");
             AccessLog.Write(DateTime.Now.ToString("yyy-MM-dd ddd hh:mm:ss tt") + " Application started. Process Id: " + ProcessID + ", Machine: " + session.Machine_Name + ", machine's username: " + session.Machine_User_Name + ", version: " + session.Version);
             session.Id = SessionFacade.Save(session);
             SessionLogFacade.Log(Constant.Priority_Information, "Application", Constant.Log_Launch, "Application started");
-
             return true;
         }
 

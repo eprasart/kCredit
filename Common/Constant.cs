@@ -65,16 +65,6 @@ namespace kCredit
         public static readonly string Privilege_Print = "";
         public static readonly string Privilege_Generate = "";
 
-        // Config
-        public static readonly string Customer_No_Format = "sys_customer_no_format";
-        public static readonly string Language = "sys_language";
-        public static readonly string Select_Limit = "sys_select_limit";
-        public static readonly string Code_Casing = "sys_code_casing";
-        public static readonly string Code_Max_Length = "sys_code_max_length";
-        public static readonly string Toolbar_Icon = "sys_toolbar_icon_display_type";
-        public static readonly string Export_Delimiter = "sys_export_delimiter";
-        public static readonly string Export_Open_File_After = "sys_export_open_file_after";
-
         public static readonly string Splitter_Distance = "_spitter_distance";
         public static readonly string Window_State = "_window_state";
         public static readonly string Location = "_location";
