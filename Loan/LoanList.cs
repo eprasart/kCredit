@@ -66,9 +66,9 @@ namespace kCredit
             txtMaturity.Text = dteMaturity.ToString("ddd dd-MM-yy");
         }
 
-        private decimal GetRatePerDay(string sUnit, decimal Rate)
+        private double GetRatePerDay(string sUnit, double Rate)
         {
-            decimal r = 0;
+            double r = 0;
             switch (sUnit)
             {
                 case "W":
@@ -81,7 +81,7 @@ namespace kCredit
             return r;
         }
 
-        private void AddRow(int no, DateTime repayment, decimal principal, decimal interest, decimal total, decimal outstanding)
+        private void AddRow(int no, DateTime repayment, double principal, double interest, double total, double outstanding)
         {
             dgvSchedule.Rows.Add();
             var row = dgvSchedule.Rows[no - 1];
@@ -101,21 +101,22 @@ namespace kCredit
 
             int nInstallmentNo = int.Parse(txtInstallmentNo.Text);
             string sFrequencyUnit = cboFrequencyUnit.SelectedValue.ToString();
-            decimal dAmount = decimal.Parse(txtAmount.Text);
-            decimal dInterestRate = decimal.Parse(txtInterestRate.Text);
+            double dAmount = double.Parse(txtAmount.Text);
+            double dInterestRate = double.Parse(txtInterestRate.Text);
             if (dInterestRate >= 1) dInterestRate /= 100;
-            decimal dPrincipalPay = 0;
-            decimal dInterestRatePerDay = GetRatePerDay(sFrequencyUnit, dInterestRate);
-            decimal dPrincipalOut = dAmount;
+            double dPrincipalPay = 0;
+            double dInterestRatePerDay = GetRatePerDay(sFrequencyUnit, dInterestRate);
+            double dPrincipalOut = dAmount;
             DateTime dtePrevious = dtpDisburse.Value;
             DateTime dteFirstInstallment = dtpFirstInstallment.Value;
             DateTime dteRepayment = dteFirstInstallment;
             int iDayNum = (int)(dteRepayment - dtePrevious).TotalDays;
-            decimal dInterestPay = 0;
-            decimal dTotalPay = 0;
-            decimal dGrandTotalPay = 0;
-            decimal dPMT = 0;   // for EMI
+            double dInterestPay = 0;
+            double dTotalPay = 0;
+            double dGrandTotalPay = 0;
+            double dPMT = 0;   // for EMI
             string sMethod = cboMethod.SelectedValue.ToString();    // Calculation method            
+            CurrencyFacade.LoadSetting(cboCurrency.SelectedValue.ToString());
 
             if (sMethod != "FI")
                 dInterestPay = dPrincipalOut * iDayNum * dInterestRatePerDay;
@@ -128,13 +129,13 @@ namespace kCredit
                     dPrincipalPay = dAmount / nInstallmentNo;
                     dTotalPay = dPrincipalPay + dInterestPay;
                     break;
-
                 case "EMI":
                     dPMT = ScheduleFacade.EMI(dAmount, dInterestRate, nInstallmentNo);
                     dTotalPay = dPMT;
                     dPrincipalPay = dTotalPay - dInterestPay;
                     break;
             }
+            dTotalPay = CurrencyFacade.Round(dTotalPay);
             AddRow(1, dteRepayment, dPrincipalPay, dInterestPay, dTotalPay, dPrincipalOut);
 
             dGrandTotalPay = dPrincipalPay + dInterestPay;
@@ -160,7 +161,7 @@ namespace kCredit
                         dPrincipalPay = dTotalPay - dInterestPay;
                         break;
                 }
-
+                dTotalPay = CurrencyFacade.Round(dTotalPay);
                 AddRow(i, dteRepayment, dPrincipalPay, dInterestPay, dTotalPay, dPrincipalOut);
 
                 dPrincipalOut -= dPrincipalPay;
@@ -182,6 +183,7 @@ namespace kCredit
                     dPrincipalPay = dTotalPay - dInterestPay;
                     break;
             }
+            dTotalPay = CurrencyFacade.Round(dTotalPay);
             AddRow(nInstallmentNo, dteMaturity, dPrincipalPay, dInterestPay, dTotalPay, 0);
         }
 
@@ -362,6 +364,11 @@ namespace kCredit
                     txtNote.Text = m.Note;
                     SetStatus(m.Status);
                     // Schedule
+                    CurrencyFacade.LoadSetting(cboCurrency.SelectedValue.ToString());   
+                    colPrin.DefaultCellStyle.Format = CurrencyFacade.Format;
+                    colInt.DefaultCellStyle.Format = CurrencyFacade.Format;
+                    colTotal.DefaultCellStyle.Format = CurrencyFacade.Format;
+                    colOutstanding.DefaultCellStyle.Format = CurrencyFacade.Format;
                     dgvSchedule.DataSource = ScheduleFacade.GetDataTable(m.Account_No);
                     LockControls();
                     IsDirty = false;
@@ -476,9 +483,9 @@ namespace kCredit
             m.Frequency_Unit = cboFrequencyUnit.SelectedValue.ToString();
             m.Frequency = int.Parse(txtFrequency.Text);
             m.Installment_No = int.Parse(txtInstallmentNo.Text);
-            m.Amount = decimal.Parse(txtAmount.Text);
+            m.Amount = double.Parse(txtAmount.Text);
             m.Currency = cboCurrency.SelectedValue.ToString();
-            m.Interest_Rate = decimal.Parse(txtInterestRate.Text);
+            m.Interest_Rate = double.Parse(txtInterestRate.Text);
             m.Calculation_Method = cboMethod.SelectedValue.ToString();
             m.Disburse_Date = dtpDisburse.Value;
             m.First_Installment_Date = dtpFirstInstallment.Value;
@@ -525,10 +532,10 @@ namespace kCredit
                 s.account_no = m.Account_No;
                 s.no = int.Parse(row.Cells["colNo"].Value.ToString());
                 s.date = (DateTime)row.Cells["colDate"].Value;
-                s.principal = decimal.Parse(row.Cells["colPrin"].Value.ToString());
-                s.interest = decimal.Parse(row.Cells["colInt"].Value.ToString());
-                s.total = decimal.Parse(row.Cells["colTotal"].Value.ToString());
-                s.outstanding = decimal.Parse(row.Cells["colOutstanding"].Value.ToString());
+                s.principal = double.Parse(row.Cells["colPrin"].Value.ToString());
+                s.interest = double.Parse(row.Cells["colInt"].Value.ToString());
+                s.total = double.Parse(row.Cells["colTotal"].Value.ToString());
+                s.outstanding = double.Parse(row.Cells["colOutstanding"].Value.ToString());
                 ScheduleFacade.Save(s);
             }
             if (dgvList.CurrentRow != null) RowIndex = dgvList.CurrentRow.Index;
@@ -724,7 +731,7 @@ namespace kCredit
                 }
                 else
                     if (MessageFacade.Show(msg + "\r\n" + MessageFacade.proceed_confirmation, MessageFacade.active_inactive, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.No)
-                        return;
+                    return;
             }
             try
             {
@@ -798,9 +805,9 @@ namespace kCredit
                     }
                     else
                         if (MessageFacade.Show(msg + "\r\n" + MessageFacade.lock_override, LabelFacade.sys_unlock, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.Yes)
-                            SessionLogFacade.Log(Constant.Priority_Caution, Constant.Module_Branch, Constant.Log_Lock, "Override lock. Id=" + dgvList.Id + ", Code=" + txtAccountNo.Text);
-                        else
-                            return;
+                        SessionLogFacade.Log(Constant.Priority_Caution, Constant.Module_Branch, Constant.Log_Lock, "Override lock. Id=" + dgvList.Id + ", Code=" + txtAccountNo.Text);
+                    else
+                        return;
                 }
                 txtMaturity.SelectionStart = txtMaturity.Text.Length;
                 txtMaturity.Focus();
@@ -1051,7 +1058,7 @@ namespace kCredit
             fReport.FileName = "Schedule.rdlc";
             //fReport.SetParameters(new ReportParameter("pFromDate", fromDate), new ReportParameter("pToDate", toDate),
             //                    new ReportParameter("pFilter", Filter));
-            var sql = "select frequency_unit, frequency, amount, currency, interest_rate, calculation_method, disburse_date, maturity_date, payment_site, name credit_agent_name, phone credit_agent_phone," +
+            var sql = "select format, frequency_unit, frequency, amount, currency, interest_rate, calculation_method, disburse_date, maturity_date, payment_site, a.name credit_agent_name, phone credit_agent_phone," +
                 "\nlast_name || ' ' || first_name customer_name," +
                 "\nl.account_no, day_short || ' ' || to_char(date, 'dd-MM-yy') date, no, principal, interest, total, outstanding, pay_off" +
                 "\nfrom schedule s" +
@@ -1059,17 +1066,13 @@ namespace kCredit
                 "\ninner join customer c on l.customer_no = c.customer_no" +
                 "\ninner join agent a on l.credit_agent_id = a.id" +
                 "\ninner join day d on extract(dow from date) = d.code" +
-                "\nwhere l.account_no = :account_no";
+                "\ninner join currency cy on l.currency = cy.code" +
+                "\nwhere l.account_no = :account_no\norder by no";
             var cmd = new Npgsql.NpgsqlCommand(sql);
             cmd.Parameters.AddWithValue(":account_no", txtAccountNo.Text);
             fReport.ReportSource = SqlFacade.GetDataTable(cmd);
             fReport.PreviewReport();
             Cursor = Cursors.Default;
-        }
-
-        private void cboFrequencyUnit_TextChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }

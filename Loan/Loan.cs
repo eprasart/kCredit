@@ -19,9 +19,9 @@ namespace kCredit
         public string Frequency_Unit { get; set; }
         public int Frequency { get; set; }
         public int Installment_No { get; set; }
-        public decimal Amount { get; set; }
+        public double Amount { get; set; }
         public string Currency { get; set; }
-        public decimal Interest_Rate { get; set; }
+        public double Interest_Rate { get; set; }
         public string Calculation_Method { get; set; }
         public DateTime Disburse_Date { get; set; }
         public DateTime First_Installment_Date { get; set; }
@@ -173,11 +173,11 @@ namespace kCredit
         public string account_no { get; set; }
         public DateTime date { get; set; }
         public int no { get; set; }
-        public decimal principal { get; set; }
-        public decimal interest { get; set; }
-        public decimal total { get; set; }
-        public decimal outstanding { get; set; }
-        public decimal pay_off { get; set; }
+        public double principal { get; set; }
+        public double interest { get; set; }
+        public double total { get; set; }
+        public double outstanding { get; set; }
+        public double pay_off { get; set; }
         public string note { get; set; }
         public string status { get; set; }
         public string Insert_By { get; set; }
@@ -226,9 +226,9 @@ namespace kCredit
         }
 
 
-        public static decimal EMI(decimal amount, decimal r, int n)
+        public static double EMI(double amount, double r, int n)
         {   // PMT
-            var pow = (decimal)Math.Pow((double)(1 + r), (double)n);
+            var pow = (double)Math.Pow((double)(1 + r), (double)n);
             return amount * r * pow / (pow - 1);
         }
         //public static Loan Select(long Id)

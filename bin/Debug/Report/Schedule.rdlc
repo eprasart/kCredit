@@ -42,7 +42,7 @@
               <Width>0.4375in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.88542in</Width>
+              <Width>0.9375in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>1in</Width>
@@ -367,7 +367,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!principal.Value</Value>
-                              <Style />
+                              <Style>
+                                <Format>=Fields!format.Value</Format>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -404,7 +406,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!interest.Value</Value>
-                              <Style />
+                              <Style>
+                                <Format>=Fields!format.Value</Format>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -442,7 +446,7 @@
                             <TextRun>
                               <Value>=Fields!total.Value</Value>
                               <Style>
-                                <Format>#,0.00</Format>
+                                <Format>=Fields!format.Value</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -480,7 +484,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!outstanding.Value</Value>
-                              <Style />
+                              <Style>
+                                <Format>=Fields!format.Value</Format>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -535,7 +541,7 @@
         <Top>3.24875in</Top>
         <Left>0.125in</Left>
         <Height>0.47917in</Height>
-        <Width>5.48959in</Width>
+        <Width>5.54167in</Width>
         <ZIndex>1</ZIndex>
         <Style>
           <Border>
@@ -934,36 +940,6 @@
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
-      <Textbox Name="interest_rate2">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value />
-                <Style />
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>interest_rate</rd:DefaultName>
-        <Top>4.84186cm</Top>
-        <Left>0.3175cm</Left>
-        <Height>0.6cm</Height>
-        <Width>8.10067cm</Width>
-        <ZIndex>14</ZIndex>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
       <Textbox Name="interest_rate4">
         <CanGrow>true</CanGrow>
         <KeepTogether>true</KeepTogether>
@@ -983,7 +959,7 @@
         <Left>8.79772cm</Left>
         <Height>0.6cm</Height>
         <Width>8.10067cm</Width>
-        <ZIndex>15</ZIndex>
+        <ZIndex>14</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -1013,7 +989,7 @@
         <Left>8.79772cm</Left>
         <Height>0.6cm</Height>
         <Width>8.10067cm</Width>
-        <ZIndex>16</ZIndex>
+        <ZIndex>15</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -1070,7 +1046,7 @@
         </Field>
         <Field Name="amount">
           <DataField>amount</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="currency">
           <DataField>currency</DataField>
@@ -1078,7 +1054,7 @@
         </Field>
         <Field Name="interest_rate">
           <DataField>interest_rate</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="calculation_method">
           <DataField>calculation_method</DataField>
@@ -1126,28 +1102,32 @@
         </Field>
         <Field Name="principal">
           <DataField>principal</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="interest">
           <DataField>interest</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="total">
           <DataField>total</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="outstanding">
           <DataField>outstanding</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="credit_agent_phone">
           <DataField>credit_agent_phone</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="format">
+          <DataField>format</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>Loan</rd:DataSetName>
-        <rd:SchemaPath>D:\Code\kCredit\Loan\LoanDS.xsd</rd:SchemaPath>
+        <rd:SchemaPath>D:\code\kCredit\General\LoanDS.xsd</rd:SchemaPath>
         <rd:TableName>Schedule</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />

@@ -90,8 +90,8 @@ namespace kCredit
 
         public static bool IsDecimal(string value)
         {
-            decimal isNumber = 0;
-            return decimal.TryParse(value, out isNumber);
+            double isNumber = 0;
+            return double.TryParse(value, out isNumber);
         }
 
         public static void SaveFormSate(Form frm)
@@ -112,6 +112,6 @@ namespace kCredit
             if (si != new System.Drawing.Size(-1, -1))
                 frm.Size = si;
             frm.WindowState = ConfigFacade.GetWindowState(frm.Name + Constant.Window_State, "0");
-        }
+        }       
     }
 }

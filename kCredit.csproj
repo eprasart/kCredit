@@ -102,6 +102,7 @@
     <Compile Include="Customer\CustomerList.Designer.cs">
       <DependentUpon>CustomerList.cs</DependentUpon>
     </Compile>
+    <Compile Include="General\Currency.cs" />
     <Compile Include="GL\GL.cs" />
     <Compile Include="General\BranchList.cs">
       <SubType>Form</SubType>
@@ -112,10 +113,14 @@
     <Compile Include="Customer\Customer.cs" />
     <Compile Include="General\Branch.cs" />
     <Compile Include="Loan\Loan.cs" />
-    <Compile Include="Loan\LoanDS.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
+    <Compile Include="General\LoanDS.cs">
       <DependentUpon>LoanDS.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="General\LoanDS.Designer.cs">
+      <DependentUpon>LoanDS.xsd</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Loan\LoanList.cs">
       <SubType>Form</SubType>
@@ -228,15 +233,15 @@
       <DependentUpon>Splash.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="Loan\LoanDS.xsc">
+    <None Include="General\LoanDS.xsc">
       <DependentUpon>LoanDS.xsd</DependentUpon>
     </None>
-    <None Include="Loan\LoanDS.xsd">
+    <None Include="General\LoanDS.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>LoanDS.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Loan\LoanDS.xss">
+    <None Include="General\LoanDS.xss">
       <DependentUpon>LoanDS.xsd</DependentUpon>
     </None>
     <None Include="packages.config" />
