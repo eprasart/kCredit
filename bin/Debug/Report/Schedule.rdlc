@@ -2,39 +2,6 @@
 <Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
   <Body>
     <ReportItems>
-      <Textbox Name="customer_name">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>ឈ្មោះ​អតិថិជន: </Value>
-                <Style />
-              </TextRun>
-              <TextRun>
-                <Value>=Fields!customer_name.Value</Value>
-                <Style />
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>customer_name</rd:DefaultName>
-        <Top>1.12375in</Top>
-        <Left>0.125in</Left>
-        <Height>0.25in</Height>
-        <Width>3.18924in</Width>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
       <Tablix Name="Tablix1">
         <TablixBody>
           <TablixColumns>
@@ -42,7 +9,7 @@
               <Width>0.4375in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.9375in</Width>
+              <Width>1.02083in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>1in</Width>
@@ -55,6 +22,9 @@
             </TablixColumn>
             <TablixColumn>
               <Width>1.16667in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1.95833in</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -277,6 +247,42 @@
                     </Textbox>
                   </CellContents>
                 </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox6">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value />
+                              <Style>
+                                <FontFamily>Khmer OS Battambang</FontFamily>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Right</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox6</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>None</Style>
+                        </Border>
+                        <BottomBorder>
+                          <Style>Solid</Style>
+                        </BottomBorder>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
               </TablixCells>
             </TablixRow>
             <TablixRow>
@@ -330,7 +336,9 @@
                             <TextRun>
                               <Label>date</Label>
                               <Value>=Fields!date.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontFamily>Khmer OS Battambang</FontFamily>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -513,12 +521,50 @@
                     </Textbox>
                   </CellContents>
                 </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox7">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value />
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Right</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox7</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>None</Style>
+                        </Border>
+                        <BottomBorder>
+                          <Color>Gray</Color>
+                          <Style>Solid</Style>
+                        </BottomBorder>
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
               </TablixCells>
             </TablixRow>
           </TablixRows>
         </TablixBody>
         <TablixColumnHierarchy>
           <TablixMembers>
+            <TablixMember />
             <TablixMember />
             <TablixMember />
             <TablixMember />
@@ -538,11 +584,10 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>DataSet1</DataSetName>
-        <Top>3.24875in</Top>
+        <Top>2.24875in</Top>
         <Left>0.125in</Left>
         <Height>0.47917in</Height>
-        <Width>5.54167in</Width>
-        <ZIndex>1</ZIndex>
+        <Width>7.58333in</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -556,7 +601,13 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>លេខ​គណនី: </Value>
+                <Value>លេខ​គណនី</Value>
+                <Style>
+                  <FontFamily>Khmer OS Battambang</FontFamily>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value>: </Value>
                 <Style />
               </TextRun>
               <TextRun>
@@ -566,13 +617,89 @@
             </TextRuns>
             <Style />
           </Paragraph>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>ឈ្មោះ​អតិថិជន</Value>
+                <Style>
+                  <FontFamily>Khmer OS Battambang</FontFamily>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value>: </Value>
+                <Style />
+              </TextRun>
+              <TextRun>
+                <Value>=Fields!customer_name.Value</Value>
+                <Style>
+                  <FontFamily>Khmer OS Battambang</FontFamily>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>ចំនួន​ប្រាក់​ឲ្យ​ខ្ចី</Value>
+                <Style>
+                  <FontFamily>Khmer OS Battambang</FontFamily>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value>: </Value>
+                <Style />
+              </TextRun>
+              <TextRun>
+                <Value>=Fields!amount.Value</Value>
+                <Style>
+                  <Format>#,0</Format>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value xml:space="preserve"> </Value>
+                <Style />
+              </TextRun>
+              <TextRun>
+                <Value>=Fields!currency.Value</Value>
+                <Style>
+                  <FontFamily>Khmer OS Battambang</FontFamily>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>អត្រា​ការប្រាក់</Value>
+                <Style>
+                  <FontFamily>Khmer OS Battambang</FontFamily>
+                  <Format>0.00</Format>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value>: </Value>
+                <Style>
+                  <Format>0.00</Format>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value>=Fields!interest_rate.Value</Value>
+                <Style>
+                  <Format>0.00</Format>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
         </Paragraphs>
         <rd:DefaultName>customer_name</rd:DefaultName>
-        <Top>0.92931in</Top>
+        <Top>1.05063in</Top>
         <Left>0.125in</Left>
-        <Height>0.25in</Height>
-        <Width>3.18924in</Width>
-        <ZIndex>2</ZIndex>
+        <Height>1.05229in</Height>
+        <Width>3.45833in</Width>
+        <ZIndex>1</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -604,10 +731,10 @@
         </Paragraphs>
         <rd:DefaultName>Textbox1</rd:DefaultName>
         <Top>0.68833cm</Top>
-        <Left>10.795cm</Left>
+        <Left>9.10167cm</Left>
         <Height>1.12917cm</Height>
-        <Width>6.31cm</Width>
-        <ZIndex>3</ZIndex>
+        <Width>8.524cm</Width>
+        <ZIndex>2</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -626,7 +753,7 @@
         <Left>0.3175cm</Left>
         <Height>1.5cm</Height>
         <Width>1.5cm</Width>
-        <ZIndex>4</ZIndex>
+        <ZIndex>3</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -642,6 +769,7 @@
               <TextRun>
                 <Value>អង្គការ​អភិវឌ្ឍន៌​អរុណរះ</Value>
                 <Style>
+                  <FontFamily>Khmer OS</FontFamily>
                   <FontSize>14pt</FontSize>
                 </Style>
               </TextRun>
@@ -653,8 +781,8 @@
         <Top>0.68833cm</Top>
         <Left>1.99389cm</Left>
         <Height>0.92164cm</Height>
-        <Width>6.42428cm</Width>
-        <ZIndex>5</ZIndex>
+        <Width>7.10778cm</Width>
+        <ZIndex>4</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -675,6 +803,7 @@
                 <Value>រៀនសូត្រ ភាពវិជ្ជា​ជីវៈ តម្លាភាព និង​គណនយ្យភាព</Value>
                 <Style>
                   <FontStyle>Italic</FontStyle>
+                  <FontFamily>Khmer OS Battambang</FontFamily>
                   <FontSize>9pt</FontSize>
                 </Style>
               </TextRun>
@@ -686,8 +815,8 @@
         <Top>1.64111cm</Top>
         <Left>0.3175cm</Left>
         <Height>0.70998cm</Height>
-        <Width>8.10067cm</Width>
-        <ZIndex>6</ZIndex>
+        <Width>8.78417cm</Width>
+        <ZIndex>5</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -705,41 +834,34 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>មន្ត្រីឥណទាន: </Value>
+                <Value>មន្ត្រីឥណទាន</Value>
+                <Style>
+                  <FontFamily>Khmer OS Battambang</FontFamily>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value>: </Value>
                 <Style />
               </TextRun>
               <TextRun>
-                <Value>=Fields!credit_agent.Value</Value>
-                <Style />
+                <Value>=Fields!credit_agent_name.Value</Value>
+                <Style>
+                  <FontFamily>Khmer OS Battambang</FontFamily>
+                </Style>
               </TextRun>
             </TextRuns>
             <Style />
           </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>customer_name</rd:DefaultName>
-        <Top>1.32291in</Top>
-        <Left>0.125in</Left>
-        <Height>0.25in</Height>
-        <Width>3.18924in</Width>
-        <ZIndex>7</ZIndex>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
-      <Textbox Name="customer_name4">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>ទូរស័ព្ទ: </Value>
+                <Value>ទូរស័ព្ទ</Value>
+                <Style>
+                  <FontFamily>Khmer OS Battambang</FontFamily>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value>: </Value>
                 <Style />
               </TextRun>
               <TextRun>
@@ -749,97 +871,35 @@
             </TextRuns>
             <Style />
           </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>customer_name</rd:DefaultName>
-        <Top>1.5868in</Top>
-        <Left>0.125in</Left>
-        <Height>0.25in</Height>
-        <Width>3.18924in</Width>
-        <ZIndex>8</ZIndex>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
-      <Textbox Name="customer_name5">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
           <Paragraph>
             <TextRuns>
+              <TextRun>
+                <Value>ថ្ងៃផ្តល់​ទន់</Value>
+                <Style>
+                  <FontFamily>Khmer OS Battambang</FontFamily>
+                </Style>
+              </TextRun>
               <TextRun>
                 <Value>: </Value>
                 <Style />
               </TextRun>
               <TextRun>
-                <Value>=Fields!amount.Value</Value>
-                <Style />
+                <Value>=Fields!disburse_date.Value</Value>
+                <Style>
+                  <FontFamily>Khmer OS Battambang</FontFamily>
+                </Style>
               </TextRun>
             </TextRuns>
             <Style />
           </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>customer_name</rd:DefaultName>
-        <Top>1.5868in</Top>
-        <Left>3.44792in</Left>
-        <Height>0.25in</Height>
-        <Width>3.18924in</Width>
-        <ZIndex>9</ZIndex>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
-      <Textbox Name="customer_name6">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>: </Value>
-                <Style />
+                <Value>សង​ប្រាក់</Value>
+                <Style>
+                  <FontFamily>Khmer OS Battambang</FontFamily>
+                </Style>
               </TextRun>
-              <TextRun>
-                <Value>=Fields!installment_no.Value</Value>
-                <Style />
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>customer_name</rd:DefaultName>
-        <Top>1.32291in</Top>
-        <Left>3.44792in</Left>
-        <Height>0.25in</Height>
-        <Width>3.18924in</Width>
-        <ZIndex>10</ZIndex>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
-      <Textbox Name="customer_name8">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
               <TextRun>
                 <Value>: </Value>
                 <Style />
@@ -854,142 +914,51 @@
               </TextRun>
               <TextRun>
                 <Value>=Fields!frequency_unit.Value</Value>
+                <Style>
+                  <FontFamily>Khmer OS Battambang</FontFamily>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value xml:space="preserve"> </Value>
                 <Style />
               </TextRun>
               <TextRun>
-                <Value> ម្តង</Value>
+                <Value>ម្តង</Value>
+                <Style>
+                  <FontFamily>Khmer OS Battambang</FontFamily>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>កន្លែង​បង់​ប្រាក់</Value>
+                <Style>
+                  <FontFamily>Khmer OS Battambang</FontFamily>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value>: </Value>
                 <Style />
+              </TextRun>
+              <TextRun>
+                <Value>=Fields!payment_site.Value</Value>
+                <Style>
+                  <FontFamily>Khmer OS Battambang</FontFamily>
+                </Style>
               </TextRun>
             </TextRuns>
             <Style />
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>customer_name</rd:DefaultName>
-        <Top>0.92931in</Top>
-        <Left>3.44792in</Left>
-        <Height>0.25in</Height>
-        <Width>3.18924in</Width>
-        <ZIndex>11</ZIndex>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
-      <Textbox Name="currency">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>=Fields!currency.Value</Value>
-                <Style />
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>currency</rd:DefaultName>
-        <Top>4.84186cm</Top>
-        <Left>8.75772cm</Left>
-        <Height>0.6cm</Height>
-        <Width>8.10067cm</Width>
-        <ZIndex>12</ZIndex>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
-      <Textbox Name="interest_rate">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>=Fields!interest_rate.Value</Value>
-                <Style />
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>interest_rate</rd:DefaultName>
-        <Top>5.61825cm</Top>
-        <Left>8.79772cm</Left>
-        <Height>0.6cm</Height>
-        <Width>8.10067cm</Width>
-        <ZIndex>13</ZIndex>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
-      <Textbox Name="interest_rate4">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>=Fields!payment_site.Value</Value>
-                <Style />
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>interest_rate</rd:DefaultName>
-        <Top>7.17103cm</Top>
-        <Left>8.79772cm</Left>
-        <Height>0.6cm</Height>
-        <Width>8.10067cm</Width>
-        <ZIndex>14</ZIndex>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
-      <Textbox Name="interest_rate5">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>=Fields!disburse_date.Value</Value>
-                <Style />
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>interest_rate</rd:DefaultName>
-        <Top>6.39464cm</Top>
-        <Left>8.79772cm</Left>
-        <Height>0.6cm</Height>
-        <Width>8.10067cm</Width>
-        <ZIndex>15</ZIndex>
+        <Top>0.80236in</Top>
+        <Left>4.1875in</Left>
+        <Height>1.30056in</Height>
+        <Width>2.75174in</Width>
+        <ZIndex>6</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -1001,10 +970,10 @@
         </Style>
       </Textbox>
     </ReportItems>
-    <Height>9.46892cm</Height>
+    <Height>7.14058cm</Height>
     <Style />
   </Body>
-  <Width>17.105cm</Width>
+  <Width>19.57917cm</Width>
   <Page>
     <PageHeight>29.7cm</PageHeight>
     <PageWidth>21cm</PageWidth>
@@ -1038,10 +1007,6 @@
         </Field>
         <Field Name="frequency">
           <DataField>frequency</DataField>
-          <rd:TypeName>System.Int16</rd:TypeName>
-        </Field>
-        <Field Name="installment_no">
-          <DataField>installment_no</DataField>
           <rd:TypeName>System.Int16</rd:TypeName>
         </Field>
         <Field Name="amount">
@@ -1088,8 +1053,8 @@
           <DataField>payment_site</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="credit_agent">
-          <DataField>credit_agent</DataField>
+        <Field Name="credit_agent_name">
+          <DataField>credit_agent_name</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="no">
