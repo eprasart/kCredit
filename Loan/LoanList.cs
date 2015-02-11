@@ -523,8 +523,8 @@ namespace kCredit
             }
             // Schedule
             if (dgvSchedule.RowCount == 0) btnSchedule_Click(null, null);
-            if (Id != 0 && dgvSchedule.Rows[0].Cells[0].Value == null)
-                ScheduleFacade.Delete(m.Account_No);
+            //if (Id != 0 && dgvSchedule.Rows[0].Cells[0].Value != null)
+            ScheduleFacade.Delete(m.Account_No);    // Better to always delete to make sure, even if not exist yet
             for (int i = 0; i < dgvSchedule.RowCount; i++)
             {
                 var row = dgvSchedule.Rows[i];
@@ -831,6 +831,7 @@ namespace kCredit
             }
             SessionLogFacade.Log(Constant.Priority_Information, Constant.Module_Branch, Constant.Log_Lock, "Locked. Id=" + dgvList.Id + ", Code=" + txtAccountNo.Text);
             btnUnlock.ToolTipText = "Cancel (Esc or Ctrl+L)";
+            IsDirty = false;
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)

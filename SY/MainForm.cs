@@ -22,7 +22,7 @@ namespace kCredit.SYS
         private void frmMain_Load(object sender, EventArgs e)
         {
             lblVersion.Text = " v " + App.version;
-           
+
 
             Util.SetFormState(this);
 
@@ -142,8 +142,11 @@ namespace kCredit.SYS
             if (App.fLoan == null || App.fLoan.IsDisposed == true)
             {
                 App.fLoan = new frmLoan();
+                App.fLoan=Activator.CreateInstance()
                 App.fLoan.Show();
             }
+            if (App.fLoan.WindowState == FormWindowState.Minimized) //todo: do this with the rest
+                App.fLoan.WindowState = FormWindowState.Normal;
             App.fLoan.Focus();
             Cursor = Cursors.Default;
         }
