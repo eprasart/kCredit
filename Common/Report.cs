@@ -34,7 +34,7 @@ namespace kCredit
             //rds.Value = ReportSource;
             rptViewer.LocalReport.DataSources.Add(rds);
             rptViewer.RefreshReport();
-            WindowState = FormWindowState.Maximized;
+            //WindowState = FormWindowState.Maximized;
             this.Show();
             this.Cursor = Cursors.Default;
         }

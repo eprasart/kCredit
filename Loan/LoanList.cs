@@ -1058,15 +1058,18 @@ namespace kCredit
             fReport.FileName = "Schedule.rdlc";
             //fReport.SetParameters(new ReportParameter("pFromDate", fromDate), new ReportParameter("pToDate", toDate),
             //                    new ReportParameter("pFilter", Filter));
-            var sql = "select format, frequency_unit, frequency, amount, currency, interest_rate, calculation_method, disburse_date, maturity_date, payment_site, a.name credit_agent_name, phone credit_agent_phone," +
+            var sql = "select format, case frequency_unit when 'M' then 'ខែ' when 'W' then 'សប្តាហ៌' when 'D' then 'ថ្ងៃ' end frequency_unit, frequency, " +
+                "amount, cy.name_khm currency, interest_rate, calculation_method, da.day_short || ' ' || to_char(disburse_date, 'dd-MM-yy') disburse_date, maturity_date, site.description payment_site, a.name credit_agent_name, phone credit_agent_phone," +
                 "\nlast_name || ' ' || first_name customer_name," +
-                "\nl.account_no, day_short || ' ' || to_char(date, 'dd-MM-yy') date, no, principal, interest, total, outstanding, pay_off" +
+                "\nl.account_no, d.day_short || ' ' || to_char(date, 'dd-MM-yy') date, no, principal, interest, total, outstanding, pay_off" +
                 "\nfrom schedule s" +
                 "\ninner join loan l on s.account_no = l.account_no" +
                 "\ninner join customer c on l.customer_no = c.customer_no" +
                 "\ninner join agent a on l.credit_agent_id = a.id" +
                 "\ninner join day d on extract(dow from date) = d.code" +
+                "\ninner join day da on extract(dow from disburse_date) = da.code" +
                 "\ninner join currency cy on l.currency = cy.code" +
+                "\ninner join list site on field = 'payment_site' and l.payment_site = site.code" +
                 "\nwhere l.account_no = :account_no\norder by no";
             var cmd = new Npgsql.NpgsqlCommand(sql);
             cmd.Parameters.AddWithValue(":account_no", txtAccountNo.Text);
