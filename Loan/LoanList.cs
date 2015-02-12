@@ -731,7 +731,7 @@ namespace kCredit
                 }
                 else
                     if (MessageFacade.Show(msg + "\r\n" + MessageFacade.proceed_confirmation, MessageFacade.active_inactive, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.No)
-                    return;
+                        return;
             }
             try
             {
@@ -805,9 +805,9 @@ namespace kCredit
                     }
                     else
                         if (MessageFacade.Show(msg + "\r\n" + MessageFacade.lock_override, LabelFacade.sys_unlock, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.Yes)
-                        SessionLogFacade.Log(Constant.Priority_Caution, Constant.Module_Branch, Constant.Log_Lock, "Override lock. Id=" + dgvList.Id + ", Code=" + txtAccountNo.Text);
-                    else
-                        return;
+                            SessionLogFacade.Log(Constant.Priority_Caution, Constant.Module_Branch, Constant.Log_Lock, "Override lock. Id=" + dgvList.Id + ", Code=" + txtAccountNo.Text);
+                        else
+                            return;
                 }
                 txtMaturity.SelectionStart = txtMaturity.Text.Length;
                 txtMaturity.Focus();
@@ -1057,7 +1057,7 @@ namespace kCredit
             if (dgvSchedule.RowCount == 0) btnSchedule_Click(null, null);
             var fReport = new frmReport("Repayment Schedule");
             fReport.FileName = "Schedule.rdlc";
-            fReport.AddParameter("Path", "file:" + App.StartupPath + "Report\\");
+            fReport.AddParameter("Path", "file:" + App.StartupPath);
             var sql = "select format, case frequency_unit when 'M' then 'ខែ' when 'W' then 'សប្តាហ៌' when 'D' then 'ថ្ងៃ' end frequency_unit, frequency, " +
                 "amount, cy.name_khm currency, interest_rate, calculation_method, da.day_short || ' ' || to_char(disburse_date, 'dd-MM-yy') disburse_date, maturity_date, site.description payment_site, a.name credit_agent_name, phone credit_agent_phone," +
                 "\nlast_name || ' ' || first_name customer_name," +
