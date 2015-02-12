@@ -50,7 +50,6 @@
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Report";
-            this.Load += new System.EventHandler(this.frmReport_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmReport_KeyDown);
             this.ResumeLayout(false);
 

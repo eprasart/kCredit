@@ -746,8 +746,8 @@
         </Style>
       </Textbox>
       <Image Name="Logo">
-        <Source>Embedded</Source>
-        <Value>Logo</Value>
+        <Source>External</Source>
+        <Value>=Parameters!Path.Value &amp; "Logo.png"</Value>
         <Sizing>FitProportional</Sizing>
         <Top>0.3175cm</Top>
         <Left>0.3175cm</Left>
@@ -1100,6 +1100,12 @@
       </rd:DataSetInfo>
     </DataSet>
   </DataSets>
+  <ReportParameters>
+    <ReportParameter Name="Path">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+  </ReportParameters>
   <EmbeddedImages>
     <EmbeddedImage Name="Logo">
       <MIMEType>image/png</MIMEType>

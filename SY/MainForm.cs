@@ -142,7 +142,7 @@ namespace kCredit.SYS
             if (App.fLoan == null || App.fLoan.IsDisposed == true)
             {
                 App.fLoan = new frmLoan();
-                App.fLoan=Activator.CreateInstance()
+                //App.fLoan=Activator.CreateInstance()
                 App.fLoan.Show();
             }
             if (App.fLoan.WindowState == FormWindowState.Minimized) //todo: do this with the rest

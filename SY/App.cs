@@ -12,6 +12,8 @@ namespace kCredit
 {
     public static class App
     {
+        public static string StartupPath;
+
         public static frmSplash fSplash = null;
 
         public static Setting setting = new Setting();
@@ -31,6 +33,9 @@ namespace kCredit
 
         public static bool Init()
         {
+            StartupPath = Application.StartupPath;
+            if (!StartupPath.EndsWith("\\")) StartupPath += "\\";
+
             SetVersion();
 
             // Splash screen

@@ -2,6 +2,7 @@
 using System.Data;
 using System.Windows.Forms;
 using Microsoft.Reporting.WinForms;
+using System.Collections.Generic;
 
 namespace kCredit
 {
@@ -9,8 +10,11 @@ namespace kCredit
     {
         //Fields
         private string _FileName;
+        private List<ReportParameter> Parameters = new List<ReportParameter>();
 
         //Property
+        public DataTable ReportSource { get; set; }
+
         public string FileName
         {
             get
@@ -22,39 +26,39 @@ namespace kCredit
                 _FileName = value;
             }
         }
-        
-        public DataTable ReportSource { get; set; }
+
+        public void AddParameter(ReportParameter p)
+        {
+            Parameters.Add(p);
+        }
+
+        public void AddParameter(string name, string value)
+        {
+
+            Parameters.Add(new ReportParameter(name, value));
+        }
 
         public void PreviewReport()
         {
-            this.Cursor = Cursors.WaitCursor;
+            Cursor = Cursors.WaitCursor;
+            rptViewer.LocalReport.EnableExternalImages = true;
             rptViewer.LocalReport.ReportPath = FileName;
             ReportDataSource rds = new ReportDataSource("DataSet1", ReportSource);
-            //rds.Name = "DataSet1";
-            //rds.Value = ReportSource;
             rptViewer.LocalReport.DataSources.Add(rds);
+            if (Parameters.Count > 0)
+                rptViewer.LocalReport.SetParameters(Parameters);
             rptViewer.RefreshReport();
-            //WindowState = FormWindowState.Maximized;
-            this.Show();
-            this.Cursor = Cursors.Default;
-        }
-
-        //if report consist of parameter(s) use this method to add
-        public void SetParameters(params ReportParameter[] rptParam)
-        {
-            rptViewer.LocalReport.ReportPath = FileName;
-
-            foreach (ReportParameter p in rptParam)
-            {
-                rptViewer.LocalReport.SetParameters(p);
-            }
+            Show();
+            Cursor = Cursors.Default;
         }
 
         public frmReport()
         {
             InitializeComponent();
         }
-        public frmReport(string Title):this()
+
+        public frmReport(string Title)
+            : this()
         {
             Text = Title;
         }
@@ -67,11 +71,5 @@ namespace kCredit
                 this.rptViewer.PrintDialog();
             }
         }
-
-        private void frmReport_Load(object sender, EventArgs e)
-        {
-
-        }
-
     }
 }

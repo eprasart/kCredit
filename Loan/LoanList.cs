@@ -364,7 +364,7 @@ namespace kCredit
                     txtNote.Text = m.Note;
                     SetStatus(m.Status);
                     // Schedule
-                    CurrencyFacade.LoadSetting(cboCurrency.SelectedValue.ToString());   
+                    CurrencyFacade.LoadSetting(cboCurrency.SelectedValue.ToString());
                     colPrin.DefaultCellStyle.Format = CurrencyFacade.Format;
                     colInt.DefaultCellStyle.Format = CurrencyFacade.Format;
                     colTotal.DefaultCellStyle.Format = CurrencyFacade.Format;
@@ -1057,8 +1057,7 @@ namespace kCredit
             if (dgvSchedule.RowCount == 0) btnSchedule_Click(null, null);
             var fReport = new frmReport("Repayment Schedule");
             fReport.FileName = "Schedule.rdlc";
-            //fReport.SetParameters(new ReportParameter("pFromDate", fromDate), new ReportParameter("pToDate", toDate),
-            //                    new ReportParameter("pFilter", Filter));
+            fReport.AddParameter("Path", "file:" + App.StartupPath + "Report\\");
             var sql = "select format, case frequency_unit when 'M' then 'ខែ' when 'W' then 'សប្តាហ៌' when 'D' then 'ថ្ងៃ' end frequency_unit, frequency, " +
                 "amount, cy.name_khm currency, interest_rate, calculation_method, da.day_short || ' ' || to_char(disburse_date, 'dd-MM-yy') disburse_date, maturity_date, site.description payment_site, a.name credit_agent_name, phone credit_agent_phone," +
                 "\nlast_name || ' ' || first_name customer_name," +
