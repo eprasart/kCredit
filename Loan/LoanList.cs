@@ -36,14 +36,15 @@ namespace kCredit
         private DateTime GetNextRepaymentDate(DateTime dteCurrent, int nNo = 1)
         {
             string sUnit = cboFrequencyUnit.SelectedValue.ToString();
+            int nFrequency = int.Parse(txtFrequency.Text);
             DateTime dteRepayment = dteCurrent;
             switch (sUnit)
             {
                 case "W":
-                    dteRepayment = dteCurrent.AddDays(7 * nNo);
+                    dteRepayment = dteCurrent.AddDays(7 * nNo * nFrequency);
                     break;
                 case "M":
-                    dteRepayment = dteCurrent.AddMonths(nNo);
+                    dteRepayment = dteCurrent.AddMonths(nNo * nFrequency);
                     break;
             }
             return dteRepayment;
@@ -81,6 +82,11 @@ namespace kCredit
             return r;
         }
 
+        private int GetTotalDays(DateTime d1, DateTime d2)
+        {
+            return (int)(d2 - d1).TotalDays;
+        }
+
         private void AddRow(int no, DateTime repayment, double principal, double interest, double total, double outstanding)
         {
             dgvSchedule.Rows.Add();
@@ -110,7 +116,8 @@ namespace kCredit
             DateTime dtePrevious = dtpDisburse.Value;
             DateTime dteFirstInstallment = dtpFirstInstallment.Value;
             DateTime dteRepayment = dteFirstInstallment;
-            int iDayNum = (int)(dteRepayment - dtePrevious).TotalDays;
+
+            int nDayNum = GetTotalDays(dtePrevious, dteRepayment);
             double dInterestPay = 0;
             double dTotalPay = 0;
             double dGrandTotalPay = 0;
@@ -119,23 +126,23 @@ namespace kCredit
             CurrencyFacade.LoadSetting(cboCurrency.SelectedValue.ToString());
 
             if (sMethod != "FI")
-                dInterestPay = dPrincipalOut * iDayNum * dInterestRatePerDay;
-            else
-                dInterestPay = dAmount * iDayNum * dInterestRatePerDay; // Flat interest ( * original amount)
+                dInterestPay = CurrencyFacade.Round(dPrincipalOut * nDayNum * dInterestRatePerDay);
+            else    // == "FI", Flat interest ( * original amount)
+                dInterestPay = dAmount * nDayNum * dInterestRatePerDay;
             switch (sMethod)
             {
                 case "FI":
                 case "D":
-                    dPrincipalPay = dAmount / nInstallmentNo;
+                    dPrincipalPay = CurrencyFacade.Round(dAmount / nInstallmentNo);
                     dTotalPay = dPrincipalPay + dInterestPay;
                     break;
                 case "EMI":
-                    dPMT = ScheduleFacade.EMI(dAmount, dInterestRate, nInstallmentNo);
+                    dPMT = CurrencyFacade.Round(ScheduleFacade.EMI(dAmount, dInterestRate, nInstallmentNo));
                     dTotalPay = dPMT;
                     dPrincipalPay = dTotalPay - dInterestPay;
                     break;
             }
-            dTotalPay = CurrencyFacade.Round(dTotalPay);
+            //dTotalPay = dTotalPay;
             AddRow(1, dteRepayment, dPrincipalPay, dInterestPay, dTotalPay, dPrincipalOut);
 
             dGrandTotalPay = dPrincipalPay + dInterestPay;
@@ -145,11 +152,12 @@ namespace kCredit
             for (int i = 2; i < nInstallmentNo; i++)
             {
                 dteRepayment = GetNextRepaymentDate(dteFirstInstallment, i - 1);
-                iDayNum = (int)(dteRepayment - dtePrevious).TotalDays;
+                nDayNum = GetTotalDays(dtePrevious, dteRepayment);
                 if (sMethod != "FI")
-                    dInterestPay = dPrincipalOut * iDayNum * dInterestRatePerDay;
-                else
-                    dInterestPay = dAmount * iDayNum * dInterestRatePerDay; // Flat interest ( * original amount)
+                    dInterestPay = dPrincipalOut * nDayNum * dInterestRatePerDay;
+                else  // == "FI", Flat interest ( * original amount)
+                    dInterestPay = dAmount * nDayNum * dInterestRatePerDay;
+                dInterestPay = CurrencyFacade.Round(dInterestPay);
                 switch (sMethod)
                 {
                     case "FI":
@@ -167,11 +175,12 @@ namespace kCredit
                 dPrincipalOut -= dPrincipalPay;
                 dtePrevious = dteRepayment;
             }
-            iDayNum = (int)(dteMaturity - dtePrevious).TotalDays;
+            nDayNum = GetTotalDays(dtePrevious, dteMaturity);
             if (sMethod != "FI")
-                dInterestPay = dPrincipalOut * iDayNum * dInterestRatePerDay;
-            else
-                dInterestPay = dAmount * iDayNum * dInterestRatePerDay; // Flat interest ( * original amount)
+                dInterestPay = dPrincipalOut * nDayNum * dInterestRatePerDay;
+            else  // == "FI", Flat interest ( * original amount)
+                dInterestPay = dAmount * nDayNum * dInterestRatePerDay;
+            dInterestPay = CurrencyFacade.Round(dInterestPay);
             switch (sMethod)
             {
                 case "FI":
@@ -1002,8 +1011,8 @@ namespace kCredit
 
         private void cboFrequencyUnit_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cboFrequencyUnit.SelectedIndex == -1 || btnNew.Enabled) return;
-            txtAccountNo.Text = LoanFacade.GetNextAccountNo(cboFrequencyUnit.SelectedValue.ToString()); //todo: Format No; from table
+            //if (cboFrequencyUnit.SelectedIndex == -1 || btnNew.Enabled) return;
+            //txtAccountNo.Text = LoanFacade.GetNextAccountNo(cboFrequencyUnit.SelectedValue.ToString()); //todo: Format No; from table
         }
 
         private void txtMaturity_Enter(object sender, EventArgs e)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -94,24 +95,37 @@ namespace kCredit
             return double.TryParse(value, out isNumber);
         }
 
-        public static void SaveFormSate(Form frm)
+        static bool isPointVisibleOnAScreen(Point p)
         {
-            ConfigFacade.Set(frm.Name + Constant.Location, frm.Location);
-            ConfigFacade.Set(frm.Name + Constant.Window_State, frm.WindowState);
-            if (frm.WindowState == FormWindowState.Normal) ConfigFacade.Set(frm.Name + Constant.Size, frm.Size);
+            foreach (Screen s in Screen.AllScreens)
+            {
+                if (p.X > s.Bounds.Right && p.X > s.Bounds.Left && p.Y > s.Bounds.Top && p.Y < s.Bounds.Bottom)
+                    return true;
+            }
+            return false;
         }
 
-        public static void SetFormState(Form frm)
+        public static void SaveFormSate(Form frm, string prefix = "")
+        {
+            if (prefix.Length == 0) prefix = frm.Name;
+            ConfigFacade.Set(prefix + Constant.Location, frm.Location);
+            ConfigFacade.Set(prefix + Constant.Window_State, frm.WindowState);
+            if (frm.WindowState == FormWindowState.Normal) ConfigFacade.Set(prefix + Constant.Size, frm.Size);
+        }
+
+        public static void SetFormState(Form frm, string prefix = "")
         {
             frm.Icon = Properties.Resources.Icon;
-            var lo = ConfigFacade.GetPoint(frm.Name + Constant.Location);
-            //todo: location = "-32000, -32000"
-            if (lo != new System.Drawing.Point(-1, -1))
+            if (prefix.Length == 0) prefix = frm.Name;
+            var lo = ConfigFacade.GetPoint(prefix + Constant.Location);            
+            if (lo != new Point(-1, -1) && !isPointVisibleOnAScreen(lo))
                 frm.Location = lo;
-            var si = ConfigFacade.GetSize(frm.Name + Constant.Size);
+            //else
+                //todo: record for future find out
+            var si = ConfigFacade.GetSize(prefix + Constant.Size);
             if (si != new System.Drawing.Size(-1, -1))
                 frm.Size = si;
-            frm.WindowState = ConfigFacade.GetWindowState(frm.Name + Constant.Window_State, "0");
-        }       
+            frm.WindowState = ConfigFacade.GetWindowState(prefix + Constant.Window_State, "0");
+        }
     }
 }
