@@ -507,6 +507,7 @@ namespace kCredit
             MessageBoxIcon icon = MessageBoxIcon.Information, MessageBoxDefaultButton defaultButton = MessageBoxDefaultButton.Button1)
         {
             var fMsg = new frmMsg(msg, title, buttons, icon, defaultButton);
+            if (title.Length == 0) title = LabelFacade.sys_save;
             fMsg.Text = title;
             DialogResult dResult = DialogResult.OK;
             if (buttons == MessageBoxButtons.OK && icon == MessageBoxIcon.Information)

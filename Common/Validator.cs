@@ -27,11 +27,11 @@ namespace kCredit
             if (cFocus == null) cFocus = c;
         }
 
-        public bool Show()
-        {
+        public bool Show(string title="")
+        {            
             if (Msg.Length > 0)
             {
-                MessageFacade.Show(frm, ref fMsg, Msg.ToString(), LabelFacade.sys_save);
+                MessageFacade.Show(frm, ref fMsg, Msg.ToString(), title );
                 cFocus.Focus();
                 return false;
             }

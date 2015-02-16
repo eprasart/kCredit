@@ -101,6 +101,21 @@ namespace kCredit
 
         private void GenerateSchedule()
         {
+            var valid = new Validator(this, "loan");
+            string No = txtAccountNo.Text.Trim();
+            if (cboFrequencyUnit.SelectedIndex == -1) valid.Add(cboFrequencyUnit, "frequency_unit_unspecified");
+            if (!Util.IsInteger(txtFrequency.Text)) valid.Add(txtFrequency, "frequency_invalid");
+            if (!Util.IsInteger(txtInstallmentNo.Text)) valid.Add(txtInstallmentNo, "installment_no_invalid");
+            if (!Util.IsDecimal(txtAmount.Text)) valid.Add(txtAmount, "amount_invalid");
+            if (cboCurrency.SelectedIndex == -1) valid.Add(cboCurrency, "currency_unspecified");
+            if (!Util.IsDecimal(txtInterestRate.Text)) valid.Add(txtInterestRate, "interest_rate_invalid");
+            if (dtpFirstInstallment.Checked && dtpFirstInstallment.Value <= dtpDisburse.Value) valid.Add(dtpFirstInstallment, "first_installment_date_invalid");
+            if (!valid.Show(LabelFacade.Get("loan_generate_schedule", "Generate Schedule")))
+                return;
+            else
+                Validator.Close(this);
+
+            Cursor = Cursors.WaitCursor;
             CalculateDates();
             dgvSchedule.DataSource = null;
             dgvSchedule.Rows.Clear();
@@ -194,6 +209,10 @@ namespace kCredit
             }
             dTotalPay = CurrencyFacade.Round(dTotalPay);
             AddRow(nInstallmentNo, dteMaturity, dPrincipalPay, dInterestPay, dTotalPay, 0);
+
+            if (ModifierKeys != Keys.Control)   // Switch to Schedule tab
+                tabControl1.SelectedIndex = 1;
+            Cursor = Cursors.Default;
         }
 
         private void RefreshGrid(long seq = 0)
@@ -244,8 +263,6 @@ namespace kCredit
         {
             txtFrequency.ReadOnly = l;
             cboFrequencyUnit.Enabled = !l;
-            btnBrowse.Enabled = !l;
-            btnSchedule.Enabled = !l;
             cboPurpose.Enabled = !l;
             cboPaymentSite.Enabled = !l;
             cboAgent.Enabled = !l;
@@ -275,6 +292,11 @@ namespace kCredit
             btnFind.Enabled = l;
             btnClear.Enabled = l;
             btnFilter.Enabled = l;
+
+            btnBrowse.Enabled = !l;
+            btnSchedule.Enabled = !l;
+            btnGenerate.Enabled = !l;
+            btnPreview.Enabled = l;
             Validator.Close(this);
         }
 
@@ -740,7 +762,7 @@ namespace kCredit
                 }
                 else
                     if (MessageFacade.Show(msg + "\r\n" + MessageFacade.proceed_confirmation, MessageFacade.active_inactive, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.No)
-                        return;
+                    return;
             }
             try
             {
@@ -814,9 +836,9 @@ namespace kCredit
                     }
                     else
                         if (MessageFacade.Show(msg + "\r\n" + MessageFacade.lock_override, LabelFacade.sys_unlock, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.Yes)
-                            SessionLogFacade.Log(Constant.Priority_Caution, Constant.Module_Branch, Constant.Log_Lock, "Override lock. Id=" + dgvList.Id + ", Code=" + txtAccountNo.Text);
-                        else
-                            return;
+                        SessionLogFacade.Log(Constant.Priority_Caution, Constant.Module_Branch, Constant.Log_Lock, "Override lock. Id=" + dgvList.Id + ", Code=" + txtAccountNo.Text);
+                    else
+                        return;
                 }
                 txtMaturity.SelectionStart = txtMaturity.Text.Length;
                 txtMaturity.Focus();
@@ -1022,11 +1044,7 @@ namespace kCredit
 
         private void btnSchedule_Click(object sender, EventArgs e)
         {
-            Cursor = Cursors.WaitCursor;
             GenerateSchedule();
-            if (ModifierKeys != Keys.Control)
-                tabControl1.SelectedIndex = 1;
-            Cursor = Cursors.Default;
         }
 
         private void chkNeverOn_CheckedChanged(object sender, EventArgs e)
@@ -1053,11 +1071,7 @@ namespace kCredit
 
         private void btnGenerate_Click(object sender, EventArgs e)
         {
-            Cursor = Cursors.WaitCursor;
             GenerateSchedule();
-            if (ModifierKeys != Keys.Control)
-                tabControl1.SelectedIndex = 1;
-            Cursor = Cursors.Default;
         }
 
         private void btnPreview_Click(object sender, EventArgs e)

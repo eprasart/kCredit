@@ -77,8 +77,8 @@ namespace kCredit
             LabelFacade.Load();
             MessageFacade.Load();            
             // Log
-            ErrorLogFacade.logFile.FileName = Path.Combine(Application.StartupPath, "Error.log");
-            AccessLog.FileName = Path.Combine(Application.StartupPath, "Access.log");
+            ErrorLogFacade.logFile.FileName = Path.Combine(App.StartupPath, "Error.log");
+            AccessLog.FileName = Path.Combine(App.StartupPath, "Access.log");
             AccessLog.Write(DateTime.Now.ToString("yyy-MM-dd ddd hh:mm:ss tt") + " Application started. Process Id: " + ProcessID + ", Machine: " + session.Machine_Name + ", machine's username: " + session.Machine_User_Name + ", version: " + session.Version);
             session.Id = SessionFacade.Save(session);
             SessionLogFacade.Log(Constant.Priority_Information, "Application", Constant.Log_Launch, "Application started");
@@ -92,7 +92,7 @@ namespace kCredit
 
         private static void LoadSettings()
         {
-            setting.Path = Path.Combine(Application.StartupPath, "setting.ini");
+            setting.Path = Path.Combine(App.StartupPath, "setting.ini");
             try
             {
                 SqlFacade.ConnectionString = setting.Get("ConnectionString", @"server=localhost;uid=erp;pwd=erp");

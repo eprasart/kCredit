@@ -19,7 +19,7 @@ namespace kCredit
         {
             get
             {
-                return System.IO.Path.Combine(Application.StartupPath, "Report", _FileName);
+                return System.IO.Path.Combine(App.StartupPath, "Report", _FileName);
             }
             set
             {
