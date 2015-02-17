@@ -17,6 +17,7 @@ namespace kCredit
         bool IsIgnore = true;
 
         DateTime dteMaturity;
+        string ModuleName = "Loan";
 
         public frmLoan()
         {
@@ -404,7 +405,7 @@ namespace kCredit
                     dgvSchedule.DataSource = ScheduleFacade.GetDataTable(m.Account_No);
                     LockControls();
                     IsDirty = false;
-                    SessionLogFacade.Log(Constant.Priority_Information, Constant.Module_Branch, Constant.Log_View, "View. Id=" + m.Id + ", Account No.=" + m.Account_No);
+                    SessionLogFacade.Log(Constant.Priority_Information, ModuleName, Constant.Log_View, "View. Id=" + m.Id + ", Account No.=" + m.Account_No);
                 }
                 catch (Exception ex)
                 {
@@ -510,7 +511,7 @@ namespace kCredit
             Cursor = Cursors.WaitCursor;
             // Loan account
             var m = new Loan();
-            var log = new SessionLog { Module = Constant.Module_Branch };
+            var log = new SessionLog { Module = ModuleName };
             m.Id = Id;
             m.Frequency_Unit = cboFrequencyUnit.SelectedValue.ToString();
             m.Frequency = int.Parse(txtFrequency.Text);
@@ -595,7 +596,7 @@ namespace kCredit
                 Data.LoadList(cboMove, "non_working_day_move");
                 Data.LoadCurrency(cboCurrency);
 
-                SessionLogFacade.Log(Constant.Priority_Information, Constant.Module_Branch, Constant.Log_Open, "Opened");
+                SessionLogFacade.Log(Constant.Priority_Information, ModuleName, Constant.Log_Open, "Opened");
                 RefreshGrid();
                 LoadData();
             }
@@ -611,7 +612,7 @@ namespace kCredit
             if (!Privilege.CanAccess(Constant.Function_IC_Unit_Measure, Constant.Privilege_New))
             {
                 MessageFacade.Show(MessageFacade.privilege_no_access, LabelFacade.sys_new, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                SessionLogFacade.Log(Constant.Priority_Caution, Constant.Module_Branch, Constant.Log_NoAccess, "New: No access");
+                SessionLogFacade.Log(Constant.Priority_Caution, ModuleName, Constant.Log_NoAccess, "New: No access");
                 return;
             }
             if (IsExpand) picExpand_Click(sender, e);
@@ -623,7 +624,7 @@ namespace kCredit
             cboPurpose.Focus();
             cboFrequencyUnit_SelectedIndexChanged(null, null);
             if (dgvList.CurrentRow != null) RowIndex = dgvList.CurrentRow.Index;
-            SessionLogFacade.Log(Constant.Priority_Information, Constant.Module_Branch, Constant.Log_New, "New clicked");
+            SessionLogFacade.Log(Constant.Priority_Information, ModuleName, Constant.Log_New, "New clicked");
             IsDirty = false;
         }
 
@@ -649,7 +650,7 @@ namespace kCredit
 
         private void btnSaveNew_Click(object sender, EventArgs e)
         {
-            SessionLogFacade.Log(Constant.Priority_Information, Constant.Module_Branch, Constant.Log_SaveAndNew, "Saved and new. Id=" + dgvList.Id + ", Code=" + txtAccountNo.Text);
+            SessionLogFacade.Log(Constant.Priority_Information, ModuleName, Constant.Log_SaveAndNew, "Saved and new. Id=" + dgvList.Id + ", Code=" + txtAccountNo.Text);
             btnSave_Click(sender, e);
             if (btnSaveNew.Enabled) return;
             btnNew_Click(sender, e);
@@ -672,7 +673,7 @@ namespace kCredit
                     if (!Privilege.CanAccess(Constant.Function_IC_Unit_Measure, "O"))
                     {
                         MessageFacade.Show(msg, LabelFacade.sys_delete, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        SessionLogFacade.Log(Constant.Priority_Caution, Constant.Module_Branch, Constant.Log_Delete, "Cannot delete. Currently locked by '" + lInfo.Lock_By + "' since '" + lInfo.Lock_At + "' . Id=" + dgvList.Id + ", Code=" + txtAccountNo.Text);
+                        SessionLogFacade.Log(Constant.Priority_Caution, ModuleName, Constant.Log_Delete, "Cannot delete. Currently locked by '" + lInfo.Lock_By + "' since '" + lInfo.Lock_At + "' . Id=" + dgvList.Id + ", Code=" + txtAccountNo.Text);
                         return;
                     }
                 }
@@ -692,7 +693,7 @@ namespace kCredit
                 }
                 RefreshGrid();
                 // log
-                SessionLogFacade.Log(Constant.Priority_Warning, Constant.Module_Branch, Constant.Log_Delete, "Deleted. Id=" + dgvList.Id + ", Code=" + txtAccountNo.Text);
+                SessionLogFacade.Log(Constant.Priority_Warning, ModuleName, Constant.Log_Delete, "Deleted. Id=" + dgvList.Id + ", Code=" + txtAccountNo.Text);
             }
             catch (Exception ex)
             {
@@ -706,7 +707,7 @@ namespace kCredit
             if (!Privilege.CanAccess(Constant.Function_IC_Unit_Measure, Constant.Privilege_New))
             {
                 MessageFacade.Show(MessageFacade.privilege_no_access, LabelFacade.sys_copy, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                SessionLogFacade.Log(Constant.Priority_Information, Constant.Module_Branch, Constant.Log_NoAccess, "Copy: No access");
+                SessionLogFacade.Log(Constant.Priority_Information, ModuleName, Constant.Log_NoAccess, "Copy: No access");
                 return;
             }
             Id = 0;
@@ -714,7 +715,7 @@ namespace kCredit
             txtAccountNo.Focus();
             LockControls(false);
             cboFrequencyUnit_SelectedIndexChanged(null, null);
-            SessionLogFacade.Log(Constant.Priority_Information, Constant.Module_Branch, Constant.Log_Copy, "Copy from Id=" + dgvList.Id + "Code=" + txtAccountNo.Text);
+            SessionLogFacade.Log(Constant.Priority_Information, ModuleName, Constant.Log_Copy, "Copy from Id=" + dgvList.Id + "Code=" + txtAccountNo.Text);
             IsDirty = false;
         }
 
@@ -763,7 +764,7 @@ namespace kCredit
                 }
                 else
                     if (MessageFacade.Show(msg + "\r\n" + MessageFacade.proceed_confirmation, MessageFacade.active_inactive, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.No)
-                    return;
+                        return;
             }
             try
             {
@@ -775,7 +776,7 @@ namespace kCredit
                 ErrorLogFacade.Log(ex);
             }
             RefreshGrid();
-            SessionLogFacade.Log(Constant.Priority_Caution, Constant.Module_Branch, status == Constant.RecordStatus_InActive ? Constant.Log_Inactive : Constant.Log_Active, "Id=" + dgvList.Id + ", Code=" + txtAccountNo.Text);
+            SessionLogFacade.Log(Constant.Priority_Caution, ModuleName, status == Constant.RecordStatus_InActive ? Constant.Log_Inactive : Constant.Log_Active, "Id=" + dgvList.Id + ", Code=" + txtAccountNo.Text);
         }
 
         private void btnUnlock_Click(object sender, EventArgs e)
@@ -783,7 +784,7 @@ namespace kCredit
             if (!Privilege.CanAccess(Constant.Function_IC_Unit_Measure, Constant.Privilege_Update))
             {
                 MessageFacade.Show(MessageFacade.privilege_no_access, LabelFacade.sys_button_unlock, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                SessionLogFacade.Log(Constant.Priority_Information, Constant.Module_Branch, Constant.Log_NoAccess, "Copy: No access");
+                SessionLogFacade.Log(Constant.Priority_Information, ModuleName, Constant.Log_NoAccess, "Copy: No access");
                 return;
             }
             if (IsExpand) picExpand_Click(sender, e);
@@ -816,7 +817,7 @@ namespace kCredit
                 }
                 if (dgvList.CurrentRow != null && !dgvList.CurrentRow.Selected)
                     dgvList.CurrentRow.Selected = true;
-                SessionLogFacade.Log(Constant.Priority_Information, Constant.Module_Branch, Constant.Log_Unlock, "Unlock cancel. Id=" + dgvList.Id + ", Code=" + txtAccountNo.Text);
+                SessionLogFacade.Log(Constant.Priority_Information, ModuleName, Constant.Log_Unlock, "Unlock cancel. Id=" + dgvList.Id + ", Code=" + txtAccountNo.Text);
                 btnUnlock.ToolTipText = "Unlock (Ctrl+L)";
                 IsDirty = false;
                 return;
@@ -837,9 +838,9 @@ namespace kCredit
                     }
                     else
                         if (MessageFacade.Show(msg + "\r\n" + MessageFacade.lock_override, LabelFacade.sys_unlock, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.Yes)
-                        SessionLogFacade.Log(Constant.Priority_Caution, Constant.Module_Branch, Constant.Log_Lock, "Override lock. Id=" + dgvList.Id + ", Code=" + txtAccountNo.Text);
-                    else
-                        return;
+                            SessionLogFacade.Log(Constant.Priority_Caution, ModuleName, Constant.Log_Lock, "Override lock. Id=" + dgvList.Id + ", Code=" + txtAccountNo.Text);
+                        else
+                            return;
                 }
                 txtMaturity.SelectionStart = txtMaturity.Text.Length;
                 txtMaturity.Focus();
@@ -861,7 +862,7 @@ namespace kCredit
                 ErrorLogFacade.Log(ex);
                 return;
             }
-            SessionLogFacade.Log(Constant.Priority_Information, Constant.Module_Branch, Constant.Log_Lock, "Locked. Id=" + dgvList.Id + ", Code=" + txtAccountNo.Text);
+            SessionLogFacade.Log(Constant.Priority_Information, ModuleName, Constant.Log_Lock, "Locked. Id=" + dgvList.Id + ", Code=" + txtAccountNo.Text);
             btnUnlock.ToolTipText = "Cancel (Esc or Ctrl+L)";
             IsDirty = false;
         }

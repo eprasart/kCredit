@@ -29,14 +29,14 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnNew = new System.Windows.Forms.ToolStripButton();
             this.btnCopy = new System.Windows.Forms.ToolStripButton();
@@ -55,15 +55,31 @@
             this.btnClear = new System.Windows.Forms.Button();
             this.btnFilter = new System.Windows.Forms.Button();
             this.dgvList = new kBit.UI.DataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txtFind = new kBit.UI.TextBox(this.components);
+            this.txtName = new kBit.UI.TextBox(this.components);
+            this.lblName = new System.Windows.Forms.Label();
             this.chkHoliday = new System.Windows.Forms.CheckBox();
             this.glbGeneral = new kBit.UI.GroupLabel();
             this.chkSunday = new System.Windows.Forms.CheckBox();
             this.chkSaturday = new System.Windows.Forms.CheckBox();
+            this.groupLabel1 = new kBit.UI.GroupLabel();
             this.groupLabel2 = new kBit.UI.GroupLabel();
             this.glbNote = new kBit.UI.GroupLabel();
             this.txtNote = new System.Windows.Forms.TextBox();
+            this.cboRoundTotal = new kBit.UI.ComboBox(this.components);
+            this.cboRoundInterest = new kBit.UI.ComboBox(this.components);
+            this.cboRoundPrincipal = new kBit.UI.ComboBox(this.components);
             this.cboMethod = new kBit.UI.ComboBox(this.components);
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.cboMove = new kBit.UI.ComboBox(this.components);
             this.label4 = new System.Windows.Forms.Label();
@@ -72,22 +88,6 @@
             this.mnuShowA = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuShowI = new System.Windows.Forms.ToolStripMenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.groupLabel1 = new kBit.UI.GroupLabel();
-            this.cboRoundPrincipal = new kBit.UI.ComboBox(this.components);
-            this.cboRoundInterest = new kBit.UI.ComboBox(this.components);
-            this.cboRoundTotal = new kBit.UI.ComboBox(this.components);
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.txtName = new kBit.UI.TextBox(this.components);
-            this.lblName = new System.Windows.Forms.Label();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -331,8 +331,8 @@
             this.dgvList.AllowUserToAddRows = false;
             this.dgvList.AllowUserToDeleteRows = false;
             this.dgvList.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Honeydew;
-            this.dgvList.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.Honeydew;
+            this.dgvList.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle9;
             this.dgvList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -347,14 +347,14 @@
             this.Column8,
             this.Column4,
             this.Column7});
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.Teal;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvList.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle16.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.Color.Teal;
+            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvList.DefaultCellStyle = dataGridViewCellStyle16;
             this.dgvList.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvList.Location = new System.Drawing.Point(1, 51);
             this.dgvList.Margin = new System.Windows.Forms.Padding(4);
@@ -370,6 +370,78 @@
             this.dgvList.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvList_CellDoubleClick);
             this.dgvList.SelectionChanged += new System.EventHandler(this.dgvList_SelectionChanged);
             this.dgvList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvList_KeyDown);
+            // 
+            // Column1
+            // 
+            this.Column1.DataPropertyName = "Id";
+            this.Column1.HeaderText = "Id";
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            this.Column1.Visible = false;
+            // 
+            // colName
+            // 
+            this.colName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colName.DataPropertyName = "name";
+            dataGridViewCellStyle10.NullValue = null;
+            this.colName.DefaultCellStyle = dataGridViewCellStyle10;
+            this.colName.HeaderText = "Name";
+            this.colName.Name = "colName";
+            this.colName.ReadOnly = true;
+            this.colName.Width = 70;
+            // 
+            // Column2
+            // 
+            this.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Column2.DataPropertyName = "calculation_method";
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle11.Format = "N0";
+            dataGridViewCellStyle11.NullValue = null;
+            this.Column2.DefaultCellStyle = dataGridViewCellStyle11;
+            this.Column2.HeaderText = "Calculation Method";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            this.Column2.Width = 134;
+            // 
+            // Column3
+            // 
+            this.Column3.DataPropertyName = "principal_round_rule";
+            dataGridViewCellStyle12.Format = "dd-MM-yy";
+            this.Column3.DefaultCellStyle = dataGridViewCellStyle12;
+            this.Column3.HeaderText = "Priciple Rounding";
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
+            // 
+            // Column8
+            // 
+            this.Column8.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Column8.DataPropertyName = "interest_round_rule";
+            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle13.Format = "N2";
+            this.Column8.DefaultCellStyle = dataGridViewCellStyle13;
+            this.Column8.HeaderText = "Interest Rounding";
+            this.Column8.Name = "Column8";
+            this.Column8.ReadOnly = true;
+            this.Column8.Width = 125;
+            // 
+            // Column4
+            // 
+            this.Column4.DataPropertyName = "total_round_rule";
+            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle14.Format = "N0";
+            this.Column4.DefaultCellStyle = dataGridViewCellStyle14;
+            this.Column4.HeaderText = "Total Rounding";
+            this.Column4.Name = "Column4";
+            this.Column4.ReadOnly = true;
+            // 
+            // Column7
+            // 
+            this.Column7.DataPropertyName = "note";
+            dataGridViewCellStyle15.Format = "ddd dd-MM-yy";
+            this.Column7.DefaultCellStyle = dataGridViewCellStyle15;
+            this.Column7.HeaderText = "Note";
+            this.Column7.Name = "Column7";
+            this.Column7.ReadOnly = true;
             // 
             // txtFind
             // 
@@ -389,6 +461,32 @@
             this.txtFind.Enter += new System.EventHandler(this.txtFind_Enter);
             this.txtFind.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyDown);
             this.txtFind.Leave += new System.EventHandler(this.txtFind_Leave);
+            // 
+            // txtName
+            // 
+            this.txtName.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtName.Format = null;
+            this.txtName.Location = new System.Drawing.Point(155, 40);
+            this.txtName.Margin = new System.Windows.Forms.Padding(4);
+            this.txtName.Name = "txtName";
+            this.txtName.Numeric = false;
+            this.txtName.ReadOnly = true;
+            this.txtName.Size = new System.Drawing.Size(230, 25);
+            this.txtName.TabIndex = 32;
+            this.txtName.TabOnEnter = true;
+            this.txtName.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.toolTip1.SetToolTip(this.txtName, "Default conversion factor");
+            // 
+            // lblName
+            // 
+            this.lblName.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblName.Location = new System.Drawing.Point(12, 43);
+            this.lblName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblName.Name = "lblName";
+            this.lblName.Size = new System.Drawing.Size(136, 17);
+            this.lblName.TabIndex = 31;
+            this.lblName.Text = "Name";
+            this.lblName.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // chkHoliday
             // 
@@ -440,6 +538,17 @@
             this.chkSaturday.UseVisualStyleBackColor = true;
             this.chkSaturday.CheckedChanged += new System.EventHandler(this.chkNeverOn_CheckedChanged);
             // 
+            // groupLabel1
+            // 
+            this.groupLabel1.Caption = "Rounding Rule";
+            this.groupLabel1.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupLabel1.Location = new System.Drawing.Point(12, 112);
+            this.groupLabel1.Margin = new System.Windows.Forms.Padding(4, 12, 4, 4);
+            this.groupLabel1.Name = "groupLabel1";
+            this.groupLabel1.Size = new System.Drawing.Size(373, 21);
+            this.groupLabel1.TabIndex = 0;
+            this.groupLabel1.TabStop = false;
+            // 
             // groupLabel2
             // 
             this.groupLabel2.Caption = "Installment Date";
@@ -460,7 +569,7 @@
             this.glbNote.Location = new System.Drawing.Point(12, 360);
             this.glbNote.Margin = new System.Windows.Forms.Padding(4, 12, 4, 4);
             this.glbNote.Name = "glbNote";
-            this.glbNote.Size = new System.Drawing.Size(501, 21);
+            this.glbNote.Size = new System.Drawing.Size(500, 21);
             this.glbNote.TabIndex = 28;
             this.glbNote.TabStop = false;
             // 
@@ -474,9 +583,45 @@
             this.txtNote.Multiline = true;
             this.txtNote.Name = "txtNote";
             this.txtNote.ReadOnly = true;
-            this.txtNote.Size = new System.Drawing.Size(517, 68);
+            this.txtNote.Size = new System.Drawing.Size(516, 68);
             this.txtNote.TabIndex = 29;
             this.txtNote.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
+            // 
+            // cboRoundTotal
+            // 
+            this.cboRoundTotal.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboRoundTotal.Enabled = false;
+            this.cboRoundTotal.FormattingEnabled = true;
+            this.cboRoundTotal.Location = new System.Drawing.Point(155, 202);
+            this.cboRoundTotal.Name = "cboRoundTotal";
+            this.cboRoundTotal.Size = new System.Drawing.Size(230, 25);
+            this.cboRoundTotal.TabIndex = 15;
+            this.cboRoundTotal.TabOnEnter = true;
+            this.cboRoundTotal.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
+            // 
+            // cboRoundInterest
+            // 
+            this.cboRoundInterest.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboRoundInterest.Enabled = false;
+            this.cboRoundInterest.FormattingEnabled = true;
+            this.cboRoundInterest.Location = new System.Drawing.Point(155, 171);
+            this.cboRoundInterest.Name = "cboRoundInterest";
+            this.cboRoundInterest.Size = new System.Drawing.Size(230, 25);
+            this.cboRoundInterest.TabIndex = 15;
+            this.cboRoundInterest.TabOnEnter = true;
+            this.cboRoundInterest.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
+            // 
+            // cboRoundPrincipal
+            // 
+            this.cboRoundPrincipal.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboRoundPrincipal.Enabled = false;
+            this.cboRoundPrincipal.FormattingEnabled = true;
+            this.cboRoundPrincipal.Location = new System.Drawing.Point(155, 140);
+            this.cboRoundPrincipal.Name = "cboRoundPrincipal";
+            this.cboRoundPrincipal.Size = new System.Drawing.Size(230, 25);
+            this.cboRoundPrincipal.TabIndex = 15;
+            this.cboRoundPrincipal.TabOnEnter = true;
+            this.cboRoundPrincipal.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // cboMethod
             // 
@@ -489,6 +634,39 @@
             this.cboMethod.TabIndex = 15;
             this.cboMethod.TabOnEnter = true;
             this.cboMethod.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
+            // 
+            // label3
+            // 
+            this.label3.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(12, 205);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(136, 17);
+            this.label3.TabIndex = 14;
+            this.label3.Text = "Total";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label2
+            // 
+            this.label2.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(12, 174);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(136, 17);
+            this.label2.TabIndex = 14;
+            this.label2.Text = "Interest";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label1
+            // 
+            this.label1.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(12, 143);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(136, 17);
+            this.label1.TabIndex = 14;
+            this.label1.Text = "Principal";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label17
             // 
@@ -561,184 +739,6 @@
             this.mnuShowI.Size = new System.Drawing.Size(147, 22);
             this.mnuShowI.Text = "Show Inactive";
             this.mnuShowI.CheckedChanged += new System.EventHandler(this.mnuShow_CheckedChanged);
-            // 
-            // groupLabel1
-            // 
-            this.groupLabel1.Caption = "Rounding Rule";
-            this.groupLabel1.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupLabel1.Location = new System.Drawing.Point(12, 112);
-            this.groupLabel1.Margin = new System.Windows.Forms.Padding(4, 12, 4, 4);
-            this.groupLabel1.Name = "groupLabel1";
-            this.groupLabel1.Size = new System.Drawing.Size(373, 21);
-            this.groupLabel1.TabIndex = 0;
-            this.groupLabel1.TabStop = false;
-            // 
-            // cboRoundPrincipal
-            // 
-            this.cboRoundPrincipal.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboRoundPrincipal.Enabled = false;
-            this.cboRoundPrincipal.FormattingEnabled = true;
-            this.cboRoundPrincipal.Location = new System.Drawing.Point(155, 140);
-            this.cboRoundPrincipal.Name = "cboRoundPrincipal";
-            this.cboRoundPrincipal.Size = new System.Drawing.Size(230, 25);
-            this.cboRoundPrincipal.TabIndex = 15;
-            this.cboRoundPrincipal.TabOnEnter = true;
-            this.cboRoundPrincipal.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
-            // 
-            // cboRoundInterest
-            // 
-            this.cboRoundInterest.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboRoundInterest.Enabled = false;
-            this.cboRoundInterest.FormattingEnabled = true;
-            this.cboRoundInterest.Location = new System.Drawing.Point(155, 171);
-            this.cboRoundInterest.Name = "cboRoundInterest";
-            this.cboRoundInterest.Size = new System.Drawing.Size(230, 25);
-            this.cboRoundInterest.TabIndex = 15;
-            this.cboRoundInterest.TabOnEnter = true;
-            this.cboRoundInterest.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
-            // 
-            // cboRoundTotal
-            // 
-            this.cboRoundTotal.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboRoundTotal.Enabled = false;
-            this.cboRoundTotal.FormattingEnabled = true;
-            this.cboRoundTotal.Location = new System.Drawing.Point(155, 202);
-            this.cboRoundTotal.Name = "cboRoundTotal";
-            this.cboRoundTotal.Size = new System.Drawing.Size(230, 25);
-            this.cboRoundTotal.TabIndex = 15;
-            this.cboRoundTotal.TabOnEnter = true;
-            this.cboRoundTotal.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
-            // 
-            // label1
-            // 
-            this.label1.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(12, 143);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(136, 17);
-            this.label1.TabIndex = 14;
-            this.label1.Text = "Principal";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label2
-            // 
-            this.label2.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(12, 174);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(136, 17);
-            this.label2.TabIndex = 14;
-            this.label2.Text = "Interest";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label3
-            // 
-            this.label3.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(12, 205);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(136, 17);
-            this.label3.TabIndex = 14;
-            this.label3.Text = "Total";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // txtName
-            // 
-            this.txtName.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtName.Format = null;
-            this.txtName.Location = new System.Drawing.Point(155, 40);
-            this.txtName.Margin = new System.Windows.Forms.Padding(4);
-            this.txtName.Name = "txtName";
-            this.txtName.Numeric = false;
-            this.txtName.ReadOnly = true;
-            this.txtName.Size = new System.Drawing.Size(230, 25);
-            this.txtName.TabIndex = 32;
-            this.txtName.TabOnEnter = true;
-            this.txtName.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.toolTip1.SetToolTip(this.txtName, "Default conversion factor");
-            // 
-            // lblName
-            // 
-            this.lblName.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblName.Location = new System.Drawing.Point(12, 43);
-            this.lblName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(136, 17);
-            this.lblName.TabIndex = 31;
-            this.lblName.Text = "Name";
-            this.lblName.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // Column1
-            // 
-            this.Column1.DataPropertyName = "Id";
-            this.Column1.HeaderText = "Id";
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
-            this.Column1.Visible = false;
-            // 
-            // colName
-            // 
-            this.colName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colName.DataPropertyName = "name";
-            dataGridViewCellStyle2.NullValue = null;
-            this.colName.DefaultCellStyle = dataGridViewCellStyle2;
-            this.colName.HeaderText = "Name";
-            this.colName.Name = "colName";
-            this.colName.ReadOnly = true;
-            this.colName.Width = 70;
-            // 
-            // Column2
-            // 
-            this.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Column2.DataPropertyName = "calculation_method";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle3.Format = "N0";
-            dataGridViewCellStyle3.NullValue = null;
-            this.Column2.DefaultCellStyle = dataGridViewCellStyle3;
-            this.Column2.HeaderText = "Calculation Method";
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
-            this.Column2.Width = 134;
-            // 
-            // Column3
-            // 
-            this.Column3.DataPropertyName = "principal_round_rule";
-            dataGridViewCellStyle4.Format = "dd-MM-yy";
-            this.Column3.DefaultCellStyle = dataGridViewCellStyle4;
-            this.Column3.HeaderText = "Priciple Rounding";
-            this.Column3.Name = "Column3";
-            this.Column3.ReadOnly = true;
-            // 
-            // Column8
-            // 
-            this.Column8.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Column8.DataPropertyName = "interest_round_rule";
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle5.Format = "N2";
-            this.Column8.DefaultCellStyle = dataGridViewCellStyle5;
-            this.Column8.HeaderText = "Interest Rounding";
-            this.Column8.Name = "Column8";
-            this.Column8.ReadOnly = true;
-            this.Column8.Width = 125;
-            // 
-            // Column4
-            // 
-            this.Column4.DataPropertyName = "total_round_rule";
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle6.Format = "N0";
-            this.Column4.DefaultCellStyle = dataGridViewCellStyle6;
-            this.Column4.HeaderText = "Total Rounding";
-            this.Column4.Name = "Column4";
-            this.Column4.ReadOnly = true;
-            // 
-            // Column7
-            // 
-            this.Column7.DataPropertyName = "note";
-            dataGridViewCellStyle7.Format = "ddd dd-MM-yy";
-            this.Column7.DefaultCellStyle = dataGridViewCellStyle7;
-            this.Column7.HeaderText = "Note";
-            this.Column7.Name = "Column7";
-            this.Column7.ReadOnly = true;
             // 
             // frmProduct
             // 

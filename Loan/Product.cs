@@ -16,6 +16,8 @@ namespace kCredit
         bool IsDirty = false;
         bool IsIgnore = true;
 
+        string ModuleName = "Product";
+
         public frmProduct()
         {
             InitializeComponent();
@@ -101,7 +103,7 @@ namespace kCredit
             btnFind.Enabled = l;
             btnClear.Enabled = l;
             btnFilter.Enabled = l;
-           
+
             Validator.Close(this);
         }
 
@@ -126,7 +128,7 @@ namespace kCredit
         private bool IsValidated()
         {
             var valid = new Validator(this, "product");
-            if (txtName.IsEmptyTrim)) valid.Add(txtName, "name_invalid");
+            if (txtName.IsEmptyTrim) valid.Add(txtName, "name_invalid");
             if (cboMethod.Unspecified) valid.Add(cboMethod, "calculation_method_unspecified");
             if (cboRoundPrincipal.Unspecified) valid.Add(cboRoundPrincipal, "principal_round_rule_unspecified");
             if (cboRoundInterest.Unspecified) valid.Add(cboRoundInterest, "interest_round_rule_unspecified");
@@ -139,17 +141,6 @@ namespace kCredit
         {
             txtName.Text = "";
             txtName.Focus();
-            txtInstallmentNo.Text = "";
-            txtAmount.Text = "";
-            txtInterestRate.Text = "";
-            dtpDisburse.Value = DateTime.Today;
-            dtpFirstInstallment.Checked = false;
-            txtMaturity.Text = "";
-            txtCustomerNo.Text = "";
-            txtCustomerName.Text = "";
-            cboPaymentSite.SelectedIndex = -1;
-            cboAgent.SelectedIndex = -1;
-            txtAccountStatus.Text = "";
             chkSaturday.Checked = true;
             chkSunday.Checked = true;
             chkHoliday.Checked = true;
@@ -164,37 +155,21 @@ namespace kCredit
             if (Id != 0)
                 try
                 {
-                    var m = LoanFacade.Select(Id);
-                    txtAccountNo.Text = m.Account_No;
-                    txtCustomerNo.Text = m.Customer_No;
-                    txtCustomerName.Text = dgvList.CurrentRow.Cells["colName"].Value.ToString();
-                    cboFrequencyUnit.SelectedValue = m.Frequency_Unit;
-                    txtName.Text = m.Frequency.ToString(txtName.Format);
-                    txtInstallmentNo.Text = m.Installment_No.ToString(txtInstallmentNo.Format);
-                    txtAmount.Text = m.Amount.ToString(txtAmount.Format);
-                    cboCurrency.SelectedValue = m.Currency;
-                    txtInterestRate.Text = m.Interest_Rate.ToString(txtInterestRate.Format);
+                    var m = ProductFacade.Select(Id);
+                    txtName.Text = m.Name;
                     cboMethod.SelectedValue = m.Calculation_Method;
-                    dtpDisburse.Value = m.Disburse_Date;
-                    dtpFirstInstallment.Value = m.First_Installment_Date;
-                    txtMaturity.Text = m.Maturity_Date.ToString("ddd dd-MM-yy");
-                    txtAccountNo.Text = m.Account_No;
-                    txtCustomerNo.Text = m.Customer_No;
-                    cboPurpose.SelectedValue = m.Purpose;
-                    cboPaymentSite.SelectedValue = m.Payment_Site;
-                    cboAgent.SelectedValue = m.Credit_Agent_Id;
-                    txtAccountStatus.Text = m.Account_Status;
+                    cboRoundPrincipal.SelectedValue = m.Principal_Round_Rule;
+                    cboRoundInterest.SelectedValue = m.Interest_Round_Rule;
+                    cboRoundTotal.SelectedValue = m.Total_Round_Rule;
                     chkSaturday.Checked = (m.Never_On.Contains("6"));
                     chkSunday.Checked = (m.Never_On.Contains("0"));
                     chkHoliday.Checked = (m.Never_On.Contains("H"));
                     cboMove.SelectedValue = m.Non_Working_Day_Move;
                     txtNote.Text = m.Note;
                     SetStatus(m.Status);
-                    // Schedule
-                    CurrencyFacade.LoadSetting(cboCurrency.SelectedValue.ToString());
                     LockControls();
                     IsDirty = false;
-                    SessionLogFacade.Log(Constant.Priority_Information, Constant.Module_Branch, Constant.Log_View, "View. Id=" + m.Id + ", Account No.=" + m.Account_No);
+                    SessionLogFacade.Log(Constant.Priority_Information, ModuleName, Constant.Log_View, "View. Id=" + m.Id + ", Name=" + m.Name);
                 }
                 catch (Exception ex)
                 {
@@ -234,24 +209,6 @@ namespace kCredit
             }
         }
 
-        private void SetCodeCasing()
-        {
-            CharacterCasing cs;
-            switch (ConfigFacade.Code_Casing)
-            {
-                case "U":
-                    cs = CharacterCasing.Upper;
-                    break;
-                case "L":
-                    cs = CharacterCasing.Lower;
-                    break;
-                default:
-                    cs = CharacterCasing.Normal;
-                    break;
-            }
-            txtAccountNo.CharacterCasing = cs;
-        }
-
         private void SetSettings()
         {
             try
@@ -287,7 +244,6 @@ namespace kCredit
             btnClear.Text = "     " + (LabelFacade.sys_button_clear ?? btnClear.Text.Replace(" ", ""));
             btnFilter.Text = "     " + (LabelFacade.sys_button_filter ?? btnFilter.Text.Replace(" ", ""));
 
-            colAccountNo.HeaderText = LabelFacade.Get(prefix + "code") ?? colAccountNo.HeaderText;
             lblName.Text = LabelFacade.Get(prefix + "default_factor") ?? lblName.Text;
             glbGeneral.Caption = LabelFacade.Get(prefix + "general") ?? glbGeneral.Caption;
             glbNote.Caption = LabelFacade.Get(prefix + "note") ?? glbNote.Caption;
@@ -299,29 +255,19 @@ namespace kCredit
             if (!IsValidated()) return false;
             Cursor = Cursors.WaitCursor;
             // Loan account
-            var m = new Loan();
-            var log = new SessionLog { Module = Constant.Module_Branch };
+            var m = new Product();
+            var log = new SessionLog { Module = Constant.Module_Product };
             m.Id = Id;
-            m.Frequency_Unit = cboFrequencyUnit.SelectedValue.ToString();
-            m.Frequency = int.Parse(txtName.Text);
-            m.Installment_No = int.Parse(txtInstallmentNo.Text);
-            m.Amount = double.Parse(txtAmount.Text);
-            m.Currency = cboCurrency.SelectedValue.ToString();
-            m.Interest_Rate = double.Parse(txtInterestRate.Text);
-            m.Calculation_Method = cboMethod.SelectedValue.ToString();
-            m.Disburse_Date = dtpDisburse.Value;
-            m.First_Installment_Date = dtpFirstInstallment.Value;
-            m.Account_No = txtAccountNo.Text;
-            m.Customer_No = txtCustomerNo.Text;
-            m.Purpose = cboPurpose.SelectedValue.ToString();
-            m.Payment_Site = cboPaymentSite.SelectedValue.ToString();
-            m.Credit_Agent_Id = int.Parse(cboAgent.SelectedValue.ToString());
+            m.Name = txtName.Text;
+            m.Calculation_Method = cboMethod.Value;
+            m.Interest_Round_Rule = cboRoundInterest.Value;
+            m.Principal_Round_Rule = cboRoundPrincipal.Value;
             string sNeverOn = "";
             if (chkSaturday.Checked) sNeverOn = "6";
             if (chkSunday.Checked) sNeverOn += "0";
             if (chkHoliday.Checked) sNeverOn += "H";
             m.Never_On = sNeverOn;
-            m.Non_Working_Day_Move = cboMove.SelectedValue.ToString();
+            m.Non_Working_Day_Move = cboMove.Value;
             m.Note = txtNote.Text;
             if (m.Id == 0)
             {
@@ -335,7 +281,7 @@ namespace kCredit
             }
             try
             {
-                m.Id = LoanFacade.Save(m);
+                m.Id = ProductFacade.Save(m);
             }
             catch (Exception ex)
             {
@@ -346,7 +292,7 @@ namespace kCredit
             RefreshGrid(m.Id);
             LockControls();
             Cursor = Cursors.Default;
-            log.Message = "Saved. Id=" + m.Id + ", Account No.=" + m.Account_No;
+            log.Message = "Saved. Id=" + m.Id + ", Name=" + m.Name;
             SessionLogFacade.Log(log);
             IsDirty = false;
             return true;
@@ -359,15 +305,13 @@ namespace kCredit
                 dgvList.ShowLessColumns(true);
                 SetSettings();
                 SetLabels();
-                Data.LoadList(cboFrequencyUnit, "frequency_unit");
                 Data.LoadList(cboMethod, "calculation_method");
-                Data.LoadList(cboPurpose, "loan_purpose");
-                Data.LoadList(cboPaymentSite, "payment_site");
-                Data.LoadAgent(cboAgent);
+                Data.LoadList(cboRoundPrincipal, "round_rule");
+                Data.LoadList(cboRoundInterest, "round_rule");
+                Data.LoadList(cboRoundTotal, "round_rule");
                 Data.LoadList(cboMove, "non_working_day_move");
-                Data.LoadCurrency(cboCurrency);
 
-                SessionLogFacade.Log(Constant.Priority_Information, Constant.Module_Branch, Constant.Log_Open, "Opened");
+                SessionLogFacade.Log(Constant.Priority_Information, ModuleName, Constant.Log_Open, "Opened");
                 RefreshGrid();
                 LoadData();
             }
@@ -383,7 +327,7 @@ namespace kCredit
             if (!Privilege.CanAccess(Constant.Function_IC_Unit_Measure, Constant.Privilege_New))
             {
                 MessageFacade.Show(MessageFacade.privilege_no_access, LabelFacade.sys_new, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                SessionLogFacade.Log(Constant.Priority_Caution, Constant.Module_Branch, Constant.Log_NoAccess, "New: No access");
+                SessionLogFacade.Log(Constant.Priority_Caution, ModuleName, Constant.Log_NoAccess, "New: No access");
                 return;
             }
             if (IsExpand) picExpand_Click(sender, e);
@@ -392,10 +336,9 @@ namespace kCredit
                 dgvList.CurrentRow.Selected = false;
             Id = 0;
             LockControls(false);
-            cboPurpose.Focus();
             cboFrequencyUnit_SelectedIndexChanged(null, null);
             if (dgvList.CurrentRow != null) RowIndex = dgvList.CurrentRow.Index;
-            SessionLogFacade.Log(Constant.Priority_Information, Constant.Module_Branch, Constant.Log_New, "New clicked");
+            SessionLogFacade.Log(Constant.Priority_Information, ModuleName, Constant.Log_New, "New clicked");
             IsDirty = false;
         }
 
@@ -421,7 +364,7 @@ namespace kCredit
 
         private void btnSaveNew_Click(object sender, EventArgs e)
         {
-            SessionLogFacade.Log(Constant.Priority_Information, Constant.Module_Branch, Constant.Log_SaveAndNew, "Saved and new. Id=" + dgvList.Id + ", Code=" + txtAccountNo.Text);
+            SessionLogFacade.Log(Constant.Priority_Information, ModuleName, Constant.Log_SaveAndNew, "Saved and new. Id=" + dgvList.Id + ", Name=" + txtName.Text);
             btnSave_Click(sender, e);
             if (btnSaveNew.Enabled) return;
             btnNew_Click(sender, e);
@@ -444,7 +387,7 @@ namespace kCredit
                     if (!Privilege.CanAccess(Constant.Function_IC_Unit_Measure, "O"))
                     {
                         MessageFacade.Show(msg, LabelFacade.sys_delete, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        SessionLogFacade.Log(Constant.Priority_Caution, Constant.Module_Branch, Constant.Log_Delete, "Cannot delete. Currently locked by '" + lInfo.Lock_By + "' since '" + lInfo.Lock_At + "' . Id=" + dgvList.Id + ", Code=" + txtAccountNo.Text);
+                        SessionLogFacade.Log(Constant.Priority_Caution, ModuleName, Constant.Log_Delete, "Cannot delete. Currently locked by '" + lInfo.Lock_By + "' since '" + lInfo.Lock_At + "' . Id=" + dgvList.Id + ", Name=" + txtName.Text);
                         return;
                     }
                 }
@@ -464,7 +407,7 @@ namespace kCredit
                 }
                 RefreshGrid();
                 // log
-                SessionLogFacade.Log(Constant.Priority_Warning, Constant.Module_Branch, Constant.Log_Delete, "Deleted. Id=" + dgvList.Id + ", Code=" + txtAccountNo.Text);
+                SessionLogFacade.Log(Constant.Priority_Warning, ModuleName, Constant.Log_Delete, "Deleted. Id=" + dgvList.Id + ", Name=" + txtName.Text);
             }
             catch (Exception ex)
             {
@@ -478,15 +421,15 @@ namespace kCredit
             if (!Privilege.CanAccess(Constant.Function_IC_Unit_Measure, Constant.Privilege_New))
             {
                 MessageFacade.Show(MessageFacade.privilege_no_access, LabelFacade.sys_copy, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                SessionLogFacade.Log(Constant.Priority_Information, Constant.Module_Branch, Constant.Log_NoAccess, "Copy: No access");
+                SessionLogFacade.Log(Constant.Priority_Information, ModuleName, Constant.Log_NoAccess, "Copy: No access");
                 return;
             }
             Id = 0;
             if (IsExpand) picExpand_Click(sender, e);
-            txtAccountNo.Focus();
+            txtName.Focus();
             LockControls(false);
             cboFrequencyUnit_SelectedIndexChanged(null, null);
-            SessionLogFacade.Log(Constant.Priority_Information, Constant.Module_Branch, Constant.Log_Copy, "Copy from Id=" + dgvList.Id + "Code=" + txtAccountNo.Text);
+            SessionLogFacade.Log(Constant.Priority_Information, ModuleName, Constant.Log_Copy, "Copy from Id=" + dgvList.Id + "Name=" + txtName.Text);
             IsDirty = false;
         }
 
@@ -535,7 +478,7 @@ namespace kCredit
                 }
                 else
                     if (MessageFacade.Show(msg + "\r\n" + MessageFacade.proceed_confirmation, MessageFacade.active_inactive, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.No)
-                    return;
+                        return;
             }
             try
             {
@@ -547,7 +490,7 @@ namespace kCredit
                 ErrorLogFacade.Log(ex);
             }
             RefreshGrid();
-            SessionLogFacade.Log(Constant.Priority_Caution, Constant.Module_Branch, status == Constant.RecordStatus_InActive ? Constant.Log_Inactive : Constant.Log_Active, "Id=" + dgvList.Id + ", Code=" + txtAccountNo.Text);
+            SessionLogFacade.Log(Constant.Priority_Caution, ModuleName, status == Constant.RecordStatus_InActive ? Constant.Log_Inactive : Constant.Log_Active, "Id=" + dgvList.Id + ", Name=" + txtName.Text);
         }
 
         private void btnUnlock_Click(object sender, EventArgs e)
@@ -555,7 +498,7 @@ namespace kCredit
             if (!Privilege.CanAccess(Constant.Function_IC_Unit_Measure, Constant.Privilege_Update))
             {
                 MessageFacade.Show(MessageFacade.privilege_no_access, LabelFacade.sys_button_unlock, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                SessionLogFacade.Log(Constant.Priority_Information, Constant.Module_Branch, Constant.Log_NoAccess, "Copy: No access");
+                SessionLogFacade.Log(Constant.Priority_Information, ModuleName, Constant.Log_NoAccess, "Copy: No access");
                 return;
             }
             if (IsExpand) picExpand_Click(sender, e);
@@ -573,7 +516,6 @@ namespace kCredit
                     else if (result == System.Windows.Forms.DialogResult.Cancel)
                         return;
                 }
-                LoanFacade.DecrementSrNo(cboFrequencyUnit.SelectedValue.ToString());
                 LockControls(true);
                 dgvList.Focus();
                 try
@@ -588,7 +530,7 @@ namespace kCredit
                 }
                 if (dgvList.CurrentRow != null && !dgvList.CurrentRow.Selected)
                     dgvList.CurrentRow.Selected = true;
-                SessionLogFacade.Log(Constant.Priority_Information, Constant.Module_Branch, Constant.Log_Unlock, "Unlock cancel. Id=" + dgvList.Id + ", Code=" + txtAccountNo.Text);
+                SessionLogFacade.Log(Constant.Priority_Information, ModuleName, Constant.Log_Unlock, "Unlock cancel. Id=" + dgvList.Id + ", Name=" + txtName.Text);
                 btnUnlock.ToolTipText = "Unlock (Ctrl+L)";
                 IsDirty = false;
                 return;
@@ -609,12 +551,10 @@ namespace kCredit
                     }
                     else
                         if (MessageFacade.Show(msg + "\r\n" + MessageFacade.lock_override, LabelFacade.sys_unlock, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.Yes)
-                        SessionLogFacade.Log(Constant.Priority_Caution, Constant.Module_Branch, Constant.Log_Lock, "Override lock. Id=" + dgvList.Id + ", Code=" + txtAccountNo.Text);
-                    else
-                        return;
+                            SessionLogFacade.Log(Constant.Priority_Caution, ModuleName, Constant.Log_Lock, "Override lock. Id=" + dgvList.Id + ", Name=" + txtName.Text);
+                        else
+                            return;
                 }
-                txtMaturity.SelectionStart = txtMaturity.Text.Length;
-                txtMaturity.Focus();
                 LockControls(false);
             }
             catch (Exception ex)
@@ -625,7 +565,7 @@ namespace kCredit
             }
             try
             {
-                LoanFacade.Lock(dgvList.Id, txtAccountNo.Text);
+                ProductFacade.Lock(dgvList.Id, txtName.Text);
             }
             catch (Exception ex)
             {
@@ -633,7 +573,7 @@ namespace kCredit
                 ErrorLogFacade.Log(ex);
                 return;
             }
-            SessionLogFacade.Log(Constant.Priority_Information, Constant.Module_Branch, Constant.Log_Lock, "Locked. Id=" + dgvList.Id + ", Code=" + txtAccountNo.Text);
+            SessionLogFacade.Log(Constant.Priority_Information, ModuleName, Constant.Log_Lock, "Locked. Id=" + dgvList.Id + ", Name=" + txtName.Text);
             btnUnlock.ToolTipText = "Cancel (Esc or Ctrl+L)";
             IsDirty = false;
         }
@@ -820,42 +760,6 @@ namespace kCredit
                 lblOnNonWorkingDay.Enabled = !b;
             IsDirty = true;
             //if (!cboMove.Enabled) cboMove.SelectedValue = "";
-        }
-
-        private void btnBrowse_Click(object sender, EventArgs e)
-        {
-            var fCustomer = new frmCustomer();
-            fCustomer.IsDlg = true;
-            if (fCustomer.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
-            txtCustomerNo.Text = fCustomer.CustomerNo;
-            txtAccountNo.Text = LoanFacade.GetNextAccountNo(txtCustomerNo.Text);
-            txtCustomerName.Text = fCustomer.FullName;
-        }
-
-        private void btnPreview_Click(object sender, EventArgs e)
-        {
-            Cursor = Cursors.WaitCursor;
-            var fReport = new frmReport("Repayment Schedule");
-            fReport.FileName = "Schedule.rdlc";
-            fReport.AddParameter("Path", "file:" + App.StartupPath);
-            var sql = "select format, case frequency_unit when 'M' then 'ខែ' when 'W' then 'សប្តាហ៌' when 'D' then 'ថ្ងៃ' end frequency_unit, frequency, " +
-                "amount, cy.name_khm currency, interest_rate, calculation_method, da.day_short || ' ' || to_char(disburse_date, 'dd-MM-yy') disburse_date, maturity_date, site.description payment_site, a.name credit_agent_name, phone credit_agent_phone," +
-                "\nlast_name || ' ' || first_name customer_name," +
-                "\nl.account_no, d.day_short || ' ' || to_char(date, 'dd-MM-yy') date, no, principal, interest, total, outstanding, pay_off" +
-                "\nfrom schedule s" +
-                "\ninner join loan l on s.account_no = l.account_no" +
-                "\ninner join customer c on l.customer_no = c.customer_no" +
-                "\ninner join agent a on l.credit_agent_id = a.id" +
-                "\ninner join day d on extract(dow from date) = d.code" +
-                "\ninner join day da on extract(dow from disburse_date) = da.code" +
-                "\ninner join currency cy on l.currency = cy.code" +
-                "\ninner join list site on field = 'payment_site' and l.payment_site = site.code" +
-                "\nwhere l.account_no = :account_no\norder by no";
-            var cmd = new Npgsql.NpgsqlCommand(sql);
-            cmd.Parameters.AddWithValue(":account_no", txtAccountNo.Text);
-            fReport.ReportSource = SqlFacade.GetDataTable(cmd);
-            fReport.PreviewReport();
-            Cursor = Cursors.Default;
         }
     }
 }

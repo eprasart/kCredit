@@ -39,10 +39,11 @@ namespace kCredit
         public static readonly string Log_NoAccess = "No Access";
 
         // Module
-        public static readonly string Module_IC_Location = "IC Location";
-        public static readonly string Module_Customer = "Customer";
-        public static readonly string Module_IC_Item = "IC Item";
-        public static readonly string Module_Branch = "Branch";
+        //public static readonly string Module_IC_Location = "IC Location";
+        //public static readonly string Module_Customer = "Customer";
+        //public static readonly string Module_Branch = "Branch";
+        //public static readonly string Module_Loan = "Loan";
+        //public static readonly string Module_Product = "Product";
 
         // Function name
         public static readonly string Function_IC_Location = "ICLOC";   // Category
