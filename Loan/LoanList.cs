@@ -103,11 +103,11 @@ namespace kCredit
         {
             var valid = new Validator(this, "loan");
             string No = txtAccountNo.Text.Trim();
-            if (cboFrequencyUnit.SelectedIndex == -1) valid.Add(cboFrequencyUnit, "frequency_unit_unspecified");
+            if (cboFrequencyUnit.Unspecified) valid.Add(cboFrequencyUnit, "frequency_unit_unspecified");
             if (!Util.IsInteger(txtFrequency.Text)) valid.Add(txtFrequency, "frequency_invalid");
             if (!Util.IsInteger(txtInstallmentNo.Text)) valid.Add(txtInstallmentNo, "installment_no_invalid");
             if (!Util.IsDecimal(txtAmount.Text)) valid.Add(txtAmount, "amount_invalid");
-            if (cboCurrency.SelectedIndex == -1) valid.Add(cboCurrency, "currency_unspecified");
+            if (cboCurrency.Unspecified) valid.Add(cboCurrency, "currency_unspecified");
             if (!Util.IsDecimal(txtInterestRate.Text)) valid.Add(txtInterestRate, "interest_rate_invalid");
             if (dtpFirstInstallment.Checked && dtpFirstInstallment.Value <= dtpDisburse.Value) valid.Add(dtpFirstInstallment, "first_installment_date_invalid");
             if (!valid.Show(LabelFacade.Get("loan_generate_schedule", "Generate Schedule")))
@@ -322,16 +322,17 @@ namespace kCredit
         {
             var valid = new Validator(this, "loan");
             string No = txtAccountNo.Text.Trim();
-            if (cboFrequencyUnit.SelectedIndex == -1) valid.Add(cboFrequencyUnit, "frequency_unit_unspecified");
+            if (cboFrequencyUnit.Unspecified) valid.Add(cboFrequencyUnit, "frequency_unit_unspecified");
             if (!Util.IsInteger(txtFrequency.Text)) valid.Add(txtFrequency, "frequency_invalid");
             if (!Util.IsInteger(txtInstallmentNo.Text)) valid.Add(txtInstallmentNo, "installment_no_invalid");
             if (!Util.IsDecimal(txtAmount.Text)) valid.Add(txtAmount, "amount_invalid");
-            if (cboCurrency.SelectedIndex == -1) valid.Add(cboCurrency, "currency_unspecified");
+            if (cboCurrency.Unspecified) valid.Add(cboCurrency, "currency_unspecified");
             if (!Util.IsDecimal(txtInterestRate.Text)) valid.Add(txtInterestRate, "interest_rate_invalid");
             if (dtpFirstInstallment.Checked && dtpFirstInstallment.Value <= dtpDisburse.Value) valid.Add(dtpFirstInstallment, "first_installment_date_invalid");
-            if (txtCustomerNo.Text.Length == 0) valid.Add(btnBrowse, "customer_unspecified");
-            if (cboPaymentSite.SelectedIndex == -1) valid.Add(cboPaymentSite, "payment_site_unspecified");
-            if (cboAgent.SelectedIndex == -1) valid.Add(cboAgent, "credit_agent_unspecified");
+            if (txtCustomerNo.IsEmpty) valid.Add(btnBrowse, "customer_unspecified");
+            if (cboPaymentSite.Unspecified) valid.Add(cboPaymentSite, "payment_site_unspecified");
+            if (cboAgent.Unspecified) valid.Add(cboAgent, "credit_agent_unspecified");
+            if (cboMove.Enabled && cboMove.Unspecified) valid.Add(cboMove, "non_working_move_unspecified");
             return valid.Show();
         }
 
@@ -471,7 +472,7 @@ namespace kCredit
                 //SetCodeCasing();
                 //txtAccountNo.MaxLength = ConfigFacade.sy_code_max_length;
 
-                Util.SetFormState(this);
+                FormFacade.SetFormState(this);
             }
             catch (Exception ex)
             {
@@ -953,7 +954,7 @@ namespace kCredit
                 btnUnlock_Click(null, null);
             if (!IsExpand)
                 ConfigFacade.Set(Name + Constant.Splitter_Distance, splitContainer1.SplitterDistance);
-            Util.SaveFormSate(this);
+            FormFacade.SaveFormSate(this);
         }
 
         private void txtCode_Leave(object sender, EventArgs e)

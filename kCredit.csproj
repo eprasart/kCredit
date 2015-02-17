@@ -91,7 +91,13 @@
     <Compile Include="Common\Report.designer.cs">
       <DependentUpon>Report.cs</DependentUpon>
     </Compile>
-    <Compile Include="Common\Util.cs" />
+    <Compile Include="Loan\Product.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Loan\Product.Designer.cs">
+      <DependentUpon>Product.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Util\Util.cs" />
     <Compile Include="Common\SqlFacade.cs" />
     <Compile Include="Common\Constant.cs" />
     <Compile Include="Common\Security.cs" />
@@ -102,7 +108,6 @@
     <Compile Include="Customer\CustomerList.Designer.cs">
       <DependentUpon>CustomerList.cs</DependentUpon>
     </Compile>
-    <Compile Include="General\Currency.cs" />
     <Compile Include="GL\GL.cs" />
     <Compile Include="General\BranchList.cs">
       <SubType>Form</SubType>
@@ -199,6 +204,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="General\BranchList.resx">
       <DependentUpon>BranchList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Loan\Product.resx">
+      <DependentUpon>Product.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Loan\LoanList.resx">
       <DependentUpon>LoanList.cs</DependentUpon>

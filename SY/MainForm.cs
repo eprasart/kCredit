@@ -24,7 +24,7 @@ namespace kCredit.SYS
             lblVersion.Text = " v " + App.version;
 
 
-            Util.SetFormState(this);
+            FormFacade.SetFormState(this);
 
             App.fSplash.ShowMsg("");
             App.fSplash.StartTimer();
@@ -70,7 +70,7 @@ namespace kCredit.SYS
 
         private void frmMain_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Util.SaveFormSate(this);
+            FormFacade.SaveFormSate(this);
 
             App.Close();
         }

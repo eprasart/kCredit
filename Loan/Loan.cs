@@ -10,6 +10,121 @@ using System.Windows.Forms;
 
 namespace kCredit
 {
+    class Product
+    {
+        public long Id { get; set; }
+        public string Name { get; set; }
+        public string Calculation_Method { get; set; }
+        public string Principal_Round_Rule { get; set; }
+        public string Interest_Round_Rule { get; set; }
+        public string Total_Round_Rule { get; set; }        
+        public string Never_On { get; set; }
+        public string Non_Working_Day_Move { get; set; }
+        public string Note { get; set; }
+        public string Status { get; set; }
+        public string Insert_By { get; set; }
+        public DateTime? Insert_At { get; set; }
+        public string Change_By { get; set; }
+        public DateTime? Change_At { get; set; }
+    }
+
+    static class ProductFacade
+    {
+        public static readonly string TableName = "product";
+
+        public static DataTable GetDataTable(string filter = "", string status = "")
+        {
+            var sql = "select *" +
+                "\nfrom product";
+            if (status.Length == 0)
+                sql += " and status <> '" + Constant.RecordStatus_Deleted + "'";
+            else
+                sql += " and status = '" + status + "'";
+            if (filter.Length > 0)
+                sql += " and (" + SqlFacade.SqlILike("name, note") + ")";
+            sql += "\norder by name\nlimit " + ConfigFacade.Select_Limit;
+
+            var cmd = new NpgsqlCommand(sql);
+            if (filter.Length > 0)
+                cmd.Parameters.AddWithValue(":filter", "%" + filter + "%");
+
+            return SqlFacade.GetDataTable(cmd);
+        }
+
+        public static long Save(Product m)
+        {
+            string sql = "";
+            if (m.Id == 0)
+            {
+                m.Insert_By = App.session.Username;                
+                sql = "name, calculation_method, principal_round_rule, interest_round_rule, total_round_rule, never_on, non_working_day_move, note, insert_by";
+                sql = SqlFacade.SqlInsert(TableName, sql, "", true);
+                m.Id = SqlFacade.Connection.ExecuteScalar<long>(sql, m);
+            }
+            else
+            {
+                m.Change_By = App.session.Username;
+                sql = "name, calculation_method, principal_round_rule, interest_round_rule, total_round_rule, never_on, non_working_day_move, note, change_by, change_at, change_no";
+                sql = SqlFacade.SqlUpdate(TableName, sql, "change_at = now(), change_no = change_no + 1", "id = :id");
+                SqlFacade.Connection.Execute(sql, m);
+                ReleaseLock(m.Id);  // Unlock
+            }
+            return m.Id;
+        }
+
+        public static Product Select(long Id)
+        {
+            var sql = SqlFacade.SqlSelect(TableName, "*", "id = :id");
+            return SqlFacade.Connection.Query<Product>(sql, new { Id }).FirstOrDefault();
+        }
+
+        public static void SetStatus(long Id, string status)
+        {
+            var sql = SqlFacade.SqlUpdate(TableName, "status, change_by, change_at", "change_at = now()", "id = :id");
+            SqlFacade.Connection.Execute(sql, new { status, Change_By = App.session.Username, Id });
+        }
+
+        public static Lock GetLock(long Id)
+        {
+            return LockFacade.Select(TableName, Id);
+        }
+
+        public static void Lock(long Id, string code)
+        {
+            var m = new Lock { Table_Name = TableName, Lock_Id = Id, Ref = code };
+            LockFacade.Save(m);
+        }
+
+        public static void ReleaseLock(long Id)
+        {
+            LockFacade.Delete(TableName, Id);
+        }
+
+        public static bool Exists(string name, long Id = 0)
+        {
+            var sql = SqlFacade.SqlExists(TableName, "id <> :id and status <> :status and name = :name");
+            var bExists = false;
+            try
+            {
+                bExists = SqlFacade.Connection.ExecuteScalar<bool>(sql, new { Id, Status = Constant.RecordStatus_Deleted,  name });
+            }
+            catch (Exception ex)
+            {
+                MessageFacade.Show(MessageFacade.error_query + "\r\n" + ex.Message, LabelFacade.sys_customer, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ErrorLogFacade.Log(ex, "Exists");
+            }
+            return bExists;
+        }
+
+        public static void Export()
+        {
+            var cols = "*";
+            cols = ConfigFacade.Get(Constant.Sql_Export + TableName, cols);
+            string sql = SqlFacade.SqlSelect(TableName, cols, "status <> '" + Constant.RecordStatus_Deleted + "'", "name");
+            SqlFacade.ExportToCSV(sql);
+        }
+    }
+
     class Loan
     {
         public long Id { get; set; }

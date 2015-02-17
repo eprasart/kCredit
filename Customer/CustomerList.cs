@@ -292,7 +292,7 @@ namespace kCredit
 
                 SetCodeCasing();
                 //txtCustomerNo.MaxLength = ConfigFacade.Code_Max_Length;
-                Util.SetFormState(this);
+                FormFacade.SetFormState(this);
             }
             catch (Exception ex)
             {
@@ -781,7 +781,7 @@ namespace kCredit
                 btnUnlock_Click(null, null);
             if (!IsExpand)
                 ConfigFacade.Set(Name + Constant.Splitter_Distance, splitContainer1.SplitterDistance);
-            Util.SaveFormSate(this);
+            FormFacade.SaveFormSate(this);
         }
 
         private void txtCode_Leave(object sender, EventArgs e)
