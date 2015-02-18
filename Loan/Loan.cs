@@ -17,7 +17,7 @@ namespace kCredit
         public string Calculation_Method { get; set; }
         public string Principal_Round_Rule { get; set; }
         public string Interest_Round_Rule { get; set; }
-        public string Total_Round_Rule { get; set; }        
+        public string Total_Round_Rule { get; set; }
         public string Never_On { get; set; }
         public string Non_Working_Day_Move { get; set; }
         public string Note { get; set; }
@@ -31,17 +31,23 @@ namespace kCredit
     static class ProductFacade
     {
         public static readonly string TableName = "product";
+        public static readonly string TitleLabel = LabelFacade.sys_product;
 
         public static DataTable GetDataTable(string filter = "", string status = "")
         {
-            var sql = "select *" +
-                "\nfrom product";
+            var sql = "select p.id, name, method.description calculation_method, prin.description principal_round_rule, int.description interest_round_rule, total.description total_round_rule" +
+                "\nfrom product p" +
+                "\njoin list method on field = 'calculation_method' and method.code = calculation_method" +
+                "\ninner join list prin on prin.field = 'round_rule' and prin.code = principal_round_rule" +
+                "\ninner join list int on int.field = 'round_rule' and int.code = interest_round_rule" +
+                "\ninner join list total on total.field = 'round_rule' and total.code = total_round_rule" +
+                "\nwhere 1 = 1";
             if (status.Length == 0)
-                sql += " and status <> '" + Constant.RecordStatus_Deleted + "'";
+                sql += " and p.status <> '" + Constant.RecordStatus_Deleted + "'";  // todo: sql injection is possible => a better way
             else
-                sql += " and status = '" + status + "'";
+                sql += " and p.status = '" + status + "'";
             if (filter.Length > 0)
-                sql += " and (" + SqlFacade.SqlILike("name, note") + ")";
+                sql += " and (" + SqlFacade.SqlILike("name, p.note") + ")";
             sql += "\norder by name\nlimit " + ConfigFacade.Select_Limit;
 
             var cmd = new NpgsqlCommand(sql);
@@ -56,7 +62,7 @@ namespace kCredit
             string sql = "";
             if (m.Id == 0)
             {
-                m.Insert_By = App.session.Username;                
+                m.Insert_By = App.session.Username;
                 sql = "name, calculation_method, principal_round_rule, interest_round_rule, total_round_rule, never_on, non_working_day_move, note, insert_by";
                 sql = SqlFacade.SqlInsert(TableName, sql, "", true);
                 m.Id = SqlFacade.Connection.ExecuteScalar<long>(sql, m);
@@ -76,6 +82,12 @@ namespace kCredit
         {
             var sql = SqlFacade.SqlSelect(TableName, "*", "id = :id");
             return SqlFacade.Connection.Query<Product>(sql, new { Id }).FirstOrDefault();
+        }
+
+        public static Product Select(string code)
+        {
+            var sql = SqlFacade.SqlSelect(TableName, "*", "code = :code");
+            return SqlFacade.Connection.Query<Product>(sql, new { code }).FirstOrDefault();
         }
 
         public static void SetStatus(long Id, string status)
@@ -106,11 +118,11 @@ namespace kCredit
             var bExists = false;
             try
             {
-                bExists = SqlFacade.Connection.ExecuteScalar<bool>(sql, new { Id, Status = Constant.RecordStatus_Deleted,  name });
+                bExists = SqlFacade.Connection.ExecuteScalar<bool>(sql, new { Id, Status = Constant.RecordStatus_Deleted, name });
             }
             catch (Exception ex)
             {
-                MessageFacade.Show(MessageFacade.error_query + "\r\n" + ex.Message, LabelFacade.sys_customer, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageFacade.Show(MessageFacade.error_query + "\r\n" + ex.Message, TitleLabel, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 ErrorLogFacade.Log(ex, "Exists");
             }
             return bExists;
@@ -137,7 +149,7 @@ namespace kCredit
         public double Amount { get; set; }
         public string Currency { get; set; }
         public double Interest_Rate { get; set; }
-        public string Calculation_Method { get; set; }
+        public string Product { get; set; }
         public DateTime Disburse_Date { get; set; }
         public DateTime First_Installment_Date { get; set; }
         public DateTime Maturity_Date { get; set; }
@@ -158,6 +170,7 @@ namespace kCredit
     static class LoanFacade
     {
         public static readonly string TableName = "loan";
+        public static readonly string TitleLabel = LabelFacade.sys_loan;
 
         public static DataTable GetDataTable(string filter = "", string status = "")
         {
@@ -185,7 +198,7 @@ namespace kCredit
             {
                 m.Insert_By = App.session.Username;
                 m.Branch_Code = App.session.Branch_Code;
-                sql = "account_no, customer_no, branch_code, frequency_unit, frequency, installment_no, amount, currency, interest_rate, calculation_method, " +
+                sql = "account_no, customer_no, branch_code, frequency_unit, frequency, installment_no, amount, currency, interest_rate, product, " +
                   "disburse_date, first_installment_date, maturity_date, never_on, non_working_day_move, purpose, payment_site, credit_agent_id, " +
                   "note, insert_by";
                 sql = SqlFacade.SqlInsert(TableName, sql, "", true);
@@ -195,7 +208,7 @@ namespace kCredit
             else
             {
                 m.Change_By = App.session.Username;
-                sql = "account_no, customer_no, branch_code, frequency_unit, frequency, installment_no, amount, currency, interest_rate, calculation_method, disburse_date, first_installment_date, " +
+                sql = "account_no, customer_no, branch_code, frequency_unit, frequency, installment_no, amount, currency, interest_rate, product, disburse_date, first_installment_date, " +
                     "maturity_date, never_on, non_working_day_move, purpose, payment_site, credit_agent_id, note, change_by, change_at, change_no";
                 sql = SqlFacade.SqlUpdate(TableName, sql, "change_at = now(), change_no = change_no + 1", "id = :id");
                 SqlFacade.Connection.Execute(sql, m);
@@ -242,7 +255,7 @@ namespace kCredit
             }
             catch (Exception ex)
             {
-                MessageFacade.Show(MessageFacade.error_query + "\r\n" + ex.Message, LabelFacade.sys_customer, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageFacade.Show(MessageFacade.error_query + "\r\n" + ex.Message, TitleLabel, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 ErrorLogFacade.Log(ex, "Exists");
             }
             return bExists;

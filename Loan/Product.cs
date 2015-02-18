@@ -17,6 +17,7 @@ namespace kCredit
         bool IsIgnore = true;
 
         string ModuleName = "Product";
+        string TitleLabel = ProductFacade.TitleLabel;
 
         public frmProduct()
         {
@@ -40,12 +41,12 @@ namespace kCredit
             if (dgvList.SelectedRows.Count > 0) RowIndex = dgvList.SelectedRows[0].Index;
             try
             {
-                dgvList.DataSource = LoanFacade.GetDataTable(txtFind.Text, GetStatus());
+                dgvList.DataSource = ProductFacade.GetDataTable(txtFind.Text, GetStatus());
             }
             catch (Exception ex)
             {
                 Cursor = Cursors.Default;
-                MessageFacade.Show(MessageFacade.error_retrieve_data + "\r\n" + ex.Message, LabelFacade.sys_customer, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageFacade.Show(MessageFacade.error_retrieve_data + "\r\n" + ex.Message, TitleLabel, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 ErrorLogFacade.Log(ex);
                 return;
             }
@@ -79,11 +80,12 @@ namespace kCredit
 
         private void LockControls(bool l = true)
         {
+            txtCode.ReadOnly = l;
             txtName.ReadOnly = l;
             cboMethod.Enabled = !l;
-            cboRoundPrincipal.Enabled = !l;
-            cboRoundInterest.Enabled = !l;
-            cboRoundTotal.Enabled = !l;
+            cboPrincipalRound.Enabled = !l;
+            cboInterestRound.Enabled = !l;
+            cboTotalRound.Enabled = !l;
             chkSaturday.Enabled = !l;
             chkSunday.Enabled = !l;
             chkHoliday.Enabled = !l;
@@ -128,11 +130,16 @@ namespace kCredit
         private bool IsValidated()
         {
             var valid = new Validator(this, "product");
+            string Code = txtCode.Text;
+            if (Code.Length == 0)
+                valid.Add(txtCode, "code_blank");
+            else if (ProductFacade.Exists(Code, Id))
+                valid.Add(txtCode, "code_exists");      
             if (txtName.IsEmptyTrim) valid.Add(txtName, "name_invalid");
             if (cboMethod.Unspecified) valid.Add(cboMethod, "calculation_method_unspecified");
-            if (cboRoundPrincipal.Unspecified) valid.Add(cboRoundPrincipal, "principal_round_rule_unspecified");
-            if (cboRoundInterest.Unspecified) valid.Add(cboRoundInterest, "interest_round_rule_unspecified");
-            if (cboRoundTotal.Unspecified) valid.Add(cboRoundTotal, "total_round_rule_unspecified");
+            if (cboPrincipalRound.Unspecified) valid.Add(cboPrincipalRound, "principal_round_rule_unspecified");
+            if (cboInterestRound.Unspecified) valid.Add(cboInterestRound, "interest_round_rule_unspecified");
+            if (cboTotalRound.Unspecified) valid.Add(cboTotalRound, "total_round_rule_unspecified");
             if (cboMove.Enabled && cboMove.Unspecified) valid.Add(cboMove, "non_working_move_unspecified");
             return valid.Show();
         }
@@ -157,14 +164,14 @@ namespace kCredit
                 {
                     var m = ProductFacade.Select(Id);
                     txtName.Text = m.Name;
-                    cboMethod.SelectedValue = m.Calculation_Method;
-                    cboRoundPrincipal.SelectedValue = m.Principal_Round_Rule;
-                    cboRoundInterest.SelectedValue = m.Interest_Round_Rule;
-                    cboRoundTotal.SelectedValue = m.Total_Round_Rule;
+                    cboMethod.Value = m.Calculation_Method;
+                    cboPrincipalRound.Value = m.Principal_Round_Rule;
+                    cboInterestRound.Value = m.Interest_Round_Rule;
+                    cboTotalRound.Value = m.Total_Round_Rule;
                     chkSaturday.Checked = (m.Never_On.Contains("6"));
                     chkSunday.Checked = (m.Never_On.Contains("0"));
                     chkHoliday.Checked = (m.Never_On.Contains("H"));
-                    cboMove.SelectedValue = m.Non_Working_Day_Move;
+                    cboMove.Value = m.Non_Working_Day_Move;
                     txtNote.Text = m.Note;
                     SetStatus(m.Status);
                     LockControls();
@@ -173,7 +180,7 @@ namespace kCredit
                 }
                 catch (Exception ex)
                 {
-                    MessageFacade.Show(MessageFacade.error_load_record + "\r\n" + ex.Message, LabelFacade.sys_customer, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageFacade.Show(MessageFacade.error_load_record + "\r\n" + ex.Message, TitleLabel, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     ErrorLogFacade.Log(ex);
                 }
             else    // when grid is empty => disable buttons and clear all controls
@@ -244,7 +251,7 @@ namespace kCredit
             btnClear.Text = "     " + (LabelFacade.sys_button_clear ?? btnClear.Text.Replace(" ", ""));
             btnFilter.Text = "     " + (LabelFacade.sys_button_filter ?? btnFilter.Text.Replace(" ", ""));
 
-            lblName.Text = LabelFacade.Get(prefix + "default_factor") ?? lblName.Text;
+            lblCode.Text = LabelFacade.Get(prefix + "default_factor") ?? lblCode.Text;
             glbGeneral.Caption = LabelFacade.Get(prefix + "general") ?? glbGeneral.Caption;
             glbNote.Caption = LabelFacade.Get(prefix + "note") ?? glbNote.Caption;
             //todo: Label for the rest
@@ -256,12 +263,13 @@ namespace kCredit
             Cursor = Cursors.WaitCursor;
             // Loan account
             var m = new Product();
-            var log = new SessionLog { Module = Constant.Module_Product };
+            var log = new SessionLog { Module = "Product" };
             m.Id = Id;
             m.Name = txtName.Text;
             m.Calculation_Method = cboMethod.Value;
-            m.Interest_Round_Rule = cboRoundInterest.Value;
-            m.Principal_Round_Rule = cboRoundPrincipal.Value;
+            m.Interest_Round_Rule = cboInterestRound.Value;
+            m.Principal_Round_Rule = cboPrincipalRound.Value;
+            m.Total_Round_Rule = cboTotalRound.Value;
             string sNeverOn = "";
             if (chkSaturday.Checked) sNeverOn = "6";
             if (chkSunday.Checked) sNeverOn += "0";
@@ -306,9 +314,9 @@ namespace kCredit
                 SetSettings();
                 SetLabels();
                 Data.LoadList(cboMethod, "calculation_method");
-                Data.LoadList(cboRoundPrincipal, "round_rule");
-                Data.LoadList(cboRoundInterest, "round_rule");
-                Data.LoadList(cboRoundTotal, "round_rule");
+                Data.LoadList(cboPrincipalRound, "round_rule");
+                Data.LoadList(cboInterestRound, "round_rule");
+                Data.LoadList(cboTotalRound, "round_rule");
                 Data.LoadList(cboMove, "non_working_day_move");
 
                 SessionLogFacade.Log(Constant.Priority_Information, ModuleName, Constant.Log_Open, "Opened");
@@ -318,7 +326,7 @@ namespace kCredit
             catch (Exception ex)
             {
                 ErrorLogFacade.Log(ex, "Form_Load");
-                MessageFacade.Show(MessageFacade.error_load_form + "\r\n" + ex.Message, LabelFacade.sys_customer, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageFacade.Show(MessageFacade.error_load_form + "\r\n" + ex.Message, TitleLabel, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -628,7 +636,7 @@ namespace kCredit
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            if (txtFind.Text.Length == 0) btnFind_Click(null, null);
+            if (txtFind.IsEmpty) btnFind_Click(null, null);
         }
 
         private void mnuShow_CheckedChanged(object sender, EventArgs e)
@@ -684,12 +692,13 @@ namespace kCredit
             splitContainer1.IsSplitterFixed = !IsExpand;
             if (!IsExpand)
             {
+                ConfigFacade.SetSplitterDistance(Name, splitContainer1.SplitterDistance);
                 splitContainer1.SplitterDistance = splitContainer1.Size.Width;
                 splitContainer1.FixedPanel = FixedPanel.Panel2;
             }
             else
             {
-                splitContainer1.SplitterDistance = ConfigFacade.GetInt(Constant.Splitter_Distance + Name); //ConfigFacade.ic_unit_measure_splitter_distance;
+                splitContainer1.SplitterDistance = ConfigFacade.GetSplitterDistance(Name); //ConfigFacade.ic_unit_measure_splitter_distance;
                 splitContainer1.FixedPanel = FixedPanel.Panel1;
             }
             dgvList.ShowLessColumns(IsExpand);
@@ -741,13 +750,13 @@ namespace kCredit
 
         private void txtFind_Leave(object sender, EventArgs e)
         {
-            lblSearch.Visible = (txtFind.Text.Length == 0);
+            lblSearch.Visible = (txtFind.IsEmpty);
         }
 
         private void cboFrequencyUnit_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //if (cboFrequencyUnit.SelectedIndex == -1 || btnNew.Enabled) return;
-            //txtAccountNo.Text = LoanFacade.GetNextAccountNo(cboFrequencyUnit.SelectedValue.ToString()); //todo: Format No; from table
+            //if (cboFrequencyUnit.UnSpecified || btnNew.Enabled) return;
+            //txtAccountNo.Text = LoanFacade.GetNextAccountNo(cboFrequencyUnit.Value); //todo: Format No; from table
         }
 
         private void chkNeverOn_CheckedChanged(object sender, EventArgs e)
@@ -759,7 +768,7 @@ namespace kCredit
             else
                 lblOnNonWorkingDay.Enabled = !b;
             IsDirty = true;
-            //if (!cboMove.Enabled) cboMove.SelectedValue = "";
+            //if (!cboMove.Enabled) cboMove.Value = "";
         }
     }
 }

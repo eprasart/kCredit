@@ -30,9 +30,10 @@
         {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnSelect = new System.Windows.Forms.ToolStripButton();
             this.btnNew = new System.Windows.Forms.ToolStripButton();
@@ -355,6 +356,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvList.BackgroundColor = System.Drawing.Color.White;
             this.dgvList.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
@@ -362,14 +371,14 @@
             this.colName,
             this.Column2,
             this.Column3});
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.Teal;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvList.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.Teal;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvList.DefaultCellStyle = dataGridViewCellStyle5;
             this.dgvList.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvList.Location = new System.Drawing.Point(1, 51);
             this.dgvList.Margin = new System.Windows.Forms.Padding(4);
@@ -407,8 +416,8 @@
             // 
             this.colName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.colName.DataPropertyName = "name";
-            dataGridViewCellStyle2.NullValue = null;
-            this.colName.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle3.NullValue = null;
+            this.colName.DefaultCellStyle = dataGridViewCellStyle3;
             this.colName.HeaderText = "Name";
             this.colName.Name = "colName";
             this.colName.ReadOnly = true;
@@ -427,8 +436,8 @@
             // 
             this.Column3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.Column3.DataPropertyName = "date_of_birth";
-            dataGridViewCellStyle3.Format = "dd-MM-yy";
-            this.Column3.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle4.Format = "dd-MM-yy";
+            this.Column3.DefaultCellStyle = dataGridViewCellStyle4;
             this.Column3.HeaderText = "Date of Birth";
             this.Column3.Name = "Column3";
             this.Column3.ReadOnly = true;
@@ -576,6 +585,7 @@
             this.cboCategory.Size = new System.Drawing.Size(230, 25);
             this.cboCategory.TabIndex = 5;
             this.cboCategory.TabOnEnter = true;
+            this.cboCategory.Value = "";
             this.cboCategory.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // txtAddress
@@ -602,7 +612,7 @@
             this.cboType.Size = new System.Drawing.Size(230, 25);
             this.cboType.TabIndex = 3;
             this.cboType.TabOnEnter = true;
-            this.cboType.SelectedIndexChanged += new System.EventHandler(this.cboType_SelectedIndexChanged);
+            this.cboType.Value = "";
             this.cboType.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // label1
@@ -626,6 +636,7 @@
             this.cboGender.Size = new System.Drawing.Size(230, 25);
             this.cboGender.TabIndex = 15;
             this.cboGender.TabOnEnter = true;
+            this.cboGender.Value = "";
             this.cboGender.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // txtCustomerNo
@@ -654,6 +665,7 @@
             this.cboBranch.Size = new System.Drawing.Size(230, 25);
             this.cboBranch.TabIndex = 1;
             this.cboBranch.TabOnEnter = true;
+            this.cboBranch.Value = "";
             this.cboBranch.SelectedIndexChanged += new System.EventHandler(this.cboBranch_SelectedIndexChanged);
             this.cboBranch.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
@@ -678,6 +690,7 @@
             this.cboVillage.Size = new System.Drawing.Size(230, 25);
             this.cboVillage.TabIndex = 27;
             this.cboVillage.TabOnEnter = true;
+            this.cboVillage.Value = "";
             this.cboVillage.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // label2
@@ -701,6 +714,7 @@
             this.cboCommune.Size = new System.Drawing.Size(230, 25);
             this.cboCommune.TabIndex = 25;
             this.cboCommune.TabOnEnter = true;
+            this.cboCommune.Value = "";
             this.cboCommune.SelectedIndexChanged += new System.EventHandler(this.cboCommune_SelectedIndexChanged);
             this.cboCommune.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
@@ -730,6 +744,7 @@
             this.cboDistrict.Size = new System.Drawing.Size(230, 25);
             this.cboDistrict.TabIndex = 23;
             this.cboDistrict.TabOnEnter = true;
+            this.cboDistrict.Value = "";
             this.cboDistrict.SelectedIndexChanged += new System.EventHandler(this.cboDistrict_SelectedIndexChanged);
             this.cboDistrict.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
@@ -743,6 +758,7 @@
             this.cboProvince.Size = new System.Drawing.Size(230, 25);
             this.cboProvince.TabIndex = 21;
             this.cboProvince.TabOnEnter = true;
+            this.cboProvince.Value = "";
             this.cboProvince.SelectedIndexChanged += new System.EventHandler(this.cboProvince_SelectedIndexChanged);
             this.cboProvince.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
@@ -918,6 +934,7 @@
             this.cboContactType4.Size = new System.Drawing.Size(150, 25);
             this.cboContactType4.TabIndex = 12;
             this.cboContactType4.TabOnEnter = true;
+            this.cboContactType4.Value = "";
             this.cboContactType4.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // cboContactType3
@@ -930,6 +947,7 @@
             this.cboContactType3.Size = new System.Drawing.Size(150, 25);
             this.cboContactType3.TabIndex = 10;
             this.cboContactType3.TabOnEnter = true;
+            this.cboContactType3.Value = "";
             this.cboContactType3.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // groupLabel2
@@ -953,6 +971,7 @@
             this.cboContactType2.Size = new System.Drawing.Size(150, 25);
             this.cboContactType2.TabIndex = 8;
             this.cboContactType2.TabOnEnter = true;
+            this.cboContactType2.Value = "";
             this.cboContactType2.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // cboIDType3
@@ -965,6 +984,7 @@
             this.cboIDType3.Size = new System.Drawing.Size(150, 25);
             this.cboIDType3.TabIndex = 4;
             this.cboIDType3.TabOnEnter = true;
+            this.cboIDType3.Value = "";
             this.cboIDType3.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // cboContactType1
@@ -977,6 +997,7 @@
             this.cboContactType1.Size = new System.Drawing.Size(150, 25);
             this.cboContactType1.TabIndex = 6;
             this.cboContactType1.TabOnEnter = true;
+            this.cboContactType1.Value = "";
             this.cboContactType1.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // cboIDType2
@@ -989,6 +1010,7 @@
             this.cboIDType2.Size = new System.Drawing.Size(150, 25);
             this.cboIDType2.TabIndex = 2;
             this.cboIDType2.TabOnEnter = true;
+            this.cboIDType2.Value = "";
             this.cboIDType2.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // cboIDType1
@@ -1001,6 +1023,7 @@
             this.cboIDType1.Size = new System.Drawing.Size(150, 25);
             this.cboIDType1.TabIndex = 0;
             this.cboIDType1.TabOnEnter = true;
+            this.cboIDType1.Value = "";
             this.cboIDType1.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // txtContactValue4

@@ -25,9 +25,9 @@ namespace kCredit.SM
         {
             string sFlag = "";
             string sMsg = "";
-            if (txtUsername.Text.Trim().Length == 0)
+            if (txtUsername.IsEmptyTrim)
                 sFlag = "U";
-            if (txtPassword.Text.Length == 0)
+            if (txtPassword.IsEmpty)
                 sFlag += "P";
             switch (sFlag)
             {
@@ -96,7 +96,7 @@ namespace kCredit.SM
 
         private void frmLogin_Activated(object sender, EventArgs e)
         {
-            if (txtUsername.Text.Length > 0)
+            if (!txtUsername.IsEmpty)
                 txtPassword.Focus();
         }
 

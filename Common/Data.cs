@@ -28,16 +28,24 @@ namespace kCredit
         {
             string sql = SqlFacade.SqlSelect("currency", "code, name", "status = 'A'", "code");
             cbo.DataSource = SqlFacade.GetDataTable(sql);
-            cbo.DisplayMember = "name";
             cbo.ValueMember = "code";
+            cbo.DisplayMember = "name";
         }
 
         public static void LoadAgent(ComboBox cbo)
         {
             string sql = SqlFacade.SqlSelect("agent", "id, name", "status = 'A' and branch_code = '" + App.session.Branch_Code + "'", "name");
             cbo.DataSource = SqlFacade.GetDataTable(sql);
-            cbo.DisplayMember = "name";
             cbo.ValueMember = "id";
+            cbo.DisplayMember = "name";
+        }
+
+        public static void LoadProduct(ComboBox cbo)
+        {
+            string sql = SqlFacade.SqlSelect("product", "id, name", "status = 'A'", "name");
+            cbo.DataSource = SqlFacade.GetDataTable(sql);
+            cbo.ValueMember = "id";
+            cbo.DisplayMember = "name";
         }
 
         public static void LoadRegional(ComboBox cbo, string type, object parent = null)
@@ -46,8 +54,8 @@ namespace kCredit
             string sWhere = "status = 'A' and type in (" + type + ")";
             if (parent != null) sWhere += " and parent = '" + parent.ToString() + "'";
             cbo.DataSource = SqlFacade.GetDataTable(SqlFacade.SqlSelect("regional", "code, name", sWhere, "name"));
-            cbo.DisplayMember = "name";
             cbo.ValueMember = "code";
+            cbo.DisplayMember = "name";
         }
 
         public static void LoadBranch(ComboBox cbo, bool includeEmpty = true)
@@ -55,8 +63,8 @@ namespace kCredit
             string sql = SqlFacade.SqlSelect("branch", "code, code || ' ' || name as name", "status = 'A'", "code");
             if (includeEmpty) sql = "select '' as code, '' as name\nunion\n" + sql;
             cbo.DataSource = SqlFacade.GetDataTable(sql);
-            cbo.DisplayMember = "name";
             cbo.ValueMember = "code";
+            cbo.DisplayMember = "name";
         }
     }
 }

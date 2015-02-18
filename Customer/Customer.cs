@@ -51,6 +51,7 @@ namespace kCredit
     static class CustomerFacade
     {
         public static readonly string TableName = "customer";
+        public static readonly string TitleLabel = LabelFacade.sys_customer;
 
         public static DataTable GetDataTable(string filter = "", string status = "")
         {
@@ -133,7 +134,7 @@ namespace kCredit
             }
             catch (Exception ex)
             {
-                MessageFacade.Show(MessageFacade.error_query + "\r\n" + ex.Message, LabelFacade.sys_customer, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageFacade.Show(MessageFacade.error_query + "\r\n" + ex.Message,TitleLabel, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 ErrorLogFacade.Log(ex, "Exists");
             }
             return bExists;

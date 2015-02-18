@@ -281,7 +281,7 @@ namespace kCredit.SM
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            lblClear.Enabled = (txtSearch.Text.Length > 0);
+            lblClear.Enabled = !txtSearch.IsEmpty;
         }
 
         private void mnuShow_CheckedChanged(object sender, EventArgs e)

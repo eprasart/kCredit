@@ -108,7 +108,6 @@
     <Compile Include="Customer\CustomerList.Designer.cs">
       <DependentUpon>CustomerList.cs</DependentUpon>
     </Compile>
-    <Compile Include="GL\GL.cs" />
     <Compile Include="General\BranchList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -133,10 +132,10 @@
     <Compile Include="Loan\LoanList.Designer.cs">
       <DependentUpon>LoanList.cs</DependentUpon>
     </Compile>
-    <Compile Include="SY\Notification.cs">
+    <Compile Include="System\Notification.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SY\Notification.Designer.cs">
+    <Compile Include="System\Notification.Designer.cs">
       <DependentUpon>Notification.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
@@ -171,27 +170,27 @@
     <Compile Include="SM\UserList.Designer.cs">
       <DependentUpon>UserList.cs</DependentUpon>
     </Compile>
-    <Compile Include="SY\Msg.cs">
+    <Compile Include="System\Msg.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SY\Msg.Designer.cs">
+    <Compile Include="System\Msg.Designer.cs">
       <DependentUpon>Msg.cs</DependentUpon>
     </Compile>
-    <Compile Include="SY\SY.cs" />
-    <Compile Include="SY\Log.cs" />
-    <Compile Include="SY\MainForm.cs">
+    <Compile Include="System\SY.cs" />
+    <Compile Include="System\Log.cs" />
+    <Compile Include="System\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SY\MainForm.Designer.cs">
+    <Compile Include="System\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="SY\App.cs" />
-    <Compile Include="SY\Program.cs" />
+    <Compile Include="System\App.cs" />
+    <Compile Include="System\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SY\Splash.cs">
+    <Compile Include="System\Splash.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SY\Splash.Designer.cs">
+    <Compile Include="System\Splash.Designer.cs">
       <DependentUpon>Splash.cs</DependentUpon>
     </Compile>
     <Compile Include="Common\Validator.cs" />
@@ -223,7 +222,7 @@
     <EmbeddedResource Include="SM\UserList.resx">
       <DependentUpon>UserList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SY\MainForm.resx">
+    <EmbeddedResource Include="System\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -231,13 +230,13 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="SY\Msg.resx">
+    <EmbeddedResource Include="System\Msg.resx">
       <DependentUpon>Msg.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SY\Notification.resx">
+    <EmbeddedResource Include="System\Notification.resx">
       <DependentUpon>Notification.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SY\Splash.resx">
+    <EmbeddedResource Include="System\Splash.resx">
       <DependentUpon>Splash.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />

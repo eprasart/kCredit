@@ -29,14 +29,11 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnNew = new System.Windows.Forms.ToolStripButton();
             this.btnCopy = new System.Windows.Forms.ToolStripButton();
@@ -61,10 +58,9 @@
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txtFind = new kBit.UI.TextBox(this.components);
             this.txtName = new kBit.UI.TextBox(this.components);
-            this.lblName = new System.Windows.Forms.Label();
+            this.lblCode = new System.Windows.Forms.Label();
             this.chkHoliday = new System.Windows.Forms.CheckBox();
             this.glbGeneral = new kBit.UI.GroupLabel();
             this.chkSunday = new System.Windows.Forms.CheckBox();
@@ -73,9 +69,9 @@
             this.groupLabel2 = new kBit.UI.GroupLabel();
             this.glbNote = new kBit.UI.GroupLabel();
             this.txtNote = new System.Windows.Forms.TextBox();
-            this.cboRoundTotal = new kBit.UI.ComboBox(this.components);
-            this.cboRoundInterest = new kBit.UI.ComboBox(this.components);
-            this.cboRoundPrincipal = new kBit.UI.ComboBox(this.components);
+            this.cboTotalRound = new kBit.UI.ComboBox(this.components);
+            this.cboInterestRound = new kBit.UI.ComboBox(this.components);
+            this.cboPrincipalRound = new kBit.UI.ComboBox(this.components);
             this.cboMethod = new kBit.UI.ComboBox(this.components);
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -88,6 +84,8 @@
             this.mnuShowA = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuShowI = new System.Windows.Forms.ToolStripMenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.lblName = new System.Windows.Forms.Label();
+            this.txtCode = new kBit.UI.TextBox(this.components);
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -245,8 +243,10 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.txtName);
+            this.splitContainer1.Panel2.Controls.Add(this.txtCode);
             this.splitContainer1.Panel2.Controls.Add(this.lblName);
+            this.splitContainer1.Panel2.Controls.Add(this.txtName);
+            this.splitContainer1.Panel2.Controls.Add(this.lblCode);
             this.splitContainer1.Panel2.Controls.Add(this.chkHoliday);
             this.splitContainer1.Panel2.Controls.Add(this.glbGeneral);
             this.splitContainer1.Panel2.Controls.Add(this.chkSunday);
@@ -255,9 +255,9 @@
             this.splitContainer1.Panel2.Controls.Add(this.groupLabel2);
             this.splitContainer1.Panel2.Controls.Add(this.glbNote);
             this.splitContainer1.Panel2.Controls.Add(this.txtNote);
-            this.splitContainer1.Panel2.Controls.Add(this.cboRoundTotal);
-            this.splitContainer1.Panel2.Controls.Add(this.cboRoundInterest);
-            this.splitContainer1.Panel2.Controls.Add(this.cboRoundPrincipal);
+            this.splitContainer1.Panel2.Controls.Add(this.cboTotalRound);
+            this.splitContainer1.Panel2.Controls.Add(this.cboInterestRound);
+            this.splitContainer1.Panel2.Controls.Add(this.cboPrincipalRound);
             this.splitContainer1.Panel2.Controls.Add(this.cboMethod);
             this.splitContainer1.Panel2.Controls.Add(this.label3);
             this.splitContainer1.Panel2.Controls.Add(this.label2);
@@ -269,7 +269,7 @@
             this.splitContainer1.Panel2.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.splitContainer1.Panel2.Padding = new System.Windows.Forms.Padding(8, 4, 8, 8);
             this.splitContainer1.Panel2MinSize = 0;
-            this.splitContainer1.Size = new System.Drawing.Size(776, 471);
+            this.splitContainer1.Size = new System.Drawing.Size(776, 502);
             this.splitContainer1.SplitterDistance = 228;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 1;
@@ -331,13 +331,21 @@
             this.dgvList.AllowUserToAddRows = false;
             this.dgvList.AllowUserToDeleteRows = false;
             this.dgvList.AllowUserToResizeRows = false;
-            dataGridViewCellStyle9.BackColor = System.Drawing.Color.Honeydew;
-            this.dgvList.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Honeydew;
+            this.dgvList.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvList.BackgroundColor = System.Drawing.Color.White;
             this.dgvList.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
@@ -345,16 +353,15 @@
             this.Column2,
             this.Column3,
             this.Column8,
-            this.Column4,
-            this.Column7});
-            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle16.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.Color.Teal;
-            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvList.DefaultCellStyle = dataGridViewCellStyle16;
+            this.Column4});
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.Teal;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvList.DefaultCellStyle = dataGridViewCellStyle5;
             this.dgvList.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvList.Location = new System.Drawing.Point(1, 51);
             this.dgvList.Margin = new System.Windows.Forms.Padding(4);
@@ -365,7 +372,7 @@
             this.dgvList.RowHeadersWidth = 35;
             this.dgvList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvList.ShowEditingIcon = false;
-            this.dgvList.Size = new System.Drawing.Size(223, 416);
+            this.dgvList.Size = new System.Drawing.Size(223, 447);
             this.dgvList.TabIndex = 1;
             this.dgvList.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvList_CellDoubleClick);
             this.dgvList.SelectionChanged += new System.EventHandler(this.dgvList_SelectionChanged);
@@ -383,8 +390,8 @@
             // 
             this.colName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.colName.DataPropertyName = "name";
-            dataGridViewCellStyle10.NullValue = null;
-            this.colName.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle3.NullValue = null;
+            this.colName.DefaultCellStyle = dataGridViewCellStyle3;
             this.colName.HeaderText = "Name";
             this.colName.Name = "colName";
             this.colName.ReadOnly = true;
@@ -394,54 +401,38 @@
             // 
             this.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.Column2.DataPropertyName = "calculation_method";
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle11.Format = "N0";
-            dataGridViewCellStyle11.NullValue = null;
-            this.Column2.DefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle4.NullValue = null;
+            this.Column2.DefaultCellStyle = dataGridViewCellStyle4;
             this.Column2.HeaderText = "Calculation Method";
             this.Column2.Name = "Column2";
             this.Column2.ReadOnly = true;
-            this.Column2.Width = 134;
+            this.Column2.Width = 147;
             // 
             // Column3
             // 
+            this.Column3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.Column3.DataPropertyName = "principal_round_rule";
-            dataGridViewCellStyle12.Format = "dd-MM-yy";
-            this.Column3.DefaultCellStyle = dataGridViewCellStyle12;
-            this.Column3.HeaderText = "Priciple Rounding";
+            this.Column3.HeaderText = "Priciple";
             this.Column3.Name = "Column3";
             this.Column3.ReadOnly = true;
+            this.Column3.Width = 78;
             // 
             // Column8
             // 
             this.Column8.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.Column8.DataPropertyName = "interest_round_rule";
-            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle13.Format = "N2";
-            this.Column8.DefaultCellStyle = dataGridViewCellStyle13;
-            this.Column8.HeaderText = "Interest Rounding";
+            this.Column8.HeaderText = "Interest";
             this.Column8.Name = "Column8";
             this.Column8.ReadOnly = true;
-            this.Column8.Width = 125;
+            this.Column8.Width = 76;
             // 
             // Column4
             // 
+            this.Column4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Column4.DataPropertyName = "total_round_rule";
-            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle14.Format = "N0";
-            this.Column4.DefaultCellStyle = dataGridViewCellStyle14;
-            this.Column4.HeaderText = "Total Rounding";
+            this.Column4.HeaderText = "Total";
             this.Column4.Name = "Column4";
             this.Column4.ReadOnly = true;
-            // 
-            // Column7
-            // 
-            this.Column7.DataPropertyName = "note";
-            dataGridViewCellStyle15.Format = "ddd dd-MM-yy";
-            this.Column7.DefaultCellStyle = dataGridViewCellStyle15;
-            this.Column7.HeaderText = "Note";
-            this.Column7.Name = "Column7";
-            this.Column7.ReadOnly = true;
             // 
             // txtFind
             // 
@@ -466,7 +457,7 @@
             // 
             this.txtName.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtName.Format = null;
-            this.txtName.Location = new System.Drawing.Point(155, 40);
+            this.txtName.Location = new System.Drawing.Point(156, 73);
             this.txtName.Margin = new System.Windows.Forms.Padding(4);
             this.txtName.Name = "txtName";
             this.txtName.Numeric = false;
@@ -477,23 +468,23 @@
             this.txtName.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.toolTip1.SetToolTip(this.txtName, "Default conversion factor");
             // 
-            // lblName
+            // lblCode
             // 
-            this.lblName.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblName.Location = new System.Drawing.Point(12, 43);
-            this.lblName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(136, 17);
-            this.lblName.TabIndex = 31;
-            this.lblName.Text = "Name";
-            this.lblName.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblCode.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCode.Location = new System.Drawing.Point(12, 43);
+            this.lblCode.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblCode.Name = "lblCode";
+            this.lblCode.Size = new System.Drawing.Size(136, 17);
+            this.lblCode.TabIndex = 31;
+            this.lblCode.Text = "Code";
+            this.lblCode.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // chkHoliday
             // 
             this.chkHoliday.AutoSize = true;
             this.chkHoliday.Checked = true;
             this.chkHoliday.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkHoliday.Location = new System.Drawing.Point(155, 293);
+            this.chkHoliday.Location = new System.Drawing.Point(155, 326);
             this.chkHoliday.Name = "chkHoliday";
             this.chkHoliday.Size = new System.Drawing.Size(74, 21);
             this.chkHoliday.TabIndex = 30;
@@ -517,7 +508,7 @@
             this.chkSunday.AutoSize = true;
             this.chkSunday.Checked = true;
             this.chkSunday.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkSunday.Location = new System.Drawing.Point(242, 266);
+            this.chkSunday.Location = new System.Drawing.Point(242, 299);
             this.chkSunday.Name = "chkSunday";
             this.chkSunday.Size = new System.Drawing.Size(73, 21);
             this.chkSunday.TabIndex = 30;
@@ -530,7 +521,7 @@
             this.chkSaturday.AutoSize = true;
             this.chkSaturday.Checked = true;
             this.chkSaturday.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkSaturday.Location = new System.Drawing.Point(155, 266);
+            this.chkSaturday.Location = new System.Drawing.Point(155, 299);
             this.chkSaturday.Name = "chkSaturday";
             this.chkSaturday.Size = new System.Drawing.Size(81, 21);
             this.chkSaturday.TabIndex = 30;
@@ -542,7 +533,7 @@
             // 
             this.groupLabel1.Caption = "Rounding Rule";
             this.groupLabel1.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupLabel1.Location = new System.Drawing.Point(12, 112);
+            this.groupLabel1.Location = new System.Drawing.Point(12, 145);
             this.groupLabel1.Margin = new System.Windows.Forms.Padding(4, 12, 4, 4);
             this.groupLabel1.Name = "groupLabel1";
             this.groupLabel1.Size = new System.Drawing.Size(373, 21);
@@ -553,7 +544,7 @@
             // 
             this.groupLabel2.Caption = "Installment Date";
             this.groupLabel2.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupLabel2.Location = new System.Drawing.Point(12, 242);
+            this.groupLabel2.Location = new System.Drawing.Point(12, 275);
             this.groupLabel2.Margin = new System.Windows.Forms.Padding(4, 12, 4, 4);
             this.groupLabel2.Name = "groupLabel2";
             this.groupLabel2.Size = new System.Drawing.Size(373, 21);
@@ -566,10 +557,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.glbNote.Caption = "Note";
             this.glbNote.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.glbNote.Location = new System.Drawing.Point(12, 360);
+            this.glbNote.Location = new System.Drawing.Point(12, 393);
             this.glbNote.Margin = new System.Windows.Forms.Padding(4, 12, 4, 4);
             this.glbNote.Name = "glbNote";
-            this.glbNote.Size = new System.Drawing.Size(500, 21);
+            this.glbNote.Size = new System.Drawing.Size(498, 21);
             this.glbNote.TabIndex = 28;
             this.glbNote.TabStop = false;
             // 
@@ -578,67 +569,71 @@
             this.txtNote.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtNote.Location = new System.Drawing.Point(12, 389);
+            this.txtNote.Location = new System.Drawing.Point(12, 422);
             this.txtNote.Margin = new System.Windows.Forms.Padding(4);
             this.txtNote.Multiline = true;
             this.txtNote.Name = "txtNote";
             this.txtNote.ReadOnly = true;
-            this.txtNote.Size = new System.Drawing.Size(516, 68);
+            this.txtNote.Size = new System.Drawing.Size(514, 66);
             this.txtNote.TabIndex = 29;
             this.txtNote.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
-            // cboRoundTotal
+            // cboTotalRound
             // 
-            this.cboRoundTotal.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboRoundTotal.Enabled = false;
-            this.cboRoundTotal.FormattingEnabled = true;
-            this.cboRoundTotal.Location = new System.Drawing.Point(155, 202);
-            this.cboRoundTotal.Name = "cboRoundTotal";
-            this.cboRoundTotal.Size = new System.Drawing.Size(230, 25);
-            this.cboRoundTotal.TabIndex = 15;
-            this.cboRoundTotal.TabOnEnter = true;
-            this.cboRoundTotal.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
+            this.cboTotalRound.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboTotalRound.Enabled = false;
+            this.cboTotalRound.FormattingEnabled = true;
+            this.cboTotalRound.Location = new System.Drawing.Point(155, 235);
+            this.cboTotalRound.Name = "cboTotalRound";
+            this.cboTotalRound.Size = new System.Drawing.Size(230, 25);
+            this.cboTotalRound.TabIndex = 15;
+            this.cboTotalRound.TabOnEnter = true;
+            this.cboTotalRound.Value = "";
+            this.cboTotalRound.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
-            // cboRoundInterest
+            // cboInterestRound
             // 
-            this.cboRoundInterest.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboRoundInterest.Enabled = false;
-            this.cboRoundInterest.FormattingEnabled = true;
-            this.cboRoundInterest.Location = new System.Drawing.Point(155, 171);
-            this.cboRoundInterest.Name = "cboRoundInterest";
-            this.cboRoundInterest.Size = new System.Drawing.Size(230, 25);
-            this.cboRoundInterest.TabIndex = 15;
-            this.cboRoundInterest.TabOnEnter = true;
-            this.cboRoundInterest.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
+            this.cboInterestRound.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboInterestRound.Enabled = false;
+            this.cboInterestRound.FormattingEnabled = true;
+            this.cboInterestRound.Location = new System.Drawing.Point(155, 204);
+            this.cboInterestRound.Name = "cboInterestRound";
+            this.cboInterestRound.Size = new System.Drawing.Size(230, 25);
+            this.cboInterestRound.TabIndex = 15;
+            this.cboInterestRound.TabOnEnter = true;
+            this.cboInterestRound.Value = "";
+            this.cboInterestRound.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
-            // cboRoundPrincipal
+            // cboPrincipalRound
             // 
-            this.cboRoundPrincipal.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboRoundPrincipal.Enabled = false;
-            this.cboRoundPrincipal.FormattingEnabled = true;
-            this.cboRoundPrincipal.Location = new System.Drawing.Point(155, 140);
-            this.cboRoundPrincipal.Name = "cboRoundPrincipal";
-            this.cboRoundPrincipal.Size = new System.Drawing.Size(230, 25);
-            this.cboRoundPrincipal.TabIndex = 15;
-            this.cboRoundPrincipal.TabOnEnter = true;
-            this.cboRoundPrincipal.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
+            this.cboPrincipalRound.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboPrincipalRound.Enabled = false;
+            this.cboPrincipalRound.FormattingEnabled = true;
+            this.cboPrincipalRound.Location = new System.Drawing.Point(155, 173);
+            this.cboPrincipalRound.Name = "cboPrincipalRound";
+            this.cboPrincipalRound.Size = new System.Drawing.Size(230, 25);
+            this.cboPrincipalRound.TabIndex = 15;
+            this.cboPrincipalRound.TabOnEnter = true;
+            this.cboPrincipalRound.Value = "";
+            this.cboPrincipalRound.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // cboMethod
             // 
             this.cboMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboMethod.Enabled = false;
             this.cboMethod.FormattingEnabled = true;
-            this.cboMethod.Location = new System.Drawing.Point(155, 72);
+            this.cboMethod.Location = new System.Drawing.Point(155, 105);
             this.cboMethod.Name = "cboMethod";
             this.cboMethod.Size = new System.Drawing.Size(230, 25);
             this.cboMethod.TabIndex = 15;
             this.cboMethod.TabOnEnter = true;
+            this.cboMethod.Value = "";
             this.cboMethod.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // label3
             // 
             this.label3.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(12, 205);
+            this.label3.Location = new System.Drawing.Point(12, 238);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(136, 17);
@@ -649,7 +644,7 @@
             // label2
             // 
             this.label2.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(12, 174);
+            this.label2.Location = new System.Drawing.Point(12, 207);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(136, 17);
@@ -660,7 +655,7 @@
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(12, 143);
+            this.label1.Location = new System.Drawing.Point(12, 176);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(136, 17);
@@ -671,7 +666,7 @@
             // label17
             // 
             this.label17.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label17.Location = new System.Drawing.Point(12, 74);
+            this.label17.Location = new System.Drawing.Point(12, 107);
             this.label17.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(136, 17);
@@ -684,18 +679,19 @@
             this.cboMove.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboMove.Enabled = false;
             this.cboMove.FormattingEnabled = true;
-            this.cboMove.Location = new System.Drawing.Point(155, 320);
+            this.cboMove.Location = new System.Drawing.Point(155, 353);
             this.cboMove.Name = "cboMove";
             this.cboMove.Size = new System.Drawing.Size(230, 25);
             this.cboMove.TabIndex = 1;
             this.cboMove.TabOnEnter = true;
+            this.cboMove.Value = "";
             this.cboMove.SelectedIndexChanged += new System.EventHandler(this.cboFrequencyUnit_SelectedIndexChanged);
             this.cboMove.TextChanged += new System.EventHandler(this.Dirty_TextChanged);
             // 
             // label4
             // 
             this.label4.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(39, 267);
+            this.label4.Location = new System.Drawing.Point(39, 300);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(109, 17);
@@ -706,7 +702,7 @@
             // lblOnNonWorkingDay
             // 
             this.lblOnNonWorkingDay.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblOnNonWorkingDay.Location = new System.Drawing.Point(9, 323);
+            this.lblOnNonWorkingDay.Location = new System.Drawing.Point(9, 356);
             this.lblOnNonWorkingDay.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblOnNonWorkingDay.Name = "lblOnNonWorkingDay";
             this.lblOnNonWorkingDay.Size = new System.Drawing.Size(139, 17);
@@ -740,11 +736,36 @@
             this.mnuShowI.Text = "Show Inactive";
             this.mnuShowI.CheckedChanged += new System.EventHandler(this.mnuShow_CheckedChanged);
             // 
+            // lblName
+            // 
+            this.lblName.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblName.Location = new System.Drawing.Point(12, 76);
+            this.lblName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblName.Name = "lblName";
+            this.lblName.Size = new System.Drawing.Size(136, 17);
+            this.lblName.TabIndex = 31;
+            this.lblName.Text = "Name";
+            this.lblName.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // txtCode
+            // 
+            this.txtCode.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCode.Format = null;
+            this.txtCode.Location = new System.Drawing.Point(156, 40);
+            this.txtCode.Margin = new System.Windows.Forms.Padding(4);
+            this.txtCode.Name = "txtCode";
+            this.txtCode.Numeric = false;
+            this.txtCode.ReadOnly = true;
+            this.txtCode.Size = new System.Drawing.Size(230, 25);
+            this.txtCode.TabIndex = 32;
+            this.txtCode.TabOnEnter = true;
+            this.txtCode.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
             // frmProduct
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(776, 496);
+            this.ClientSize = new System.Drawing.Size(776, 527);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStrip1);
             this.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -807,21 +828,22 @@
         private System.Windows.Forms.Label label17;
         private kBit.UI.ComboBox cboMethod;
         private kBit.UI.GroupLabel groupLabel1;
-        private kBit.UI.ComboBox cboRoundPrincipal;
-        private kBit.UI.ComboBox cboRoundTotal;
-        private kBit.UI.ComboBox cboRoundInterest;
+        private kBit.UI.ComboBox cboPrincipalRound;
+        private kBit.UI.ComboBox cboTotalRound;
+        private kBit.UI.ComboBox cboInterestRound;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private kBit.UI.TextBox txtName;
-        private System.Windows.Forms.Label lblName;
+        private System.Windows.Forms.Label lblCode;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn colName;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
+        private kBit.UI.TextBox txtCode;
+        private System.Windows.Forms.Label lblName;
     }
 }
 

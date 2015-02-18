@@ -143,7 +143,7 @@ namespace kCredit
                 valid.Add(txtCode, "code_blank");
             else if (BranchFacade.Exists(Code, Id))
                 valid.Add(txtCode, "code_exists");
-            if (txtName.Text.Trim().Length == 0) valid.Add(txtName, "name_blank");           
+            if (txtName.IsEmptyTrim) valid.Add(txtName, "name_blank");           
             return valid.Show();
         }
 
@@ -166,13 +166,13 @@ namespace kCredit
                     var m = BranchFacade.Select(Id);
                     txtCode.Text = m.Code;
                     txtName.Text = m.Name.ToString();
-                    cboParent.SelectedValue = m.Parent_Branch;
-                    cboCurrency.SelectedValue = m.Currency;
+                    cboParent.Value = m.Parent_Branch;
+                    cboCurrency.Value = m.Currency;
                     txtAddress.Text = m.Address;
-                    cboProvince.SelectedValue = m.Province;
-                    cboDistrict.SelectedValue = m.District;
-                    cboCommune.SelectedValue = m.Commune;
-                    cboVillage.SelectedValue = m.Village;
+                    cboProvince.Value = m.Province;
+                    cboDistrict.Value = m.District;
+                    cboCommune.Value = m.Commune;
+                    cboVillage.Value = m.Village;
                     txtNote.Text = m.Note;
                     SetStatus(m.Status);
                     LockControls();
@@ -287,13 +287,13 @@ namespace kCredit
             m.Id = Id;
             m.Code = txtCode.Text.Trim();
             m.Name = txtName.Text;
-            m.Parent_Branch = cboParent.SelectedValue.ToString();
-            m.Currency = cboCurrency.SelectedValue.ToString();
+            m.Parent_Branch = cboParent.Value;
+            m.Currency = cboCurrency.Value;
             m.Address = txtAddress.Text;
-            m.Province = cboProvince.SelectedValue.ToString();
-            m.District = cboDistrict.SelectedValue.ToString();
-            m.Commune = cboCommune.SelectedValue.ToString();
-            m.Village = cboVillage.SelectedValue.ToString();
+            m.Province = cboProvince.Value;
+            m.District = cboDistrict.Value;
+            m.Commune = cboCommune.Value;
+            m.Village = cboVillage.Value;
             m.Note = txtNote.Text;
             if (m.Id == 0)
             {
@@ -651,7 +651,7 @@ namespace kCredit
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            if (txtFind.Text.Length == 0) btnFind_Click(null, null);
+            if (txtFind.IsEmpty) btnFind_Click(null, null);
         }
 
         private void mnuShow_CheckedChanged(object sender, EventArgs e)
@@ -766,24 +766,24 @@ namespace kCredit
 
         private void txtFind_Leave(object sender, EventArgs e)
         {
-            lblSearch.Visible = (txtFind.Text.Length == 0);
+            lblSearch.Visible = (txtFind.IsEmpty);
         }
 
         private void cboProvince_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Data.LoadRegional(cboDistrict, "'D'", cboProvince.SelectedValue);
+            Data.LoadRegional(cboDistrict, "'D'", cboProvince.Value);
             cboDistrict.SelectedIndex = -1;
         }
 
         private void cboDistrict_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Data.LoadRegional(cboCommune, "'C'", cboDistrict.SelectedValue);
+            Data.LoadRegional(cboCommune, "'C'", cboDistrict.Value);
             cboCommune.SelectedIndex = -1;
         }
 
         private void cboCommune_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Data.LoadRegional(cboVillage, "'V'", cboCommune.SelectedValue);
+            Data.LoadRegional(cboVillage, "'V'", cboCommune.Value);
             cboVillage.SelectedIndex = -1;
         }
     }

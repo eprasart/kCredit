@@ -16,8 +16,11 @@ namespace kCredit
         bool IsDirty = false;
         bool IsIgnore = true;
 
+        string customerNo;
+
         DateTime dteMaturity;
         string ModuleName = "Loan";
+        string TitleLabel = LoanFacade.TitleLabel;
 
         public frmLoan()
         {
@@ -36,7 +39,7 @@ namespace kCredit
 
         private DateTime GetNextRepaymentDate(DateTime dteCurrent, int nNo = 1)
         {
-            string sUnit = cboFrequencyUnit.SelectedValue.ToString();
+            string sUnit = cboFrequencyUnit.Value;
             int nFrequency = int.Parse(txtFrequency.Text);
             DateTime dteRepayment = dteCurrent;
             switch (sUnit)
@@ -122,7 +125,7 @@ namespace kCredit
             dgvSchedule.Rows.Clear();
 
             int nInstallmentNo = int.Parse(txtInstallmentNo.Text);
-            string sFrequencyUnit = cboFrequencyUnit.SelectedValue.ToString();
+            string sFrequencyUnit = cboFrequencyUnit.Value;
             double dAmount = double.Parse(txtAmount.Text);
             double dInterestRate = double.Parse(txtInterestRate.Text);
             if (dInterestRate >= 1) dInterestRate /= 100;
@@ -138,23 +141,25 @@ namespace kCredit
             double dTotalPay = 0;
             double dGrandTotalPay = 0;
             double dPMT = 0;   // for EMI
-            string sMethod = cboMethod.SelectedValue.ToString();    // Calculation method            
-            CurrencyFacade.LoadSetting(cboCurrency.SelectedValue.ToString());
+            string sProd = cboProduct.Value;    // Calculation method            
+            CurrencyFacade.LoadSetting(cboCurrency.Value);
+            var prod = ProductFacade.Select(sProd);
 
-            if (sMethod != "FI")
-                dInterestPay = CurrencyFacade.Round(dPrincipalOut * nDayNum * dInterestRatePerDay);
+
+            if (sProd != "FI")
+                dInterestPay = CurrencyFacade.Round(dPrincipalOut * nDayNum * dInterestRatePerDay, prod.Interest_Round_Rule);
             else    // == "FI", Flat interest ( * original amount)
                 dInterestPay = dAmount * nDayNum * dInterestRatePerDay;
-            switch (sMethod)
+            switch (sProd)
             {
                 case "FI":
                 case "D":
-                    dPrincipalPay = CurrencyFacade.Round(dAmount / nInstallmentNo);
+                    dPrincipalPay = CurrencyFacade.Round(dAmount / nInstallmentNo, prod.Principal_Round_Rule);
                     dTotalPay = dPrincipalPay + dInterestPay;
                     break;
                 case "EMI":
-                    dPMT = CurrencyFacade.Round(ScheduleFacade.EMI(dAmount, dInterestRate, nInstallmentNo));
-                    dTotalPay = dPMT;
+                    dPMT = ScheduleFacade.EMI(dAmount, dInterestRate, nInstallmentNo);
+                    dTotalPay = CurrencyFacade.Round(dPMT, prod.Total_Round_Rule);
                     dPrincipalPay = dTotalPay - dInterestPay;
                     break;
             }
@@ -167,14 +172,14 @@ namespace kCredit
 
             for (int i = 2; i < nInstallmentNo; i++)
             {
-                dteRepayment = GetNextRepaymentDate(dteFirstInstallment, i - 1);
+                dteRepayment = DateFacade.GetNextWorkingDay(GetNextRepaymentDate(dteFirstInstallment, i - 1), prod.Never_On, prod.Non_Working_Day_Move);
                 nDayNum = GetTotalDays(dtePrevious, dteRepayment);
-                if (sMethod != "FI")
+                if (sProd != "FI")
                     dInterestPay = dPrincipalOut * nDayNum * dInterestRatePerDay;
                 else  // == "FI", Flat interest ( * original amount)
                     dInterestPay = dAmount * nDayNum * dInterestRatePerDay;
-                dInterestPay = CurrencyFacade.Round(dInterestPay);
-                switch (sMethod)
+                dInterestPay = CurrencyFacade.Round(dInterestPay, prod.Interest_Round_Rule);
+                switch (sProd)
                 {
                     case "FI":
                     case "D":
@@ -185,19 +190,19 @@ namespace kCredit
                         dPrincipalPay = dTotalPay - dInterestPay;
                         break;
                 }
-                dTotalPay = CurrencyFacade.Round(dTotalPay);
+                dTotalPay = CurrencyFacade.Round(dTotalPay, prod.Total_Round_Rule);
                 AddRow(i, dteRepayment, dPrincipalPay, dInterestPay, dTotalPay, dPrincipalOut);
 
                 dPrincipalOut -= dPrincipalPay;
                 dtePrevious = dteRepayment;
             }
             nDayNum = GetTotalDays(dtePrevious, dteMaturity);
-            if (sMethod != "FI")
+            if (sProd != "FI")
                 dInterestPay = dPrincipalOut * nDayNum * dInterestRatePerDay;
             else  // == "FI", Flat interest ( * original amount)
                 dInterestPay = dAmount * nDayNum * dInterestRatePerDay;
-            dInterestPay = CurrencyFacade.Round(dInterestPay);
-            switch (sMethod)
+            dInterestPay = CurrencyFacade.Round(dInterestPay, prod.Interest_Round_Rule);
+            switch (sProd)
             {
                 case "FI":
                 case "D":
@@ -208,7 +213,7 @@ namespace kCredit
                     dPrincipalPay = dTotalPay - dInterestPay;
                     break;
             }
-            dTotalPay = CurrencyFacade.Round(dTotalPay);
+            dTotalPay = CurrencyFacade.Round(dTotalPay, prod.Total_Round_Rule);
             AddRow(nInstallmentNo, dteMaturity, dPrincipalPay, dInterestPay, dTotalPay, 0);
 
             if (ModifierKeys != Keys.Control)   // Switch to Schedule tab
@@ -228,7 +233,7 @@ namespace kCredit
             catch (Exception ex)
             {
                 Cursor = Cursors.Default;
-                MessageFacade.Show(MessageFacade.error_retrieve_data + "\r\n" + ex.Message, LabelFacade.sys_customer, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageFacade.Show(MessageFacade.error_retrieve_data + "\r\n" + ex.Message, TitleLabel, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 ErrorLogFacade.Log(ex);
                 return;
             }
@@ -268,16 +273,12 @@ namespace kCredit
             cboPaymentSite.Enabled = !l;
             cboAgent.Enabled = !l;
             cboCurrency.Enabled = !l;
-            cboMethod.Enabled = !l;
+            cboProduct.Enabled = !l;
             dtpDisburse.Enabled = !l;
             dtpFirstInstallment.Enabled = !l;
             txtInstallmentNo.ReadOnly = l;
             txtAmount.ReadOnly = l;
             txtInterestRate.ReadOnly = l;
-            chkSaturday.Enabled = !l;
-            chkSunday.Enabled = !l;
-            chkHoliday.Enabled = !l;
-            chkNeverOn_CheckedChanged(null, null);
             txtNote.ReadOnly = l;
 
             btnNew.Enabled = l;
@@ -295,7 +296,6 @@ namespace kCredit
             btnFilter.Enabled = l;
 
             btnBrowse.Enabled = !l;
-            btnSchedule.Enabled = !l;
             btnGenerate.Enabled = !l;
             btnPreview.Enabled = l;
             Validator.Close(this);
@@ -330,10 +330,8 @@ namespace kCredit
             if (cboCurrency.Unspecified) valid.Add(cboCurrency, "currency_unspecified");
             if (!Util.IsDecimal(txtInterestRate.Text)) valid.Add(txtInterestRate, "interest_rate_invalid");
             if (dtpFirstInstallment.Checked && dtpFirstInstallment.Value <= dtpDisburse.Value) valid.Add(dtpFirstInstallment, "first_installment_date_invalid");
-            if (txtCustomerNo.IsEmpty) valid.Add(btnBrowse, "customer_unspecified");
             if (cboPaymentSite.Unspecified) valid.Add(cboPaymentSite, "payment_site_unspecified");
             if (cboAgent.Unspecified) valid.Add(cboAgent, "credit_agent_unspecified");
-            if (cboMove.Enabled && cboMove.Unspecified) valid.Add(cboMove, "non_working_move_unspecified");
             return valid.Show();
         }
 
@@ -348,16 +346,10 @@ namespace kCredit
             dtpDisburse.Value = DateTime.Today;
             dtpFirstInstallment.Checked = false;
             txtMaturity.Text = "";
-            txtCustomerNo.Text = "";
             txtCustomerName.Text = "";
             cboPaymentSite.SelectedIndex = -1;
             cboAgent.SelectedIndex = -1;
             txtAccountStatus.Text = "";
-            chkSaturday.Checked = true;
-            chkSunday.Checked = true;
-            chkHoliday.Checked = true;
-            cboMove.SelectedIndex = 0;
-            txtNote.Text = "";
             dgvSchedule.DataSource = null;
             dgvSchedule.Rows.Clear();
             IsDirty = false;
@@ -371,33 +363,27 @@ namespace kCredit
                 {
                     var m = LoanFacade.Select(Id);
                     txtAccountNo.Text = m.Account_No;
-                    txtCustomerNo.Text = m.Customer_No;
+                    customerNo = m.Customer_No;
                     txtCustomerName.Text = dgvList.CurrentRow.Cells["colName"].Value.ToString();
-                    cboFrequencyUnit.SelectedValue = m.Frequency_Unit;
+                    cboFrequencyUnit.Value = m.Frequency_Unit;
                     txtFrequency.Text = m.Frequency.ToString(txtFrequency.Format);
                     txtInstallmentNo.Text = m.Installment_No.ToString(txtInstallmentNo.Format);
                     txtAmount.Text = m.Amount.ToString(txtAmount.Format);
-                    cboCurrency.SelectedValue = m.Currency;
+                    cboCurrency.Value = m.Currency;
                     txtInterestRate.Text = m.Interest_Rate.ToString(txtInterestRate.Format);
-                    cboMethod.SelectedValue = m.Calculation_Method;
+                    cboProduct.Value = m.Product;
                     dtpDisburse.Value = m.Disburse_Date;
                     dtpFirstInstallment.Value = m.First_Installment_Date;
                     dtpFirstInstallment.Checked = (dtpFirstInstallment.Value != GetNextRepaymentDate(dtpDisburse.Value));
                     txtMaturity.Text = m.Maturity_Date.ToString("ddd dd-MM-yy");
                     txtAccountNo.Text = m.Account_No;
-                    txtCustomerNo.Text = m.Customer_No;
-                    cboPurpose.SelectedValue = m.Purpose;
-                    cboPaymentSite.SelectedValue = m.Payment_Site;
+                    cboPurpose.Value = m.Purpose;
+                    cboPaymentSite.Value = m.Payment_Site;
                     cboAgent.SelectedValue = m.Credit_Agent_Id;
                     txtAccountStatus.Text = m.Account_Status;
-                    chkSaturday.Checked = (m.Never_On.Contains("6"));
-                    chkSunday.Checked = (m.Never_On.Contains("0"));
-                    chkHoliday.Checked = (m.Never_On.Contains("H"));
-                    cboMove.SelectedValue = m.Non_Working_Day_Move;
-                    txtNote.Text = m.Note;
                     SetStatus(m.Status);
                     // Schedule
-                    CurrencyFacade.LoadSetting(cboCurrency.SelectedValue.ToString());
+                    CurrencyFacade.LoadSetting(cboCurrency.Value);
                     colPrin.DefaultCellStyle.Format = CurrencyFacade.Format;
                     colInt.DefaultCellStyle.Format = CurrencyFacade.Format;
                     colTotal.DefaultCellStyle.Format = CurrencyFacade.Format;
@@ -409,7 +395,7 @@ namespace kCredit
                 }
                 catch (Exception ex)
                 {
-                    MessageFacade.Show(MessageFacade.error_load_record + "\r\n" + ex.Message, LabelFacade.sys_customer, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageFacade.Show(MessageFacade.error_load_record + "\r\n" + ex.Message, TitleLabel, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     ErrorLogFacade.Log(ex);
                 }
             else    // when grid is empty => disable buttons and clear all controls
@@ -513,27 +499,21 @@ namespace kCredit
             var m = new Loan();
             var log = new SessionLog { Module = ModuleName };
             m.Id = Id;
-            m.Frequency_Unit = cboFrequencyUnit.SelectedValue.ToString();
+            m.Customer_No = customerNo;
+            m.Frequency_Unit = cboFrequencyUnit.Value;
             m.Frequency = int.Parse(txtFrequency.Text);
             m.Installment_No = int.Parse(txtInstallmentNo.Text);
             m.Amount = double.Parse(txtAmount.Text);
-            m.Currency = cboCurrency.SelectedValue.ToString();
+            m.Currency = cboCurrency.Value;
             m.Interest_Rate = double.Parse(txtInterestRate.Text);
-            m.Calculation_Method = cboMethod.SelectedValue.ToString();
+            m.Product = cboProduct.Value;
             m.Disburse_Date = dtpDisburse.Value;
             m.First_Installment_Date = dtpFirstInstallment.Value;
             m.Maturity_Date = dteMaturity;
             m.Account_No = txtAccountNo.Text;
-            m.Customer_No = txtCustomerNo.Text;
-            m.Purpose = cboPurpose.SelectedValue.ToString();
-            m.Payment_Site = cboPaymentSite.SelectedValue.ToString();
-            m.Credit_Agent_Id = int.Parse(cboAgent.SelectedValue.ToString());
-            string sNeverOn = "";
-            if (chkSaturday.Checked) sNeverOn = "6";
-            if (chkSunday.Checked) sNeverOn += "0";
-            if (chkHoliday.Checked) sNeverOn += "H";
-            m.Never_On = sNeverOn;
-            m.Non_Working_Day_Move = cboMove.SelectedValue.ToString();
+            m.Purpose = cboPurpose.Value;
+            m.Payment_Site = cboPaymentSite.Value;
+            m.Credit_Agent_Id = int.Parse(cboAgent.Value);
             m.Note = txtNote.Text;
             if (m.Id == 0)
             {
@@ -589,11 +569,10 @@ namespace kCredit
                 SetSettings();
                 SetLabels();
                 Data.LoadList(cboFrequencyUnit, "frequency_unit");
-                Data.LoadList(cboMethod, "calculation_method");
+                Data.LoadList(cboProduct, "calculation_method");
                 Data.LoadList(cboPurpose, "loan_purpose");
                 Data.LoadList(cboPaymentSite, "payment_site");
                 Data.LoadAgent(cboAgent);
-                Data.LoadList(cboMove, "non_working_day_move");
                 Data.LoadCurrency(cboCurrency);
 
                 SessionLogFacade.Log(Constant.Priority_Information, ModuleName, Constant.Log_Open, "Opened");
@@ -603,7 +582,7 @@ namespace kCredit
             catch (Exception ex)
             {
                 ErrorLogFacade.Log(ex, "Form_Load");
-                MessageFacade.Show(MessageFacade.error_load_form + "\r\n" + ex.Message, LabelFacade.sys_customer, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageFacade.Show(MessageFacade.error_load_form + "\r\n" + ex.Message, TitleLabel, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -764,7 +743,7 @@ namespace kCredit
                 }
                 else
                     if (MessageFacade.Show(msg + "\r\n" + MessageFacade.proceed_confirmation, MessageFacade.active_inactive, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.No)
-                        return;
+                    return;
             }
             try
             {
@@ -802,7 +781,7 @@ namespace kCredit
                     else if (result == System.Windows.Forms.DialogResult.Cancel)
                         return;
                 }
-                LoanFacade.DecrementSrNo(cboFrequencyUnit.SelectedValue.ToString());
+                LoanFacade.DecrementSrNo(cboFrequencyUnit.Value);
                 LockControls(true);
                 dgvList.Focus();
                 try
@@ -838,9 +817,9 @@ namespace kCredit
                     }
                     else
                         if (MessageFacade.Show(msg + "\r\n" + MessageFacade.lock_override, LabelFacade.sys_unlock, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.Yes)
-                            SessionLogFacade.Log(Constant.Priority_Caution, ModuleName, Constant.Log_Lock, "Override lock. Id=" + dgvList.Id + ", Code=" + txtAccountNo.Text);
-                        else
-                            return;
+                        SessionLogFacade.Log(Constant.Priority_Caution, ModuleName, Constant.Log_Lock, "Override lock. Id=" + dgvList.Id + ", Code=" + txtAccountNo.Text);
+                    else
+                        return;
                 }
                 txtMaturity.SelectionStart = txtMaturity.Text.Length;
                 txtMaturity.Focus();
@@ -917,7 +896,7 @@ namespace kCredit
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            if (txtFind.Text.Length == 0) btnFind_Click(null, null);
+            if (txtFind.IsEmpty) btnFind_Click(null, null);
         }
 
         private void mnuShow_CheckedChanged(object sender, EventArgs e)
@@ -973,12 +952,13 @@ namespace kCredit
             splitContainer1.IsSplitterFixed = !IsExpand;
             if (!IsExpand)
             {
+                ConfigFacade.SetSplitterDistance(Name, splitContainer1.SplitterDistance);
                 splitContainer1.SplitterDistance = splitContainer1.Size.Width;
                 splitContainer1.FixedPanel = FixedPanel.Panel2;
             }
             else
             {
-                splitContainer1.SplitterDistance = ConfigFacade.GetInt(Constant.Splitter_Distance + Name); //ConfigFacade.ic_unit_measure_splitter_distance;
+                splitContainer1.SplitterDistance = ConfigFacade.GetSplitterDistance(Name); //ConfigFacade.ic_unit_measure_splitter_distance;
                 splitContainer1.FixedPanel = FixedPanel.Panel1;
             }
             dgvList.ShowLessColumns(IsExpand);
@@ -1030,13 +1010,13 @@ namespace kCredit
 
         private void txtFind_Leave(object sender, EventArgs e)
         {
-            lblSearch.Visible = (txtFind.Text.Length == 0);
+            lblSearch.Visible = (txtFind.IsEmpty);
         }
 
         private void cboFrequencyUnit_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //if (cboFrequencyUnit.SelectedIndex == -1 || btnNew.Enabled) return;
-            //txtAccountNo.Text = LoanFacade.GetNextAccountNo(cboFrequencyUnit.SelectedValue.ToString()); //todo: Format No; from table
+            //if (cboFrequencyUnit.UnSpecified || btnNew.Enabled) return;
+            //txtAccountNo.Text = LoanFacade.GetNextAccountNo(cboFrequencyUnit.Value); //todo: Format No; from table
         }
 
         private void txtMaturity_Enter(object sender, EventArgs e)
@@ -1049,25 +1029,13 @@ namespace kCredit
             GenerateSchedule();
         }
 
-        private void chkNeverOn_CheckedChanged(object sender, EventArgs e)
-        {
-            bool b = (!chkSaturday.Checked && !chkSunday.Checked && !chkHoliday.Checked);
-            cboMove.Enabled = !b;
-            if (!chkHoliday.Enabled)
-                cboMove.Enabled = false;
-            else
-                lblOnNonWorkingDay.Enabled = !b;
-            IsDirty = true;
-            //if (!cboMove.Enabled) cboMove.SelectedValue = "";
-        }
-
         private void btnBrowse_Click(object sender, EventArgs e)
         {
             var fCustomer = new frmCustomer();
             fCustomer.IsDlg = true;
             if (fCustomer.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
-            txtCustomerNo.Text = fCustomer.CustomerNo;
-            txtAccountNo.Text = LoanFacade.GetNextAccountNo(txtCustomerNo.Text);
+            customerNo = fCustomer.CustomerNo;
+            txtAccountNo.Text = LoanFacade.GetNextAccountNo(customerNo);
             txtCustomerName.Text = fCustomer.FullName;
         }
 

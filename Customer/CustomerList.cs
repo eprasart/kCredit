@@ -20,7 +20,8 @@ namespace kCredit
         public string FullName = "";    // Customer Full name
 
         frmMsg fMsg = null;
-        string ModuleName = Constant.Module_Customer;
+        string ModuleName = "Customer";
+        string TitleLabel = CustomerFacade.TitleLabel;
 
         StringFormat headerCellFormat = new StringFormat()
         {
@@ -56,7 +57,7 @@ namespace kCredit
             catch (Exception ex)
             {
                 Cursor = Cursors.Default;
-                MessageFacade.Show(MessageFacade.error_retrieve_data + "\r\n" + ex.Message, LabelFacade.sys_customer, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageFacade.Show(MessageFacade.error_retrieve_data + "\r\n" + ex.Message, TitleLabel, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 ErrorLogFacade.Log(ex);
                 return;
             }
@@ -198,30 +199,30 @@ namespace kCredit
                     txtCustomerNo.Text = m.Customer_No;
                     txtFirstName.Text = m.First_Name;
                     txtLastName.Text = m.Last_Name;
-                    cboGender.SelectedValue = m.Gender;
+                    cboGender.Value = m.Gender;
                     dtpDOB.Value = m.Date_of_Birth;
-                    cboType.SelectedValue = m.Type;
-                    cboCategory.SelectedValue = m.Category;
-                    cboBranch.SelectedValue = m.Branch_Code;
-                    cboIDType1.SelectedValue = m.Id_Type1;
+                    cboType.Value = m.Type;
+                    cboCategory.Value = m.Category;
+                    cboBranch.Value = m.Branch_Code;
+                    cboIDType1.Value = m.Id_Type1;
                     txtIDValue1.Text = m.Id_Value1;
-                    cboIDType2.SelectedValue = m.Id_Type2;
+                    cboIDType2.Value = m.Id_Type2;
                     txtIDValue2.Text = m.Id_Value2;
-                    cboIDType3.SelectedValue = m.Id_Type3;
+                    cboIDType3.Value = m.Id_Type3;
                     txtIDValue3.Text = m.Id_Value3;
-                    cboContactType1.SelectedValue = m.Contact_Type1;
+                    cboContactType1.Value = m.Contact_Type1;
                     txtContactValue1.Text = m.Contact_Value1;
-                    cboContactType2.SelectedValue = m.Contact_Type2;
+                    cboContactType2.Value = m.Contact_Type2;
                     txtContactValue2.Text = m.Contact_Value2;
-                    cboContactType3.SelectedValue = m.Contact_Type3;
+                    cboContactType3.Value = m.Contact_Type3;
                     txtContactValue3.Text = m.Contact_Value3;
-                    cboContactType4.SelectedValue = m.Contact_Type4;
+                    cboContactType4.Value = m.Contact_Type4;
                     txtContactValue4.Text = m.Contact_Value4;
                     txtAddress.Text = m.Address;
-                    cboProvince.SelectedValue = m.Province;
-                    cboDistrict.SelectedValue = m.District;
-                    cboCommune.SelectedValue = m.Commune;
-                    cboVillage.SelectedValue = m.Village;
+                    cboProvince.Value = m.Province;
+                    cboDistrict.Value = m.District;
+                    cboCommune.Value = m.Commune;
+                    cboVillage.Value = m.Village;
                     txtNote.Text = m.Note;
                     SetStatus(m.Status);
                     LockControls();
@@ -230,7 +231,7 @@ namespace kCredit
                 }
                 catch (Exception ex)
                 {
-                    MessageFacade.Show(MessageFacade.error_load_record + "\r\n" + ex.Message, LabelFacade.sys_customer, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageFacade.Show(MessageFacade.error_load_record + "\r\n" + ex.Message, TitleLabel, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     ErrorLogFacade.Log(ex);
                 }
             else    // when grid is empty => disable buttons and clear all controls
@@ -336,30 +337,30 @@ namespace kCredit
             m.Customer_No = txtCustomerNo.Text.Trim();
             m.First_Name = txtFirstName.Text;
             m.Last_Name = txtLastName.Text;
-            m.Gender = cboGender.SelectedValue.ToString();
+            m.Gender = cboGender.Value;
             m.Date_of_Birth = dtpDOB.Value;
-            m.Type = cboType.SelectedValue.ToString();
-            m.Category = cboCategory.SelectedValue.ToString();
-            m.Branch_Code = cboBranch.SelectedValue.ToString();
-            m.Id_Type1 = cboIDType1.SelectedValue.ToString();
+            m.Type = cboType.Value;
+            m.Category = cboCategory.Value;
+            m.Branch_Code = cboBranch.Value;
+            m.Id_Type1 = cboIDType1.Value;
             m.Id_Value1 = txtIDValue1.Text;
-            m.Id_Type2 = cboIDType2.SelectedValue.ToString();
+            m.Id_Type2 = cboIDType2.Value;
             m.Id_Value2 = txtIDValue2.Text;
-            m.Id_Type3 = cboIDType3.SelectedValue.ToString();
+            m.Id_Type3 = cboIDType3.Value;
             m.Id_Value3 = txtIDValue3.Text;
-            m.Contact_Type1 = cboContactType1.SelectedValue.ToString();
+            m.Contact_Type1 = cboContactType1.Value;
             m.Contact_Value1 = txtContactValue1.Text;
-            m.Contact_Type2 = cboContactType2.SelectedValue.ToString();
+            m.Contact_Type2 = cboContactType2.Value;
             m.Contact_Value2 = txtContactValue2.Text;
-            m.Contact_Type3 = cboContactType3.SelectedValue.ToString();
+            m.Contact_Type3 = cboContactType3.Value;
             m.Contact_Value3 = txtContactValue3.Text;
-            m.Contact_Type4 = cboContactType4.SelectedValue.ToString();
+            m.Contact_Type4 = cboContactType4.Value;
             m.Contact_Value4 = txtContactValue4.Text;
             m.Address = txtAddress.Text;
-            m.Province = cboProvince.SelectedValue.ToString();
-            m.District = cboDistrict.SelectedValue.ToString();
-            m.Commune = cboCommune.SelectedValue.ToString();
-            m.Village = cboVillage.SelectedValue.ToString();
+            m.Province = cboProvince.Value;
+            m.District = cboDistrict.Value;
+            m.Commune = cboCommune.Value;
+            m.Village = cboVillage.Value;
             m.Note = txtNote.Text;
             if (m.Id == 0)
             {
@@ -419,7 +420,7 @@ namespace kCredit
             catch (Exception ex)
             {
                 ErrorLogFacade.Log(ex, "Form_Load");
-                MessageFacade.Show(MessageFacade.error_load_form + "\r\n" + ex.Message, LabelFacade.sys_customer, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageFacade.Show(MessageFacade.error_load_form + "\r\n" + ex.Message, TitleLabel, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             // ShowDialog; Select a customer
             btnSelect.Visible = IsDlg;
@@ -630,7 +631,7 @@ namespace kCredit
                     else if (result == System.Windows.Forms.DialogResult.Cancel)
                         return;
                 }
-                CustomerFacade.DecrementSrNo(cboBranch.SelectedValue.ToString());
+                CustomerFacade.DecrementSrNo(cboBranch.Value);
                 LockControls(true);
                 dgvList.Focus();
                 try
@@ -744,7 +745,7 @@ namespace kCredit
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            if (txtFind.Text.Length == 0) btnFind_Click(null, null);
+            if (txtFind.IsEmpty) btnFind_Click(null, null);
         }
 
         private void mnuShow_CheckedChanged(object sender, EventArgs e)
@@ -800,12 +801,13 @@ namespace kCredit
             splitContainer1.IsSplitterFixed = !IsExpand;
             if (!IsExpand)
             {
+                ConfigFacade.SetSplitterDistance(Name, splitContainer1.SplitterDistance);
                 splitContainer1.SplitterDistance = splitContainer1.Size.Width;
                 splitContainer1.FixedPanel = FixedPanel.Panel2;
             }
             else
             {
-                splitContainer1.SplitterDistance = ConfigFacade.GetInt(Name + Constant.Splitter_Distance);
+                splitContainer1.SplitterDistance = ConfigFacade.GetSplitterDistance(Name );
                 splitContainer1.FixedPanel = FixedPanel.Panel1;
             }
             dgvList.ShowLessColumns(IsExpand);
@@ -857,36 +859,31 @@ namespace kCredit
 
         private void txtFind_Leave(object sender, EventArgs e)
         {
-            lblSearch.Visible = (txtFind.Text.Length == 0);
+            lblSearch.Visible = (txtFind.IsEmpty);
         }
 
         private void cboProvince_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Data.LoadRegional(cboDistrict, "'D'", cboProvince.SelectedValue);
+            Data.LoadRegional(cboDistrict, "'D'", cboProvince.Value);
             cboDistrict.SelectedIndex = -1;
         }
 
         private void cboDistrict_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Data.LoadRegional(cboCommune, "'C'", cboDistrict.SelectedValue);
+            Data.LoadRegional(cboCommune, "'C'", cboDistrict.Value);
             cboCommune.SelectedIndex = -1;
         }
 
         private void cboCommune_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Data.LoadRegional(cboVillage, "'V'", cboCommune.SelectedValue);
+            Data.LoadRegional(cboVillage, "'V'", cboCommune.Value);
             cboVillage.SelectedIndex = -1;
-        }
-
-        private void cboType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void cboBranch_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cboBranch.SelectedIndex == -1 || btnNew.Enabled) return;
-            txtCustomerNo.Text = CustomerFacade.GetNextCustomerNo(cboBranch.SelectedValue.ToString()); //todo: Format No; from table
+            if (cboBranch.Unspecified || btnNew.Enabled) return;
+            txtCustomerNo.Text = CustomerFacade.GetNextCustomerNo(cboBranch.Value); //todo: Format No; from table
         }
 
         private void btnSelect_Click(object sender, EventArgs e)

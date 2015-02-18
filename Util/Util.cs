@@ -117,7 +117,8 @@ namespace kCredit
             if (prefix.Length == 0) prefix = frm.Name;
             ConfigFacade.Set(prefix + Constant.Location, frm.Location);
             ConfigFacade.Set(prefix + Constant.Window_State, frm.WindowState);
-            if (frm.WindowState == FormWindowState.Normal) ConfigFacade.Set(prefix + Constant.Size, frm.Size);
+            if (frm.WindowState == FormWindowState.Normal && (frm.FormBorderStyle == FormBorderStyle.Sizable || frm.FormBorderStyle == FormBorderStyle.SizableToolWindow))
+                ConfigFacade.Set(prefix + Constant.Size, frm.Size);
         }
 
         public static void SetFormState(Form frm, string prefix = "")
@@ -129,9 +130,12 @@ namespace kCredit
                 frm.Location = lo;
             //else
             //todo: record for future find out
-            var si = ConfigFacade.GetSize(prefix + Constant.Size);
-            if (si != new System.Drawing.Size(-1, -1))
-                frm.Size = si;
+            if (frm.FormBorderStyle == FormBorderStyle.Sizable || frm.FormBorderStyle == FormBorderStyle.SizableToolWindow)
+            {
+                var si = ConfigFacade.GetSize(prefix + Constant.Size);
+                if (si != new System.Drawing.Size(-1, -1))
+                    frm.Size = si;
+            }
             frm.WindowState = ConfigFacade.GetWindowState(prefix + Constant.Window_State, "0");
         }
     }
@@ -155,27 +159,26 @@ namespace kCredit
         public static readonly string TableName = "currency";
         private static string Currency;
         private static double RoundUnit; // Temporary store the round unit of the currency
-        private static string RoundRule;
+        //private static string RoundRule;
         public static string Format;
 
         public static void LoadSetting(string currency)
         {
             Currency = currency;
 
-            var sql = SqlFacade.SqlSelect(TableName, "round_unit, round_rule, format", "code = :code");
+            var sql = SqlFacade.SqlSelect(TableName, "round_unit, format", "code = :code");
             //RoundUnit =SqlFacade.Connection.ExecuteScalar<double>(sql, new { code = currency });
             var dr = SqlFacade.Connection.ExecuteReader(sql, new { code = currency });
             dr.Read();
-            RoundRule = dr["round_rule"].ToString();
             RoundUnit = double.Parse(dr["round_unit"].ToString());
             Format = dr["format"].ToString();
             dr.Close();
         }
 
-        public static double Round(double value)
+        public static double Round(double value, string roundRule)
         {
             double result = 0;
-            switch (RoundRule)
+            switch (roundRule)
             {
                 case "R":
                     result = RoundUpDown(value);
@@ -286,8 +289,11 @@ namespace kCredit
             return SqlFacade.Connection.ExecuteScalar<bool>(sql, new { year = date.Year, MMdd = date.ToString("MMdd") });
         }
 
-        public static DateTime GetNextWorkingDay(DateTime date, bool skipSat, bool skipSun, bool skipHoliday, string move)
+        public static DateTime GetNextWorkingDay(DateTime date, string neverOn, string move)
         {
+            bool skipSat = neverOn.Contains("6");
+            bool skipSun = neverOn.Contains("0");
+            bool skipHoliday = neverOn.Contains("H");
             int direction = (move == "F" ? 1 : -1);
             while ((skipSat && IsSaturday(date)) || (skipSun && IsSunday(date)) || skipHoliday && IsHoliday(date))
             {
