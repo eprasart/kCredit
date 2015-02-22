@@ -36,14 +36,14 @@
             this.rptViewer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rptViewer.Location = new System.Drawing.Point(0, 0);
             this.rptViewer.Name = "rptViewer";
-            this.rptViewer.Size = new System.Drawing.Size(745, 643);
+            this.rptViewer.Size = new System.Drawing.Size(817, 643);
             this.rptViewer.TabIndex = 0;
             // 
             // frmReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(745, 643);
+            this.ClientSize = new System.Drawing.Size(817, 643);
             this.Controls.Add(this.rptViewer);
             this.KeyPreview = true;
             this.Name = "frmReport";

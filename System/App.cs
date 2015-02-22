@@ -22,6 +22,7 @@ namespace kCredit
 
         //public static frmCompany fCompany;
         public static frmProduct fProduct;
+        public static frmHoliday fHoliday;
         public static frmBranch fBranch;
         public static frmCustomer fCustomer;
         public static frmLoan fLoan;

@@ -42,9 +42,9 @@ namespace kCredit
 
         public static void LoadProduct(ComboBox cbo)
         {
-            string sql = SqlFacade.SqlSelect("product", "id, name", "status = 'A'", "name");
+            string sql = SqlFacade.SqlSelect("product", "code, name", "status = 'A'", "name");
             cbo.DataSource = SqlFacade.GetDataTable(sql);
-            cbo.ValueMember = "id";
+            cbo.ValueMember = "code";
             cbo.DisplayMember = "name";
         }
 

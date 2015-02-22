@@ -13,6 +13,7 @@ namespace kCredit
     class Product
     {
         public long Id { get; set; }
+        public string Code { get; set; }
         public string Name { get; set; }
         public string Calculation_Method { get; set; }
         public string Principal_Round_Rule { get; set; }
@@ -35,7 +36,7 @@ namespace kCredit
 
         public static DataTable GetDataTable(string filter = "", string status = "")
         {
-            var sql = "select p.id, name, method.description calculation_method, prin.description principal_round_rule, int.description interest_round_rule, total.description total_round_rule" +
+            var sql = "select p.id, p.code, name, method.description calculation_method, prin.description principal_round_rule, int.description interest_round_rule, total.description total_round_rule" +
                 "\nfrom product p" +
                 "\njoin list method on field = 'calculation_method' and method.code = calculation_method" +
                 "\ninner join list prin on prin.field = 'round_rule' and prin.code = principal_round_rule" +
@@ -47,7 +48,7 @@ namespace kCredit
             else
                 sql += " and p.status = '" + status + "'";
             if (filter.Length > 0)
-                sql += " and (" + SqlFacade.SqlILike("name, p.note") + ")";
+                sql += " and (" + SqlFacade.SqlILike("p.code, name, p.note") + ")";
             sql += "\norder by name\nlimit " + ConfigFacade.Select_Limit;
 
             var cmd = new NpgsqlCommand(sql);
@@ -63,14 +64,14 @@ namespace kCredit
             if (m.Id == 0)
             {
                 m.Insert_By = App.session.Username;
-                sql = "name, calculation_method, principal_round_rule, interest_round_rule, total_round_rule, never_on, non_working_day_move, note, insert_by";
+                sql = "code, name, calculation_method, principal_round_rule, interest_round_rule, total_round_rule, never_on, non_working_day_move, note, insert_by";
                 sql = SqlFacade.SqlInsert(TableName, sql, "", true);
                 m.Id = SqlFacade.Connection.ExecuteScalar<long>(sql, m);
             }
             else
             {
                 m.Change_By = App.session.Username;
-                sql = "name, calculation_method, principal_round_rule, interest_round_rule, total_round_rule, never_on, non_working_day_move, note, change_by, change_at, change_no";
+                sql = "code, name, calculation_method, principal_round_rule, interest_round_rule, total_round_rule, never_on, non_working_day_move, note, change_by, change_at, change_no";
                 sql = SqlFacade.SqlUpdate(TableName, sql, "change_at = now(), change_no = change_no + 1", "id = :id");
                 SqlFacade.Connection.Execute(sql, m);
                 ReleaseLock(m.Id);  // Unlock

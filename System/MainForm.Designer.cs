@@ -55,6 +55,7 @@
             this.btnUnitMeasure = new kBit.UI.ButtonFlat();
             this.lblVersion = new System.Windows.Forms.Label();
             this.btnProduct = new kBit.UI.ButtonFlat();
+            this.btnHoliday = new kBit.UI.ButtonFlat();
             this.SuspendLayout();
             // 
             // groupLabel5
@@ -458,7 +459,7 @@
             // 
             this.lblVersion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblVersion.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblVersion.Location = new System.Drawing.Point(754, 269);
+            this.lblVersion.Location = new System.Drawing.Point(754, 304);
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Size = new System.Drawing.Size(191, 17);
             this.lblVersion.TabIndex = 5;
@@ -484,12 +485,31 @@
             this.btnProduct.UseVisualStyleBackColor = false;
             this.btnProduct.Click += new System.EventHandler(this.btnProduct_Click);
             // 
+            // btnHoliday
+            // 
+            this.btnHoliday.BackColor = System.Drawing.Color.White;
+            this.btnHoliday.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnHoliday.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnHoliday.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.btnHoliday.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnHoliday.Font = new System.Drawing.Font("Noto Sans Khmer", 9.75F);
+            this.btnHoliday.Image = ((System.Drawing.Image)(resources.GetObject("btnHoliday.Image")));
+            this.btnHoliday.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnHoliday.Location = new System.Drawing.Point(755, 257);
+            this.btnHoliday.Name = "btnHoliday";
+            this.btnHoliday.Size = new System.Drawing.Size(186, 31);
+            this.btnHoliday.TabIndex = 2;
+            this.btnHoliday.Text = "         Holiday";
+            this.btnHoliday.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnHoliday.UseVisualStyleBackColor = false;
+            this.btnHoliday.Click += new System.EventHandler(this.btnHoliday_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(957, 295);
+            this.ClientSize = new System.Drawing.Size(957, 330);
             this.Controls.Add(this.lblVersion);
             this.Controls.Add(this.groupLabel9);
             this.Controls.Add(this.groupLabel5);
@@ -502,6 +522,7 @@
             this.Controls.Add(this.btnCustomer);
             this.Controls.Add(this.buttonFlat18);
             this.Controls.Add(this.buttonFlat13);
+            this.Controls.Add(this.btnHoliday);
             this.Controls.Add(this.btnProduct);
             this.Controls.Add(this.btnBranch);
             this.Controls.Add(this.btnCompany);
@@ -556,5 +577,6 @@
         private kBit.UI.ButtonFlat btnUnitMeasure;
         private System.Windows.Forms.Label lblVersion;
         private kBit.UI.ButtonFlat btnProduct;
+        private kBit.UI.ButtonFlat btnHoliday;
     }
 }

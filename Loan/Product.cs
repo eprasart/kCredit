@@ -80,7 +80,7 @@ namespace kCredit
 
         private void LockControls(bool l = true)
         {
-            txtCode.ReadOnly = l;
+            txtCode.ReadOnly = Id != 0 && !l ? true : l;
             txtName.ReadOnly = l;
             cboMethod.Enabled = !l;
             cboPrincipalRound.Enabled = !l;
@@ -134,7 +134,7 @@ namespace kCredit
             if (Code.Length == 0)
                 valid.Add(txtCode, "code_blank");
             else if (ProductFacade.Exists(Code, Id))
-                valid.Add(txtCode, "code_exists");      
+                valid.Add(txtCode, "code_exists");
             if (txtName.IsEmptyTrim) valid.Add(txtName, "name_invalid");
             if (cboMethod.Unspecified) valid.Add(cboMethod, "calculation_method_unspecified");
             if (cboPrincipalRound.Unspecified) valid.Add(cboPrincipalRound, "principal_round_rule_unspecified");
@@ -146,8 +146,9 @@ namespace kCredit
 
         private void ClearAllBoxes()
         {
+            txtCode.Text = "";
+            txtCode.Focus();
             txtName.Text = "";
-            txtName.Focus();
             chkSaturday.Checked = true;
             chkSunday.Checked = true;
             chkHoliday.Checked = true;
@@ -163,6 +164,7 @@ namespace kCredit
                 try
                 {
                     var m = ProductFacade.Select(Id);
+                    txtCode.Text = m.Code;
                     txtName.Text = m.Name;
                     cboMethod.Value = m.Calculation_Method;
                     cboPrincipalRound.Value = m.Principal_Round_Rule;
@@ -236,7 +238,7 @@ namespace kCredit
 
         private void SetLabels()
         {
-            var prefix = "loan_";
+            var prefix = "product_";
             btnNew.Text = LabelFacade.sys_button_new ?? btnNew.Text;
             btnCopy.Text = LabelFacade.sys_button_copy ?? btnCopy.Text;
             btnUnlock.Text = LabelFacade.sys_button_unlock ?? btnUnlock.Text;
@@ -260,11 +262,11 @@ namespace kCredit
         private bool Save()
         {
             if (!IsValidated()) return false;
-            Cursor = Cursors.WaitCursor;
-            // Loan account
+            Cursor = Cursors.WaitCursor;            
             var m = new Product();
             var log = new SessionLog { Module = "Product" };
             m.Id = Id;
+            m.Code = txtCode.Text;
             m.Name = txtName.Text;
             m.Calculation_Method = cboMethod.Value;
             m.Interest_Round_Rule = cboInterestRound.Value;
@@ -306,7 +308,7 @@ namespace kCredit
             return true;
         }
 
-        private void frmLoanList_Load(object sender, EventArgs e)
+        private void frmProductList_Load(object sender, EventArgs e)
         {
             try
             {
@@ -387,7 +389,7 @@ namespace kCredit
                 // If referenced
                 //todo: check if exist in ic_item
                 // If locked
-                var lInfo = LoanFacade.GetLock(Id);
+                var lInfo = HolidayFacade.GetLock(Id);
                 string msg = "";
                 if (lInfo.Locked)
                 {
@@ -406,7 +408,7 @@ namespace kCredit
                     return;
                 try
                 {
-                    LoanFacade.SetStatus(Id, Constant.RecordStatus_Deleted);
+                    HolidayFacade.SetStatus(Id, Constant.RecordStatus_Deleted);
                 }
                 catch (Exception ex)
                 {
@@ -475,7 +477,7 @@ namespace kCredit
             //todo: check if already used in ic_item
 
             //If locked
-            var lInfo = LoanFacade.GetLock(Id);
+            var lInfo = HolidayFacade.GetLock(Id);
             if (lInfo.Locked)
             {
                 string msg = string.Format(MessageFacade.lock_currently, lInfo.Lock_By, lInfo.Lock_At);
@@ -490,7 +492,7 @@ namespace kCredit
             }
             try
             {
-                LoanFacade.SetStatus(Id, status);
+                HolidayFacade.SetStatus(Id, status);
             }
             catch (Exception ex)
             {
@@ -528,7 +530,7 @@ namespace kCredit
                 dgvList.Focus();
                 try
                 {
-                    LoanFacade.ReleaseLock(dgvList.Id);
+                    HolidayFacade.ReleaseLock(dgvList.Id);
                 }
                 catch (Exception ex)
                 {
@@ -547,7 +549,7 @@ namespace kCredit
             if (Id == 0) return;
             try
             {
-                var lInfo = LoanFacade.GetLock(Id);
+                var lInfo = HolidayFacade.GetLock(Id);
 
                 if (lInfo.Locked) // Check if record is locked
                 {
@@ -653,7 +655,7 @@ namespace kCredit
             IsDirty = true;
         }
 
-        private void frmLoanList_FormClosing(object sender, FormClosingEventArgs e)
+        private void frmProductList_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (IsDirty)
             {
@@ -681,7 +683,7 @@ namespace kCredit
         {
             //// Check if entered code already exists
             //if (txtNo.ReadOnly) return;
-            //if (LoanFacade.Exists(txtNo.Text.Trim()))
+            //if (ProductFacade.Exists(txtNo.Text.Trim()))
             //{
             //    MessageFacade.Show(this, ref fMsg, LabelFacade.sy_msg_prefix + MessageFacade.code_already_exists, LabelFacade.sy_customer);
             //}
@@ -734,7 +736,7 @@ namespace kCredit
         {
             Cursor = Cursors.WaitCursor;
             Application.DoEvents();
-            LoanFacade.Export();
+            ProductFacade.Export();
             Cursor = Cursors.Default;
         }
 
@@ -756,7 +758,7 @@ namespace kCredit
         private void cboFrequencyUnit_SelectedIndexChanged(object sender, EventArgs e)
         {
             //if (cboFrequencyUnit.UnSpecified || btnNew.Enabled) return;
-            //txtAccountNo.Text = LoanFacade.GetNextAccountNo(cboFrequencyUnit.Value); //todo: Format No; from table
+            //txtAccountNo.Text = ProductFacade.GetNextAccountNo(cboFrequencyUnit.Value); //todo: Format No; from table
         }
 
         private void chkNeverOn_CheckedChanged(object sender, EventArgs e)

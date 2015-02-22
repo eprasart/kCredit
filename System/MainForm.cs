@@ -163,5 +163,25 @@ namespace kCredit.SYS
             f.Focus();
             Cursor = Cursors.Default;
         }
+
+        private void btnHoliday_Click(object sender, EventArgs e)
+        {
+            var f = App.fHoliday;
+            if (!SM.Privilege.CanAccess("PRD", "V")) // todo: not hard code
+            {
+                MessageBox.Show("You don't have the privilege to access this function.");
+                return;
+            }
+            Cursor = Cursors.WaitCursor;
+            if (f == null || f.IsDisposed == true)
+            {
+                f = new frmHoliday();
+                f.Show();
+            }
+            if (f.WindowState == FormWindowState.Minimized) //todo: do this with the rest
+                f.WindowState = FormWindowState.Normal;
+            f.Focus();
+            Cursor = Cursors.Default;
+        }
     }
 }

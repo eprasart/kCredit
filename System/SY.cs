@@ -364,6 +364,7 @@ namespace kCredit
         // Form
         public static string sys_branch;
         public static string sys_product;
+        public static string sys_holiday;
         public static string sys_customer;
         public static string sys_loan;
 
@@ -439,6 +440,7 @@ namespace kCredit
 
             sys_branch = Get("sys_branch");
             sys_product = Get("sys_product");
+            sys_product = Get("sys_holiday");
             sys_customer = Get("sys_customer");
             sys_loan = Get("sys_loan");
 
