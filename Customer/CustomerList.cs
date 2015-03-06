@@ -393,7 +393,6 @@ namespace kCredit
 
         private void frmCustomerList_Load(object sender, EventArgs e)
         {
-            Icon = Properties.Resources.Icon;
             try
             {
                 dgvList.ShowLessColumns(true);
