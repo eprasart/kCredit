@@ -98,7 +98,7 @@ namespace kCredit
             setting.Path = Path.Combine(App.StartupPath, "setting.ini");
             try
             {
-                SqlFacade.ConnectionString = setting.Get("ConnectionString", @"server=localhost;uid=erp;pwd=erp");
+                SqlFacade.ConnectionString = setting.Get("ConnectionString", @"server=localhost;uid=kcredit;pwd=kcredit");
             }
             catch (Exception ex)
             {

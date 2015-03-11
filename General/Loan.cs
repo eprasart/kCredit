@@ -10,17 +10,10 @@ using System.Windows.Forms;
 
 namespace kCredit
 {
-    class Holiday
+    class Holiday:BaseTable
     {
-        public long Id { get; set; }
         public string Event { get; set; }
         public DateTime Date { get; set; }
-        public string Note { get; set; }
-        public string Status { get; set; }
-        public string Insert_By { get; set; }
-        public DateTime? Insert_At { get; set; }
-        public string Change_By { get; set; }
-        public DateTime? Change_At { get; set; }
     }
 
     static class HolidayFacade
@@ -48,18 +41,18 @@ namespace kCredit
 
         public static long Save(Holiday m)
         {
-            string sql = "";
+            string sql = "event, date, note, ";
             if (m.Id == 0)
             {
                 m.Insert_By = App.session.Username;
-                sql = "event, date, note, insert_by";
+                sql += "insert_by";
                 sql = SqlFacade.SqlInsert(TableName, sql, "", true);
                 m.Id = SqlFacade.Connection.ExecuteScalar<long>(sql, m);
             }
             else
             {
                 m.Change_By = App.session.Username;
-                sql = "event, date, note, change_by, change_at, change_no";
+                sql = "change_by, change_at, change_no";
                 sql = SqlFacade.SqlUpdate(TableName, sql, "change_at = now(), change_no = change_no + 1", "id = :id");
                 SqlFacade.Connection.Execute(sql, m);
                 ReleaseLock(m.Id);  // Unlock

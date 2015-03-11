@@ -10,9 +10,8 @@ using System.Windows.Forms;
 
 namespace kCredit
 {
-    class Branch
+    class Branch:BaseTable
     {
-        public long Id { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
         public string Parent_Branch { get; set; }
@@ -22,12 +21,6 @@ namespace kCredit
         public string District { get; set; }
         public string Commune { get; set; }
         public string Village { get; set; }
-        public string Note { get; set; }
-        public string Status { get; set; }
-        public string Insert_By { get; set; }
-        public DateTime? Insert_At { get; set; }
-        public string Change_By { get; set; }
-        public DateTime? Change_At { get; set; }
     }
 
     static class BranchFacade
@@ -54,18 +47,18 @@ namespace kCredit
 
         public static long Save(Branch m)
         {
-            string sql = "";
+            string sql = "code, name, parent_branch, currency, address, province, district, commune, village, note, ";
             if (m.Id == 0)
             {
                 m.Insert_By = App.session.Username;
-                sql = SqlFacade.SqlInsert(TableName, "code, name, parent_branch, currency, address, province, district, commune, village, note, insert_by", "", true);
+                sql = SqlFacade.SqlInsert(TableName, sql +"insert_by", "", true);
                 m.Id = SqlFacade.Connection.ExecuteScalar<long>(sql, m);
                 CustomerFacade.SaveSrNo(m.Code);
             }
             else
             {
                 m.Change_By = App.session.Username;
-                sql = SqlFacade.SqlUpdate(TableName, "code, name, parent_branch, currency, address, province, district, commune, village, note, change_by, change_at, change_no", "change_at = now(), change_no = change_no + 1", "id = :id");
+                sql = SqlFacade.SqlUpdate(TableName, sql+"change_by, change_at, change_no", "change_at = now(), change_no = change_no + 1", "id = :id");
                 SqlFacade.Connection.Execute(sql, m);
                 ReleaseLock(m.Id);  // Unlock
             }

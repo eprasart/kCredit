@@ -10,9 +10,8 @@ using System.Windows.Forms;
 
 namespace kCredit
 {
-    class Customer
+    class Customer:BaseTable
     {
-        public long Id { get; set; }
         public string Customer_No { get; set; }
         public string First_Name { get; set; }
         public string Last_Name { get; set; }
@@ -40,12 +39,6 @@ namespace kCredit
         public string District { get; set; }
         public string Commune { get; set; }
         public string Village { get; set; }
-        public string Note { get; set; }
-        public string Status { get; set; }
-        public string Insert_By { get; set; }
-        public DateTime? Insert_At { get; set; }
-        public string Change_By { get; set; }
-        public DateTime? Change_At { get; set; }
     }
 
     static class CustomerFacade
@@ -73,22 +66,20 @@ namespace kCredit
 
         public static long Save(Customer m)
         {
-            string sql = "";
+            string sql = "customer_no, first_name, last_name, gender, date_of_birth, type, category, branch_code, " +
+                    "id_type1, id_value1, id_type2, id_value2, id_type3, id_value3, contact_type1, contact_value1, contact_type2, contact_value2, contact_type3, contact_value3, contact_type4, contact_value4, " +
+                    "address, province, district, commune, village, note, ";
             if (m.Id == 0)
             {
                 m.Insert_By = App.session.Username;
-                sql = "customer_no, first_name, last_name, gender, date_of_birth, type, category, branch_code, " +
-                    "id_type1, id_value1, id_type2, id_value2, id_type3, id_value3, contact_type1, contact_value1, contact_type2, contact_value2, contact_type3, contact_value3, contact_type4, contact_value4, " +
-                    "address, province, district, commune, village, note, insert_by";
+                sql += "insert_by";
                 sql = SqlFacade.SqlInsert(TableName, sql, "", true);
                 m.Id = SqlFacade.Connection.ExecuteScalar<long>(sql, m);
             }
             else
             {
                 m.Change_By = App.session.Username;
-                sql = "customer_no, first_name, last_name, gender, date_of_birth, type, category, branch_code, " +
-                   "id_type1, id_value1, id_type2, id_value2, id_type3, id_value3, contact_type1, contact_value1, contact_type2, contact_value2, contact_type3, contact_value3, contact_type4, contact_value4, " +
-                   "address, province, district, commune, village, note, change_by, change_at, change_no";
+                sql += "change_by, change_at, change_no";
                 sql = SqlFacade.SqlUpdate(TableName, sql, "change_at = now(), change_no = change_no + 1", "id = :id");
                 SqlFacade.Connection.Execute(sql, m);
                 ReleaseLock(m.Id);  // Unlock

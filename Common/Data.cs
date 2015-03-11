@@ -1,4 +1,4 @@
-﻿using kBit.UI;
+﻿using kUI;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,6 +8,17 @@ using System.Threading.Tasks;
 
 namespace kCredit
 {
+    class BaseTable
+    {
+        public long Id { get; set; }
+        public string Note { get; set; }
+        public string Status { get; set; }
+        public string Insert_By { get; set; }
+        public DateTime? Insert_At { get; set; }
+        public string Change_By { get; set; }
+        public DateTime? Change_At { get; set; }
+    }
+
     public static class Data
     {
         public static void LoadList(ComboBox cbo, string field)

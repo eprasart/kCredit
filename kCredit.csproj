@@ -361,18 +361,17 @@
     <None Include="Resources\Information.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\kBit.UI\kBit.UI.csproj">
-      <Project>{30e4439a-c188-479f-852b-a58cbf8b0ab6}</Project>
-      <Name>kBit.UI</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Refresh.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Preview.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\kUI\kUI.csproj">
+      <Project>{30e4439a-c188-479f-852b-a58cbf8b0ab6}</Project>
+      <Name>kUI</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

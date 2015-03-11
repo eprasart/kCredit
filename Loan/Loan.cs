@@ -10,9 +10,8 @@ using System.Windows.Forms;
 
 namespace kCredit
 {
-    class Product
+    class Product:BaseTable
     {
-        public long Id { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
         public string Calculation_Method { get; set; }
@@ -21,12 +20,6 @@ namespace kCredit
         public string Total_Round_Rule { get; set; }
         public string Never_On { get; set; }
         public string Non_Working_Day_Move { get; set; }
-        public string Note { get; set; }
-        public string Status { get; set; }
-        public string Insert_By { get; set; }
-        public DateTime? Insert_At { get; set; }
-        public string Change_By { get; set; }
-        public DateTime? Change_At { get; set; }
     }
 
     static class ProductFacade
@@ -60,19 +53,19 @@ namespace kCredit
 
         public static long Save(Product m)
         {
-            string sql = "";
+            string sql = "code, name, calculation_method, principal_round_rule, interest_round_rule, total_round_rule, never_on, non_working_day_move, note, ";
             if (m.Id == 0)
             {
                 m.Insert_By = App.session.Username;
-                sql = "code, name, calculation_method, principal_round_rule, interest_round_rule, total_round_rule, never_on, non_working_day_move, note, insert_by";
+                sql += "insert_by";
                 sql = SqlFacade.SqlInsert(TableName, sql, "", true);
                 m.Id = SqlFacade.Connection.ExecuteScalar<long>(sql, m);
             }
             else
             {
                 m.Change_By = App.session.Username;
-                sql = "code, name, calculation_method, principal_round_rule, interest_round_rule, total_round_rule, never_on, non_working_day_move, note, change_by, change_at, change_no";
-                sql = SqlFacade.SqlUpdate(TableName, sql, "change_at = now(), change_no = change_no + 1", "id = :id");
+                sql += "change_by, change_at, change_no";
+                sql = SqlFacade.SqlUpdate(TableName, sql, "change_at = now(), change_no = change_no + 1", "id = :id"); //todo: gobal?
                 SqlFacade.Connection.Execute(sql, m);
                 ReleaseLock(m.Id);  // Unlock
             }
@@ -138,9 +131,8 @@ namespace kCredit
         }
     }
 
-    class Loan
+    class Loan:BaseTable
     {
-        public long Id { get; set; }
         public string Account_No { get; set; }
         public string Customer_No { get; set; }
         public string Branch_Code { get; set; }
@@ -160,12 +152,6 @@ namespace kCredit
         public string Payment_Site { get; set; }
         public int Credit_Agent_Id { get; set; }
         public string Account_Status { get; set; }
-        public string Note { get; set; }
-        public string Status { get; set; }
-        public string Insert_By { get; set; }
-        public DateTime? Insert_At { get; set; }
-        public string Change_By { get; set; }
-        public DateTime? Change_At { get; set; }
     }
 
     static class LoanFacade
@@ -194,14 +180,14 @@ namespace kCredit
 
         public static long Save(Loan m)
         {
-            string sql = "";
+            string sql = "account_no, customer_no, branch_code, frequency_unit, frequency, installment_no, amount, currency, interest_rate, product, " +
+                  "disburse_date, first_installment_date, maturity_date, never_on, non_working_day_move, purpose, payment_site, credit_agent_id, " +
+                  "note, ";
             if (m.Id == 0)
             {
                 m.Insert_By = App.session.Username;
                 m.Branch_Code = App.session.Branch_Code;
-                sql = "account_no, customer_no, branch_code, frequency_unit, frequency, installment_no, amount, currency, interest_rate, product, " +
-                  "disburse_date, first_installment_date, maturity_date, never_on, non_working_day_move, purpose, payment_site, credit_agent_id, " +
-                  "note, insert_by";
+                sql += "insert_by";
                 sql = SqlFacade.SqlInsert(TableName, sql, "", true);
 
                 m.Id = SqlFacade.Connection.ExecuteScalar<long>(sql, m);
@@ -209,8 +195,7 @@ namespace kCredit
             else
             {
                 m.Change_By = App.session.Username;
-                sql = "account_no, customer_no, branch_code, frequency_unit, frequency, installment_no, amount, currency, interest_rate, product, disburse_date, first_installment_date, " +
-                    "maturity_date, never_on, non_working_day_move, purpose, payment_site, credit_agent_id, note, change_by, change_at, change_no";
+                sql += "change_by, change_at, change_no";
                 sql = SqlFacade.SqlUpdate(TableName, sql, "change_at = now(), change_no = change_no + 1", "id = :id");
                 SqlFacade.Connection.Execute(sql, m);
                 ReleaseLock(m.Id);  // Unlock
@@ -296,9 +281,8 @@ namespace kCredit
         }
     }
 
-    class Schedule
+    class Schedule:BaseTable
     {
-        public long Id { get; set; }
         public string account_no { get; set; }
         public DateTime date { get; set; }
         public int no { get; set; }
@@ -307,12 +291,6 @@ namespace kCredit
         public double total { get; set; }
         public double outstanding { get; set; }
         public double pay_off { get; set; }
-        public string note { get; set; }
-        public string status { get; set; }
-        public string Insert_By { get; set; }
-        public DateTime? Insert_At { get; set; }
-        public string Change_By { get; set; }
-        public DateTime? Change_At { get; set; }
     }
 
     static class ScheduleFacade
@@ -329,18 +307,18 @@ namespace kCredit
 
         public static long Save(Schedule m)
         {
-            string sql = "";
+            string sql = "account_no, date, no, principal, interest, total, outstanding, ";
             if (m.Id == 0)
             {
                 m.Insert_By = App.session.Username;
-                sql = "account_no, date, no, principal, interest, total, outstanding, insert_by";
+                sql += "insert_by";
                 sql = SqlFacade.SqlInsert(TableName, sql, "", true);
                 m.Id = SqlFacade.Connection.ExecuteScalar<long>(sql, m);
             }
             else
             {
                 m.Change_By = App.session.Username;
-                sql = "date, no, principal, interest, total, outstanding, change_by, change_at, change_no";
+                sql += "change_by, change_at, change_no";
                 sql = SqlFacade.SqlUpdate(TableName, sql, "change_at = now(), change_no = change_no + 1", "id = :id");
                 SqlFacade.Connection.Execute(sql, m);
                 //ReleaseLock(m.Id);  // Unlock

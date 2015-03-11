@@ -29,33 +29,33 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
-            this.groupLabel5 = new kBit.UI.GroupLabel();
-            this.groupLabel3 = new kBit.UI.GroupLabel();
-            this.groupLabel8 = new kBit.UI.GroupLabel();
-            this.groupLabel6 = new kBit.UI.GroupLabel();
-            this.groupLabel4 = new kBit.UI.GroupLabel();
-            this.groupLabel2 = new kBit.UI.GroupLabel();
-            this.btnLoan = new kBit.UI.ButtonFlat();
-            this.btnCustomer = new kBit.UI.ButtonFlat();
-            this.buttonFlat18 = new kBit.UI.ButtonFlat();
-            this.buttonFlat13 = new kBit.UI.ButtonFlat();
-            this.btnBranch = new kBit.UI.ButtonFlat();
-            this.btnCompany = new kBit.UI.ButtonFlat();
-            this.buttonFlat6 = new kBit.UI.ButtonFlat();
-            this.buttonFlat9 = new kBit.UI.ButtonFlat();
-            this.buttonFlat11 = new kBit.UI.ButtonFlat();
-            this.btnCategory = new kBit.UI.ButtonFlat();
-            this.buttonFlat16 = new kBit.UI.ButtonFlat();
-            this.btnAuditLog = new kBit.UI.ButtonFlat();
-            this.buttonFlat12 = new kBit.UI.ButtonFlat();
-            this.btnRepayment = new kBit.UI.ButtonFlat();
-            this.buttonFlat5 = new kBit.UI.ButtonFlat();
-            this.btnUser = new kBit.UI.ButtonFlat();
-            this.groupLabel9 = new kBit.UI.GroupLabel();
-            this.btnUnitMeasure = new kBit.UI.ButtonFlat();
+            this.groupLabel5 = new kUI.GroupLabel();
+            this.groupLabel3 = new kUI.GroupLabel();
+            this.groupLabel8 = new kUI.GroupLabel();
+            this.groupLabel6 = new kUI.GroupLabel();
+            this.groupLabel4 = new kUI.GroupLabel();
+            this.groupLabel2 = new kUI.GroupLabel();
+            this.btnLoan = new kUI.ButtonFlat();
+            this.btnCustomer = new kUI.ButtonFlat();
+            this.buttonFlat18 = new kUI.ButtonFlat();
+            this.buttonFlat13 = new kUI.ButtonFlat();
+            this.btnBranch = new kUI.ButtonFlat();
+            this.btnCompany = new kUI.ButtonFlat();
+            this.buttonFlat6 = new kUI.ButtonFlat();
+            this.buttonFlat9 = new kUI.ButtonFlat();
+            this.buttonFlat11 = new kUI.ButtonFlat();
+            this.btnCategory = new kUI.ButtonFlat();
+            this.buttonFlat16 = new kUI.ButtonFlat();
+            this.btnAuditLog = new kUI.ButtonFlat();
+            this.buttonFlat12 = new kUI.ButtonFlat();
+            this.btnRepayment = new kUI.ButtonFlat();
+            this.buttonFlat5 = new kUI.ButtonFlat();
+            this.btnUser = new kUI.ButtonFlat();
+            this.groupLabel9 = new kUI.GroupLabel();
+            this.btnUnitMeasure = new kUI.ButtonFlat();
             this.lblVersion = new System.Windows.Forms.Label();
-            this.btnProduct = new kBit.UI.ButtonFlat();
-            this.btnHoliday = new kBit.UI.ButtonFlat();
+            this.btnProduct = new kUI.ButtonFlat();
+            this.btnHoliday = new kUI.ButtonFlat();
             this.SuspendLayout();
             // 
             // groupLabel5
@@ -551,32 +551,32 @@
 
         #endregion
 
-        private kBit.UI.ButtonFlat btnUser;
-        private kBit.UI.GroupLabel groupLabel2;
-        private kBit.UI.GroupLabel groupLabel3;
-        private kBit.UI.ButtonFlat btnRepayment;
-        private kBit.UI.ButtonFlat btnCategory;
-        private kBit.UI.ButtonFlat btnAuditLog;
-        private kBit.UI.ButtonFlat btnCompany;
-        private kBit.UI.ButtonFlat buttonFlat5;
-        private kBit.UI.ButtonFlat buttonFlat6;
-        private kBit.UI.GroupLabel groupLabel4;
-        private kBit.UI.ButtonFlat btnCustomer;
-        private kBit.UI.GroupLabel groupLabel5;
-        private kBit.UI.ButtonFlat buttonFlat9;
-        private kBit.UI.ButtonFlat btnLoan;
-        private kBit.UI.ButtonFlat buttonFlat11;
-        private kBit.UI.ButtonFlat buttonFlat12;
-        private kBit.UI.ButtonFlat buttonFlat13;
-        private kBit.UI.GroupLabel groupLabel6;
-        private kBit.UI.ButtonFlat btnBranch;
-        private kBit.UI.ButtonFlat buttonFlat16;
-        private kBit.UI.ButtonFlat buttonFlat18;
-        private kBit.UI.GroupLabel groupLabel8;
-        private kBit.UI.GroupLabel groupLabel9;
-        private kBit.UI.ButtonFlat btnUnitMeasure;
+        private kUI.ButtonFlat btnUser;
+        private kUI.GroupLabel groupLabel2;
+        private kUI.GroupLabel groupLabel3;
+        private kUI.ButtonFlat btnRepayment;
+        private kUI.ButtonFlat btnCategory;
+        private kUI.ButtonFlat btnAuditLog;
+        private kUI.ButtonFlat btnCompany;
+        private kUI.ButtonFlat buttonFlat5;
+        private kUI.ButtonFlat buttonFlat6;
+        private kUI.GroupLabel groupLabel4;
+        private kUI.ButtonFlat btnCustomer;
+        private kUI.GroupLabel groupLabel5;
+        private kUI.ButtonFlat buttonFlat9;
+        private kUI.ButtonFlat btnLoan;
+        private kUI.ButtonFlat buttonFlat11;
+        private kUI.ButtonFlat buttonFlat12;
+        private kUI.ButtonFlat buttonFlat13;
+        private kUI.GroupLabel groupLabel6;
+        private kUI.ButtonFlat btnBranch;
+        private kUI.ButtonFlat buttonFlat16;
+        private kUI.ButtonFlat buttonFlat18;
+        private kUI.GroupLabel groupLabel8;
+        private kUI.GroupLabel groupLabel9;
+        private kUI.ButtonFlat btnUnitMeasure;
         private System.Windows.Forms.Label lblVersion;
-        private kBit.UI.ButtonFlat btnProduct;
-        private kBit.UI.ButtonFlat btnHoliday;
+        private kUI.ButtonFlat btnProduct;
+        private kUI.ButtonFlat btnHoliday;
     }
 }
